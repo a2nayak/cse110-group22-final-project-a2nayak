@@ -1,6 +1,7 @@
 # Features of other typing games: 
 
 ## TypeRacer - url: play.typeracer.com
+
 TypeRacer is a typing game that typically involves you, the player, sitting in a car with 5-6 other random players, tasked with winning the race by typing out the paragraph given faster than anyone else. 
 
 This game's features involve a live WPM counter, an final screen to see the positions of all racers, and an explanation of where the random paragraph came from.
@@ -8,6 +9,7 @@ This game's features involve a live WPM counter, an final screen to see the posi
 This typing game focuses on speed and pressure to keep someone on task. By keeping them on a clock, it forces them to type quickly with speed and precision in order to beat their opponents. Speed by putting them in a race against other people, and precision by not accepting the final paragraph until all words are written correctly.
 
 ## Word Bomb - wordbomb.io
+
 This one is not your *typical* typing game, however it is a typing game so I will include it here.
 
 This game has a bunch of users in a lobby with 2-3 letters in the middle, with users tasked with making a word that includes those letters somewhere in the word, all while a bomb in the center is ticking down their time to make a word.
@@ -25,3 +27,13 @@ This game helps people stay on task with their typing by putting an exclusive ti
 There is a way to sign in and there's a tracker that is similar to how GitHub tends to track things. I think that this is a good way to allow users to check their progress and activity over time.
 
 Overall, I think MonkeyType is a good source to follow as a typing game, but I still think that it has some things that make it too open for us, so we will have to find a way to make things more linear.
+
+## EdClub Typing Jungle - edclub.com
+
+I'm fairly certain that EdClub is a resource used for more than just typing, but I've done this before.
+
+It's a very linear form of practicing typing, starting you off with "f" and "j" (the two letters with indents on it) and then progresses to more complicated typing.
+
+This is very useful for an educational standpoint, especially with educational videos that explain people how to properly set up their keyboard, how to place their hands in the right position, and even shows people how typing is set up depending on the keyboard you use. 
+
+Overall, I think EdClub is very good as a way to teach people typing, and should be one of the typing games that we should strive towards.
