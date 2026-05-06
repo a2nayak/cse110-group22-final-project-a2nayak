@@ -1,5 +1,27 @@
 # #1.50 Costco Developers - CSE 110 Final Project
 
+## Repo Structure
+- /src → source code
+- /tests → test files
+- /docs → technical documentation
+- /meetings → meeting notes
+- /ai-use → AI use log
+
+## Team Workflow and Repo Guidelines
+1. All tasks must have an issue and a branch created for it
+2. Individual task branches should be first merged into overall subteam branches (if applicable) before merging with master
+3. All PR's should be either thouroughly self-reviewed or if greater than 300 LoC, be peer-reviewed by one other person
+4. All pushed code should have corresponding documentation in the /docs directory. Documentation must include **at least** the following:
+    - Sprint #, names of collaborators, date pushed
+    - What is the feature?
+    - How does it work/how is it being used in the final product?
+    - What testing was performed on it
+5. All AI usage must be documented. If using AI, create a directory in /ai-use called /sprint-x-ai-log if it does not already exist and create a markdown file called your-name-ai-log.md. Include the following information: 
+    - Date
+    - What AI model is being used?
+    - Prompts log
+    - Summarize outputs/results used in final deliverable
+
 ## Overview
 
 With our team formed and enough practice with GenAI, in both a code focused and design-focused manner, we are ready to take on a project utilizing modern Agile methodologies.
