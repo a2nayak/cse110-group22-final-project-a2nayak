@@ -15,3 +15,13 @@ This game has a bunch of users in a lobby with 2-3 letters in the middle, with u
 If the bomb goes off on a player's turn, it explodes and they lose a life. If they lose all their lives, they are out of the game. They are not allowed to repeat words already said.
 
 This typing game focuses on random words and is more of a party game than anything, but still provides players with the ability to practice really crazy vocabulary skills.
+
+## MonkeyType - monkeytype.com
+
+This is a very minimalistic typing simulator that helps you practice how to type. Various settings are available such as level of complexity, time limit, and even a "zen" mode where you can freely type with no restraints. 
+
+This game helps people stay on task with their typing by putting an exclusive time limit, and also gives users a little more control over what they wish to practice. 
+
+There is a way to sign in and there's a tracker that is similar to how GitHub tends to track things. I think that this is a good way to allow users to check their progress and activity over time.
+
+Overall, I think MonkeyType is a good source to follow as a typing game, but I still think that it has some things that make it too open for us, so we will have to find a way to make things more linear.
