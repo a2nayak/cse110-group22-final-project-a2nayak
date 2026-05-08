@@ -3,74 +3,63 @@
  * Top-left UI module
  ***********************/
 console.log("Question engine loaded");
-const QuestionEngine = (() => {
-  /***********************
-   * STATE
-   ***********************/
+
+document.addEventListener("DOMContentLoaded", () => {
   const state = {
     questions: [],
-    usedQuestionIds: new Set(),
+    usedIndexes: new Set(),
     currentQuestion: null,
     score: 0,
     totalQuestions: 0,
+    answeredQuestions: 0,
   };
 
-  /***********************
-   * DOM ELEMENTS (top-left UI)
-   ***********************/
   const promptEl = document.getElementById("prompt");
   const optionsEl = document.getElementById("options");
   const inputEl = document.getElementById("typing-input");
+  const submitBtn = document.getElementById("submit-btn");
   const scoreEl = document.getElementById("score");
+  const progressEl = document.getElementById("progress");
+  const feedbackEl = document.getElementById("feedback-message");
 
-  /***********************
-   * LOAD QUESTIONS
-   ***********************/
   async function loadQuestions() {
     try {
-      const res = await fetch("questions.json");
-      const data = await res.json();
+      const res = await fetch("../data/questions.json");
 
-      state.questions = data.questions || data;
+      if (!res.ok) {
+        throw new Error("Could not load questions.json");
+      }
+
+      state.questions = await res.json();
       state.totalQuestions = state.questions.length;
 
       nextQuestion();
     } catch (err) {
       console.error("Failed to load questions:", err);
+      promptEl.textContent = "Failed to load questions.";
     }
   }
 
-  /***********************
-   * GET NEXT QUESTION (no repeats)
-   ***********************/
   function getNextQuestion() {
-    const available = state.questions.filter(
-      (q) => !state.usedQuestionIds.has(q.id)
-    );
-
-    if (available.length === 0) {
-      return null; // game finished
+    if (state.usedIndexes.size === state.questions.length) {
+      return null;
     }
 
-    const q =
-      available[Math.floor(Math.random() * available.length)];
+    let randomIndex;
 
-    state.usedQuestionIds.add(q.id);
-    state.currentQuestion = q;
+    do {
+      randomIndex = Math.floor(Math.random() * state.questions.length);
+    } while (state.usedIndexes.has(randomIndex));
 
-    return q;
+    state.usedIndexes.add(randomIndex);
+    state.currentQuestion = state.questions[randomIndex];
+
+    return state.currentQuestion;
   }
 
-  /***********************
-   * RENDER QUESTION
-   ***********************/
   function renderQuestion(q) {
-    if (!q) return;
-
     promptEl.textContent = q.prompt;
     optionsEl.innerHTML = "";
-
-    // reset input
     inputEl.value = "";
     inputEl.focus();
 
@@ -78,31 +67,52 @@ const QuestionEngine = (() => {
       const btn = document.createElement("button");
       btn.textContent = opt;
 
-      btn.addEventListener("click", () => {
-        checkAnswer(opt);
-      });
+      btn.disabled = true;
 
-      optionsEl.appendChild(btn);
-    });
+     optionsEl.appendChild(btn);
+  });
+
+  feedbackEl.textContent = "Type your answer, then press Submit.";
+  feedbackEl.className = "feedback";
+
+    updateProgress();
   }
 
-  /***********************
-   * CHECK ANSWER
-   ***********************/
-  function checkAnswer(selected) {
-    const correct = state.currentQuestion.answer;
+  function checkAnswer() {
+  if (!state.currentQuestion) return;
 
-    if (selected === correct) {
-      state.score++;
-      scoreEl.textContent = state.score;
-    }
+  const userAnswer = inputEl.value.trim();
+  const correctAnswer = state.currentQuestion.answer.trim();
 
+  if (userAnswer === "") {
+    feedbackEl.textContent = "Type an answer before submitting.";
+    feedbackEl.className = "feedback warning";
+    return;
+  }
+
+  if (userAnswer === correctAnswer) {
+    state.score++;
+    scoreEl.textContent = state.score;
+
+    feedbackEl.textContent = "Correct! Loading next question...";
+    feedbackEl.className = "feedback correct";
+  } else {
+    feedbackEl.textContent = `Incorrect. Correct answer: ${correctAnswer}`;
+    feedbackEl.className = "feedback incorrect";
+  }
+
+  state.answeredQuestions++;
+  updateProgress();
+
+  setTimeout(() => {
     nextQuestion();
+  }, 1200);
+}
+
+  function updateProgress() {
+    progressEl.textContent = `${state.answeredQuestions} / ${state.totalQuestions}`;
   }
 
-  /***********************
-   * NEXT QUESTION FLOW
-   ***********************/
   function nextQuestion() {
     const q = getNextQuestion();
 
@@ -114,26 +124,21 @@ const QuestionEngine = (() => {
     renderQuestion(q);
   }
 
-  /***********************
-   * END GAME
-   ***********************/
   function endGame() {
     promptEl.textContent = "Game Complete!";
     optionsEl.innerHTML = "";
     inputEl.disabled = true;
+    submitBtn.disabled = true;
+    progressEl.textContent = `${state.totalQuestions} / ${state.totalQuestions}`;
   }
 
-  /***********************
-   * PUBLIC API
-   ***********************/
-  return {
-    loadQuestions,
-    nextQuestion,
-    getState: () => state,
-  };
-})();
+  submitBtn.addEventListener("click", checkAnswer);
 
-/***********************
- * START GAME
- ***********************/
-QuestionEngine.loadQuestions();
+  inputEl.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      checkAnswer();
+    }
+  });
+
+  loadQuestions();
+});
