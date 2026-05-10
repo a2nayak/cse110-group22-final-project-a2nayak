@@ -1,5 +1,5 @@
 const time_used_each_question = []
-const timer_type = {
+export const timer_type = {
     stopwatch:0,
     countdown:1
 }
