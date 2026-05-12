@@ -1,0 +1,35 @@
+{
+  "name": "cse110-group22-final-project",
+  "version": "1.0.0",
+  "description": "- /src → source code\r - /tests → test files\r - /docs → technical documentation\r - /meetings → meeting notes\r - /ai-use → AI use log",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cse110-sp26-group22/cse110-group22-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cse110-sp26-group22/cse110-group22-final-project/issues"
+  },
+  "homepage": "https://github.com/cse110-sp26-group22/cse110-group22-final-project#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.5",
+    "@eslint/js": "^10.0.1",
+    "babel-jest": "^30.4.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-jest": "^29.15.2",
+    "globals": "^17.6.0",
+    "jest": "^30.3.0"
+  }
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "prompt": "Which keyword is used to define a function in Python?",
+    "options": ["func", "define", "def", "function"],
+    "answer": "def",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which symbol is used to start a comment in Python?",
+    "options": ["//", "#", "/*", "--"],
+    "answer": "#",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "How do you print text in Python?",
+    "options": ["echo('Hello')", "print('Hello')", "printf('Hello')", "console.log('Hello')"],
+    "answer": "print('Hello')",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line correctly creates a variable named age with value 18?",
+    "options": ["int age = 18", "age := 18", "age = 18", "let age = 18"],
+    "answer": "age = 18",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which operator is used for equality comparison in Python?",
+    "options": ["=", "==", "!=", ":="],
+    "answer": "==",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "How do you start an if statement in Python?",
+    "options": ["if x > 5 then:", "if (x > 5)", "if x > 5:", "if x > 5 {}"],
+    "answer": "if x > 5:",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which keyword is used for an alternative condition in Python?",
+    "options": ["elseif", "else if", "elif", "otherwise"],
+    "answer": "elif",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "How do you start a while loop in Python?",
+    "options": ["while x < 5:", "while (x < 5)", "while x < 5 do", "loop while x < 5"],
+    "answer": "while x < 5:",
+    "answerChoice": 1
+  },
+  {
+    "prompt": "Which line correctly creates a list in Python?",
+    "options": ["numbers = (1, 2, 3)", "numbers = [1, 2, 3]", "numbers = {1, 2, 3}", "numbers = <1, 2, 3>"],
+    "answer": "numbers = [1, 2, 3]",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line accesses the first element of a list named nums?",
+    "options": ["nums[1]", "nums.first()", "nums[0]", "nums{-1}"],
+    "answer": "nums[0]",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which keyword is used to create a class in Python?",
+    "options": ["object", "class", "struct", "new"],
+    "answer": "class",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line correctly imports the math module?",
+    "options": ["include math", "using math", "import math", "#import math"],
+    "answer": "import math",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "How do you create a for loop that iterates through a list called items?",
+    "options": ["for item in items:", "foreach(item : items)", "for(item in items)", "loop item in items"],
+    "answer": "for item in items:",
+    "answerChoice": 1
+  },
+  {
+    "prompt": "Which keyword exits a loop immediately?",
+    "options": ["skip", "return", "continue", "break"],
+    "answer": "break",
+    "answerChoice": 4
+  },
+  {
+    "prompt": "Which keyword skips the current loop iteration?",
+    "options": ["continue", "next", "pass", "break"],
+    "answer": "continue",
+    "answerChoice": 1
+  },
+  {
+    "prompt": "Which line correctly opens a file for reading?",
+    "options": ["open('file.txt', 'r')", "file.open('file.txt')", "read('file.txt')", "open.read('file.txt')"],
+    "answer": "open('file.txt', 'r')",
+    "answerChoice": 1
+  },
+  {
+    "prompt": "Which line converts a string x into an integer?",
+    "options": ["integer(x)", "int(x)", "str.toInt(x)", "x.int()"],
+    "answer": "int(x)",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which value represents Boolean true in Python?",
+    "options": ["true", "TRUE", "True", "1"],
+    "answer": "True",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which line correctly creates a dictionary in Python?",
+    "options": ["person = ['name': 'Sam']", "person = {'name': 'Sam'}", "person = ('name': 'Sam')", "person = <'name': 'Sam'>"],
+    "answer": "person = {'name': 'Sam'}",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which method adds an item to the end of a list?",
+    "options": ["insert()", "append()", "push()", "add()"],
+    "answer": "append()",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line correctly defines a function with parameters a and b?",
+    "options": ["function add(a, b):", "def add(a, b):", "func add(a, b)", "define add(a, b):"],
+    "answer": "def add(a, b):",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which keyword returns a value from a function?",
+    "options": ["yield", "output", "return", "send"],
+    "answer": "return",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which line correctly checks if x is not equal to 10?",
+    "options": ["x <> 10", "x != 10", "x not 10", "x ~= 10"],
+    "answer": "x != 10",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which operator is used for exponentiation in Python?",
+    "options": ["^", "**", "//", "^^"],
+    "answer": "**",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line correctly creates a tuple?",
+    "options": ["coords = [1, 2]", "coords = {1, 2}", "coords = (1, 2)", "coords = <1, 2>"],
+    "answer": "coords = (1, 2)",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which line correctly checks membership in a list?",
+    "options": ["if x inside nums:", "if x in nums:", "if nums has x:", "if nums.contains(x):"],
+    "answer": "if x in nums:",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which keyword is used to handle exceptions?",
+    "options": ["catch", "except", "error", "handle"],
+    "answer": "except",
+    "answerChoice": 2
+  },
+  {
+    "prompt": "Which line correctly starts a try-except block?",
+    "options": ["try:", "attempt:", "catch:", "error:"],
+    "answer": "try:",
+    "answerChoice": 1
+  },
+  {
+    "prompt": "Which line correctly creates a set in Python?",
+    "options": ["nums = [1, 2, 3]", "nums = (1, 2, 3)", "nums = {1, 2, 3}", "nums = <1, 2, 3>"],
+    "answer": "nums = {1, 2, 3}",
+    "answerChoice": 3
+  },
+  {
+    "prompt": "Which line correctly slices a list nums from index 1 to 3?",
+    "options": ["nums[1:3]", "nums(1,3)", "slice(nums,1,3)", "nums[1-3]"],
+    "answer": "nums[1:3]",
+    "answerChoice": 1
+  }
+]
