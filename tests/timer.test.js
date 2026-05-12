@@ -17,24 +17,26 @@ test("TimerInit sets the timer settings correctly", () => {
     expect(settings.timer_ended).toBe(false);
 });
 
-test("TimerStart automatically ends countdown timer", (done) => {
+test("TimerStart automatically ends countdown timer", () => {
     timer.TimerInit(timer.timer_type.countdown, 10, 5);
 
-    timer.TimerStart((result) => {
-        expect(result.timer_type).toBe(timer.timer_type.countdown);
-        expect(result.ticks_per_second).toBe(10);
-        expect(result.time_limit).toBe(5);
-        expect(result.total_time_used).toBeGreaterThanOrEqual(5);
+    return new Promise((resolve) => {
+        timer.TimerStart((result) => {
+            expect(result.timer_type).toBe(timer.timer_type.countdown);
+            expect(result.ticks_per_second).toBe(10);
+            expect(result.time_limit).toBe(5);
+            expect(result.total_time_used).toBeGreaterThanOrEqual(5);
 
-        const records = timer.GetAllTimerRecords();
-        expect(records.length).toBe(1);
-        expect(records[0].timer_type).toBe(timer.timer_type.countdown);
+            const records = timer.GetAllTimerRecords();
+            expect(records.length).toBe(1);
+            expect(records[0].timer_type).toBe(timer.timer_type.countdown);
 
-        done();
+            resolve();
+        });
     });
 });
 
-test("TimerStop stops countdown timer before it ends", (done) => {
+test("TimerStop stops countdown timer before it ends", () => {
     timer.TimerInit(timer.timer_type.countdown, 10, 50);
 
     let endCallbackCalled = false;
@@ -43,41 +45,45 @@ test("TimerStop stops countdown timer before it ends", (done) => {
         endCallbackCalled = true;
     });
 
-    setTimeout(() => {
-        timer.TimerStop((result) => {
-            expect(result.timer_type).toBe(timer.timer_type.countdown);
-            expect(result.ticks_per_second).toBe(10);
-            expect(result.time_limit).toBe(50);
-            expect(result.total_time_used).toBeGreaterThan(0);
-            expect(result.total_time_used).toBeLessThan(50);
-            expect(endCallbackCalled).toBe(false);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            timer.TimerStop((result) => {
+                expect(result.timer_type).toBe(timer.timer_type.countdown);
+                expect(result.ticks_per_second).toBe(10);
+                expect(result.time_limit).toBe(50);
+                expect(result.total_time_used).toBeGreaterThan(0);
+                expect(result.total_time_used).toBeLessThan(50);
+                expect(endCallbackCalled).toBe(false);
 
-            const records = timer.GetAllTimerRecords();
-            expect(records.length).toBe(1);
+                const records = timer.GetAllTimerRecords();
+                expect(records.length).toBe(1);
 
-            done();
-        });
-    }, 200);
+                resolve();
+            });
+        }, 200);
+    });
 });
 
-test("TimerStart and TimerStop work correctly for stopwatch timer", (done) => {
+test("TimerStart and TimerStop work correctly for stopwatch timer", () => {
     timer.TimerInit(timer.timer_type.stopwatch, 10);
 
     timer.TimerStart();
 
-    setTimeout(() => {
-        timer.TimerStop((result) => {
-            expect(result.timer_type).toBe(timer.timer_type.stopwatch);
-            expect(result.ticks_per_second).toBe(10);
-            expect(result.total_time_used).toBeGreaterThan(0);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            timer.TimerStop((result) => {
+                expect(result.timer_type).toBe(timer.timer_type.stopwatch);
+                expect(result.ticks_per_second).toBe(10);
+                expect(result.total_time_used).toBeGreaterThan(0);
 
-            const records = timer.GetAllTimerRecords();
-            expect(records.length).toBe(1);
-            expect(records[0].timer_type).toBe(timer.timer_type.stopwatch);
+                const records = timer.GetAllTimerRecords();
+                expect(records.length).toBe(1);
+                expect(records[0].timer_type).toBe(timer.timer_type.stopwatch);
 
-            done();
-        });
-    }, 200);
+                resolve();
+            });
+        }, 200);
+    });
 });
 
 test("TimerStop should not record twice if called multiple times", () => {
