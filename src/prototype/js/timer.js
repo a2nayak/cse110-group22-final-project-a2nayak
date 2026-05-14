@@ -27,10 +27,15 @@ function recordTimeUsed(result) {
 // params: timer_type: 0 for stopwatch, 1 for countdown
 //         ticks_per_second: how many ticks in one second, used for both timer types
 //         time_limit: how many ticks before the timer runs out, only used for countdown timer
-export function TimerInit(timer_type, ticks_per_second, time_limit=0) {
+export function TimerInit(timer_type, ticks_per_second, time_limit = 0) {
+    clearInterval(timer);
+
     timer_settings.timer_type = timer_type;
     timer_settings.ticks_per_second = ticks_per_second;
     timer_settings.time_limit = time_limit;
+
+    timer_settings.total_time_used = 0;
+    timer_settings.timer_ended = false;
 }
 
 // Starts the timer
@@ -49,12 +54,17 @@ export function TimerStart(callback_func) {
         if (timer_settings.timer_type === timer_type.countdown) {
             if (timer_settings.total_time_used >= timer_settings.time_limit) {
                 clearInterval(timer);
+
                 timer_settings.timer_ended = true;
+
+                const result = { ...timer_settings }; // freeze snapshot
+
+                recordTimeUsed(result);
+
                 if (callback_func) {
-                    callback_func(timer_settings);
+                    callback_func(result);
                 }
-                recordTimeUsed(timer_settings);
-            }
+            }   
         }
     }, 1000/timer_settings.ticks_per_second);
 }
@@ -62,18 +72,27 @@ export function TimerStart(callback_func) {
 // Stops the timer and records the time used, then calls the callback function with the timer results
 // params: callback_func: a callback function for both timer types, called when the timer stops and receives the timer results as a parameter
 export function TimerStop(callback_func) {
-    if (timer_settings.timer_ended)
-        return;
+    if (timer_settings.timer_ended) {
+        return timer_settings;
+    }
+
     timer_settings.timer_ended = true;
     clearInterval(timer);
+
     recordTimeUsed(timer_settings);
+
     if (callback_func) {
         callback_func(timer_settings);
     }
+
+    return timer_settings;
 }
 
 // Resets the timer settings for a new question, does not affect the recorded time used for previous questions
 export function TimerReset() {
+    clearInterval(timer);
+
+    timer_settings.start_time = 0;
     timer_settings.total_time_used = 0;
     timer_settings.timer_ended = false;
 }
