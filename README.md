@@ -3,6 +3,7 @@
 ## Repo Structure
 - /src → source code
 - /tests → test files
+- /planning → planning files
 - /docs → technical documentation
 - /meetings → meeting notes
 - /ai-use → AI use log
