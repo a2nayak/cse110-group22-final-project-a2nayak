@@ -7,7 +7,7 @@ body:
     id: details
     attributes:
       label: Details
-      description: Describe the feature you are requesting
+      description: Describe the feature you have planned
     validations:
       required: true
 
