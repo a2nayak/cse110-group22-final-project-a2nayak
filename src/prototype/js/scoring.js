@@ -265,7 +265,7 @@ export class ScoringSystem {
             baseScore * (1 + accuracy) -
             secondsElapsed * difficulty
         );
-        self.addScore(finalScore);
+        this.#addScore(finalScore);
         return finalScore;
     }
 }
