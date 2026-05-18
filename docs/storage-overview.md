@@ -2,12 +2,7 @@
 
 A localStorage I/O layer for the game. Handles reading and writing profiles and game state.
 
-Version 1.1 : 5/17/2026
-Sprint 2
-
-Overview: docs/storage-overview.md
-File: src/prototype/js/storage.js
-Tests: tests/storage.test.js
+**File:** `src/prototype/js/storage.js` &nbsp;|&nbsp; **Tests:** `tests/storage.test.js`
 
 ---
 
@@ -190,3 +185,10 @@ saveProfile(profile, 0);
 ```
 
 ---
+
+## Changelog
+
+| Date | Sprint | Description |
+|---|---|---|
+| 5/18/2026 | 2 | Renamed PlayerProfile → Profile, renamed loadPlayer → loadProfile etc., added models.js dependency |
+| 5/17/2026 | 2 | Initial draft |
