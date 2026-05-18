@@ -43,7 +43,7 @@ Fields can be added to either shape without requiring behavior changes elsewhere
 | `score` | number | Yes | Current game score |
 | `answeredQuestions` | number | Yes | Number of questions answered so far |
 | `usedIndexes` | Set\<number\> | Yes (as Array) | Question indexes already seen this session |
-| `savedAt` | string \| null | Yes | ISO timestamp of last save — `null` means no save exists |
+| `savedAt` | string \| null | Yes | ISO timestamp of last save. `null` means no save exists |
 | `questions` | Array | No | Full question list loaded from JSON |
 | `currentQuestion` | Object \| null | No | The active question object |
 | `totalQuestions` | number | No | Total number of questions |
