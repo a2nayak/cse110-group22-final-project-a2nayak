@@ -9,11 +9,7 @@
  * Imported by:
  * - storage.js: uses defaults when slots are uninitialized
  *
- * Version 1.0 : 5/17/2026
- * Sprint : 2
- *
  * Overview: docs/models-overview.md
- * File: src/prototype/js/models.js
  */
 
 /**
