@@ -92,7 +92,7 @@ Returns the id of the last selected profile slot, or `null` if none has been sel
 
 #### `saveActiveProfileId(id)`
 Saves the currently selected profile slot id. Call this when the user selects a profile on the profile select screen.
-- **Params:** `id` — Profile slot (0–3)
+- **Params:** `id` : Profile slot (0–3)
 
 #### `initializeProfiles()`
 Writes all 4 profile slots to localStorage with default uninitialized values, if they don't already exist. Should be called once on every page load before any other storage functions.
@@ -104,7 +104,7 @@ Creates a new initialized profile at the given slot, saves it, and returns it. S
 
 #### `clearProfile(id)`
 Resets a profile slot back to its uninitialized default and clears the associated game state. Use this when the user deletes their profile.
-- **Params:** `id` — Profile slot (0–3)
+- **Params:** `id` : Profile slot (0–3)
 
 ---
 
@@ -112,12 +112,12 @@ Resets a profile slot back to its uninitialized default and clears the associate
 
 #### `loadState(id)`
 Loads the game state for the given slot. Returns a fresh default state (with `savedAt: null`) if none exists.
-- **Params:** `id` — Profile slot (0–3)
+- **Params:** `id` : Profile slot (0–3)
 - **Returns:** `GameState`
 
 #### `saveState(state, id)`
 Writes the game state to localStorage. Strips fields (`questions`, `currentQuestion`, `totalQuestions`) and converts `usedIndexes` from Set to Array automatically. Sets `savedAt` to the current timestamp.
-- **Params:** `state` — The engine's state object, `id` : Profile slot (0–3)
+- **Params:** `state` : The engine's state object, `id` : Profile slot (0–3)
 - **Returns:** `boolean` : `true` if saved successfully, `false` on failure
 
 #### `clearState(id)`
