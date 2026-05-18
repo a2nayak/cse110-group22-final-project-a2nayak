@@ -2,11 +2,7 @@
 
 The single source of truth for data shapes used across the game. Defines default structures for `Profile` and `GameState`.
 
-Version 1.0 : 5/18/2026
-Sprint 2
-
-Overview: docs/models-overview.md
-File: src/prototype/js/models.js
+**File:** `src/prototype/js/models.js`
 
 ---
 
@@ -102,3 +98,8 @@ No other files need to change unless they specifically use `streak`.
 
 ---
 
+## Changelog
+
+| Date | Sprint | Description |
+|---|---|---|
+| 5/18/2026 | 2 | Initial draft |
