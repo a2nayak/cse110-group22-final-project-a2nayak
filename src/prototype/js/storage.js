@@ -11,12 +11,8 @@
  *
  * Dependencies:
  * - models.js: defaultProfile(), defaultGameState()
- *
- * Version 1.1 : 5/17/2026
- * Sprint : 2 
  * 
  * Overview: docs/storage-overview.md
- * File: src/prototype/js/storage.js
  * Tests: tests/storage.test.js
  */
 
@@ -27,8 +23,37 @@ const ACTIVE_KEY = "activeProfile";
 const PROFILE_KEY = (id) => `profile_${id}`; // Ex. PROFILE_KEY(0) = "profile_0"
 const STATE_KEY = (id) => `state_${id}`; // Ex. STATE_KEY(0) = "state_0"
 
-// -------- Active Profile --------
-// Functions allow program to remember last-used profile/state
+// -------- Profile --------
+
+/**
+ * Loads the profile for the given slot id.
+ * Returns an uninitialized default profile if the slot doesn't exist.
+ * @param {number} id - Profile slot (0-3)
+ * @returns {Profile}
+ */
+export function loadProfile(id) {
+    return JSON.parse(localStorage.getItem(PROFILE_KEY(id))) ?? defaultProfile();
+}
+
+/**
+ * Saves the profile to localStorage.
+ * @param {Profile} profile
+ * @param {number} id - Profile slot (0-3)
+ * @returns {boolean} True if profile saved successfully, false otherwise.
+ */
+export function saveProfile(profile, id) {
+    try {
+        localStorage.setItem(PROFILE_KEY(id), JSON.stringify(profile));
+        return true;
+    } catch (e) {
+        if (e.name === "QuotaExceededError") {
+            console.warn("localStorage is full, profile data could not be saved.", e);
+        } else {
+            console.warn("Failed to save profile data.", e);
+        }
+        return false;
+    }
+}
 
 /**
  * Loads the active profile id from localStorage.
@@ -50,8 +75,6 @@ export function saveActiveProfileId(id) {
     localStorage.setItem(ACTIVE_KEY, id);
 }
 
-// -------- Profile --------
-
 /**
  * Initializes all 4 profile slots in localStorage if they don't exist yet.
  * Should be called once on page load.
@@ -65,16 +88,6 @@ export function initializeProfiles() {
 }
 
 /**
- * Loads the profile for the given slot id.
- * Returns an uninitialized default profile if the slot doesn't exist.
- * @param {number} id - Profile slot (0-3)
- * @returns {Profile}
- */
-export function loadProfile(id) {
-    return JSON.parse(localStorage.getItem(PROFILE_KEY(id))) ?? defaultProfile();
-}
-
-/**
  * Creates a new initialized profile at the given slot id.
  * @param {number} id - Profile slot (0-3)
  * @returns {Profile} The newly created profile.
@@ -83,26 +96,6 @@ export function createProfile(id) {
     const newProfile = { ...defaultProfile(), isInitialized: true, createdAt: new Date().toISOString() };
     saveProfile(newProfile, id);
     return newProfile;
-}
-
-/**
- * Saves the profile to localStorage.
- * @param {Profile} profile
- * @param {number} id - Profile slot (0-3)
- * @returns {boolean} True if profile saved successfully, false otherwise.
- */
-export function saveProfile(profile, id) {
-    try {
-        localStorage.setItem(PROFILE_KEY(id), JSON.stringify(profile));
-        return true;
-    } catch (e) {
-        if (e.name === "QuotaExceededError") {
-            console.warn("localStorage is full, profile data could not be saved.", e);
-        } else {
-            console.warn("Failed to save profile data.", e);
-        }
-        return false;
-    }
 }
 
 /**
