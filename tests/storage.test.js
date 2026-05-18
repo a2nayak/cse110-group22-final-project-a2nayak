@@ -1,3 +1,14 @@
+/*
+Test file for storage.js
+
+Version 1.0 : 5/17/2026
+Sprint : 2 
+
+Overview: docs/storage-overview.md
+File: src/prototype/js/storage.js
+Tests: tests/storage.test.js
+*/
+
 // Import functions for unit-testing
 import { loadPlayer, savePlayer, createPlayer, clearPlayer, loadState, saveState, clearState, clearAll, loadActiveProfileId, saveActiveProfileId, initializeProfiles } from '../src/prototype/js/storage.js';
 

@@ -2,7 +2,7 @@
  * storage.js
  *
  * Serves as an I/O layer to access localStorage data
- *
+
  * Main responsibilities:
  * - Save/Load Player Profile
  * - Save/Load Game State
@@ -12,6 +12,13 @@
  * Dependencies:
  * - scoring.js: getScore(), getStreak()
  * - timer.js: GetAllTimerRecords(), GetCurrentTimerSettings()
+ * 
+ * Version 1.0 : 5/17/2026
+ * Sprint : 2 
+ * 
+ * Overview: docs/storage-overview.md
+ * File: src/prototype/js/storage.js
+ * Tests: tests/storage.test.js
  */
 
 const MAX_PROFILES = 4;

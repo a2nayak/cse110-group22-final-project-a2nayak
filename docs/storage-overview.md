@@ -2,11 +2,18 @@
 
 A localStorage I/O layer for the game. Handles reading and writing player profiles and game state. 
 
+Version 1.0 : 5/17/2026
+Sprint 2
+
+Overview: docs/storage-overview.md
+File: src/prototype/js/storage.js
+Tests: tests/storage.test.js
+
 ---
 
 ## Overview
 
-`storage.js` acts as an API between the game engine and the browser's persistent storage. The engine holds its own live copies of player and state data and calls these functions to read/write them. Ideally, no `localStorage` calls are required outside of this file.
+`storage.js` acts as an API between the game engine and the browser's persistent storage. The engine holds its own live copies of player and state data and calls these functions to read/write them. Ideally, no `localStorage()` calls are required outside of this file.
 
 Usage:
 
@@ -15,7 +22,7 @@ Usage:
 
 Is all that is required under our MVP description. These functions can be used to read/write to localStorage after game completion. 
 `PlayerProfile player` object shape can be changed as more data variables are implemented (See below)
-GameState data and related functions are for possible future persistant game state implementations (Ex. closed tab -> open page -> game continues)
+`GameState` data and related functions are for possible future persistant game state implementations (Ex. closed tab -> open page -> game continues)
 IDs are for possible implementation of multiple player profiles, for now [id = 0] can be used wherever id is required. (Writes/reads at player_0 in localStorage)
 
 **What this file does:**
@@ -143,10 +150,9 @@ Removes all player profiles, game states, and the active profile id from localSt
 ### Page load
 
 ```js
-// This example ignores any profile select opting to default to profile 0 -> id = 0
 import { initializeProfiles, loadActiveProfileId, loadPlayer, loadState } from './storage.js';
 
-// Always call first to ensure all 4 player slots exist
+// Call first to ensure all 4 player slots exist
 // Not necessary unless profile viewing interface is added
 initializeProfiles();
 
