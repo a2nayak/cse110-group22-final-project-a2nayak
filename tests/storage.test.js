@@ -1,7 +1,7 @@
 /*
 Test file for storage.js
 
-Version 1.0 : 5/17/2026
+Version 1.1 : 5/17/2026
 Sprint : 2 
 
 Overview: docs/storage-overview.md
@@ -10,7 +10,7 @@ Tests: tests/storage.test.js
 */
 
 // Import functions for unit-testing
-import { loadPlayer, savePlayer, createPlayer, clearPlayer, loadState, saveState, clearState, clearAll, loadActiveProfileId, saveActiveProfileId, initializeProfiles } from '../src/prototype/js/storage.js';
+import { loadProfile, saveProfile, createProfile, clearProfile, loadState, saveState, clearState, clearAll, loadActiveProfileId, saveActiveProfileId, initializeProfiles } from '../src/prototype/js/storage.js';
 
 // localStorageMock is implemented first to simulate localStorage functions in Node
 const localStorageMock = (() => {
@@ -36,29 +36,29 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-const TEST_PLAYER = { name: "Ben", highScore: 1234, totalGamesPlayed: 123, createdAt: "2026-05-17T10:23:00.000Z", isInitialized: true };
+const TEST_PROFILE = { name: "Ben", highScore: 1234, totalGamesPlayed: 123, createdAt: "2026-05-17T10:23:00.000Z", isInitialized: true };
 const TEST_STATE = { score: 300, answeredQuestions: 3, usedIndexes: new Set([0, 1, 2]) };
 
 describe('initializeProfiles', () => {
     test('creates all 4 profile slots', () => {
         initializeProfiles();
-        expect(loadPlayer(0)).not.toBeNull();
-        expect(loadPlayer(1)).not.toBeNull();
-        expect(loadPlayer(2)).not.toBeNull();
-        expect(loadPlayer(3)).not.toBeNull();
+        expect(loadProfile(0)).not.toBeNull();
+        expect(loadProfile(1)).not.toBeNull();
+        expect(loadProfile(2)).not.toBeNull();
+        expect(loadProfile(3)).not.toBeNull();
     });
 
     test('all slots start as uninitialized', () => {
         initializeProfiles();
-        expect(loadPlayer(0).isInitialized).toBe(false);
-        expect(loadPlayer(1).isInitialized).toBe(false);
+        expect(loadProfile(0).isInitialized).toBe(false);
+        expect(loadProfile(1).isInitialized).toBe(false);
     });
 
     test('does not overwrite existing profiles', () => {
         initializeProfiles();
-        savePlayer(TEST_PLAYER, 0);
+        saveProfile(TEST_PROFILE, 0);
         initializeProfiles();
-        expect(loadPlayer(0).name).toBe("Ben");
+        expect(loadProfile(0).name).toBe("Ben");
     });
 });
 
@@ -80,55 +80,55 @@ describe('saveActiveProfileId', () => {
     });
 });
 
-describe('loadPlayer', () => {
-    test('returns default player when slot is empty', () => {
-        const player = loadPlayer(0);
-        expect(player.isInitialized).toBe(false);
-        expect(player.name).toBe("");
+describe('loadProfile', () => {
+    test('returns default profile when slot is empty', () => {
+        const profile = loadProfile(0);
+        expect(profile.isInitialized).toBe(false);
+        expect(profile.name).toBe("");
     });
 
-    test('correctly loads player data when profile exists', () => {
-        savePlayer(TEST_PLAYER, 0);
-        const player = loadPlayer(0);
-        expect(player.name).toBe("Ben");
-        expect(player.highScore).toBe(1234);
-        expect(player.isInitialized).toBe(true);
+    test('correctly loads profile data when profile exists', () => {
+        saveProfile(TEST_PROFILE, 0);
+        const profile = loadProfile(0);
+        expect(profile.name).toBe("Ben");
+        expect(profile.highScore).toBe(1234);
+        expect(profile.isInitialized).toBe(true);
     });
 });
 
-describe('createPlayer', () => {
+describe('createProfile', () => {
     test('creates a player with isInitialized set to true', () => {
-        expect(createPlayer(0).isInitialized).toBe(true);
+        expect(createProfile(0).isInitialized).toBe(true);
     });
 
     test('sets createdAt automatically', () => {
-        expect(createPlayer(0).createdAt).not.toBeNull();
+        expect(createProfile(0).createdAt).not.toBeNull();
     });
 
     test('persists to localStorage', () => {
-        createPlayer(0);
-        expect(loadPlayer(0).isInitialized).toBe(true);
+        createProfile(0);
+        expect(loadProfile(0).isInitialized).toBe(true);
     });
 });
 
-describe('savePlayer', () => {
+describe('saveProfile', () => {
     test('returns true when valid profile is saved', () => {
-        expect(savePlayer(TEST_PLAYER, 0)).toBe(true);
+        expect(saveProfile(TEST_PROFILE, 0)).toBe(true);
     });
 
-    test('correctly saves player data after call', () => {
-        savePlayer(TEST_PLAYER, 0);
-        const player = loadPlayer(0);
-        expect(player.name).toBe("Ben");
-        expect(player.highScore).toBe(1234);
-        expect(player.totalGamesPlayed).toBe(123);
+    test('correctly saves profile data after call', () => {
+        saveProfile(TEST_PROFILE, 0);
+        const profile = loadProfile(0);
+        expect(profile.name).toBe("Ben");
+        expect(profile.highScore).toBe(1234);
+        expect(profile.totalGamesPlayed).toBe(123);
     });
 
     test('saves to correct slot', () => {
-        savePlayer(TEST_PLAYER, 0);
-        savePlayer({ ...TEST_PLAYER, name: "Sean" }, 1);
-        expect(loadPlayer(0).name).toBe("Ben");
-        expect(loadPlayer(1).name).toBe("Sean");
+        saveProfile(TEST_PROFILE, 0);
+        saveProfile({ ...TEST_PROFILE, name: "Sean" }, 1);
+        expect(loadProfile(0).name).toBe("Ben");
+        expect(loadProfile(1).name).toBe("Sean");
     });
 
     // Simulates a QuotaExceededError from localStorage
@@ -138,7 +138,7 @@ describe('savePlayer', () => {
             error.name = 'QuotaExceededError';
             throw error;
         });
-        expect(savePlayer(TEST_PLAYER, 0)).toBe(false);
+        expect(saveProfile(TEST_PROFILE, 0)).toBe(false);
     });
 });
 
@@ -147,11 +147,11 @@ describe('loadState', () => {
         const state = loadState(0);
         expect(state.score).toBe(0);
         expect(state.answeredQuestions).toBe(0);
-        expect(state.usedIndexes).toEqual([]);
+        expect(state.usedIndexes).toEqual(new Set());
         expect(state.savedAt).toBeNull();
-        expect(state.questions).toBeNull();
+        expect(state.questions).toEqual([]);
         expect(state.currentQuestion).toBeNull();
-        expect(state.totalQuestions).toBeNull();
+        expect(state.totalQuestions).toBe(0);
     });
 
     test('correctly loads state data when state exists', () => {
@@ -224,42 +224,42 @@ describe('clearState', () => {
         expect(loadState(1).score).toBe(300);
     });
 
-    test('does not affect player data', () => {
-        savePlayer(TEST_PLAYER, 0);
+    test('does not affect profile data', () => {
+        saveProfile(TEST_PROFILE, 0);
         clearState(0);
-        expect(loadPlayer(0).name).toBe("Ben");
+        expect(loadProfile(0).name).toBe("Ben");
     });
 });
 
-describe('clearPlayer', () => {
+describe('clearProfile', () => {
     test('resets player slot to uninitialized', () => {
-        savePlayer(TEST_PLAYER, 0);
-        clearPlayer(0);
-        expect(loadPlayer(0).isInitialized).toBe(false);
-        expect(loadPlayer(0).name).toBe("");
+        saveProfile(TEST_PROFILE, 0);
+        clearProfile(0);
+        expect(loadProfile(0).isInitialized).toBe(false);
+        expect(loadProfile(0).name).toBe("");
     });
 
     test('also clears associated state', () => {
         saveState(TEST_STATE, 0);
-        clearPlayer(0);
+        clearProfile(0);
         expect(loadState(0).score).toBe(0);
     });
 
     test('does not affect other slots', () => {
-        savePlayer(TEST_PLAYER, 0);
-        savePlayer({ ...TEST_PLAYER, name: "Sean" }, 1);
-        clearPlayer(0);
-        expect(loadPlayer(1).name).toBe("Sean");
+        saveProfile(TEST_PROFILE, 0);
+        saveProfile({ ...TEST_PROFILE, name: "Sean" }, 1);
+        clearProfile(0);
+        expect(loadProfile(1).name).toBe("Sean");
     });
 });
 
 describe('clearAll', () => {
-    test('removes all player and state data', () => {
+    test('removes all profile and state data', () => {
         initializeProfiles();
-        savePlayer(TEST_PLAYER, 0);
+        saveProfile(TEST_PROFILE, 0);
         saveState(TEST_STATE, 0);
         clearAll();
-        expect(loadPlayer(0).isInitialized).toBe(false);
+        expect(loadProfile(0).isInitialized).toBe(false);
         expect(loadState(0).score).toBe(0);
     });
 
