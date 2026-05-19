@@ -144,17 +144,7 @@ Heavy gameplay logic should remain in `systems/*.js`.
 
 ---
 
-## systems/*.js
-
-### Goal
-
-Each systems file contains isolated gameplay logic/functions that are called by `game.js`.
-
-Systems functions are responsible for mutating/updating `gameState`.
-
----
-
-# GameState Object Structure
+### GameState Object Structure
 
 ```txt
 Player player
@@ -165,9 +155,9 @@ int current_question_id
 
 ---
 
-# PLAYER CLASS
+### Player Class
 
-## Constructor
+#### Constructor
 
 Create a default player object with placeholder values.
 
@@ -175,7 +165,7 @@ Customizable player setup and onboarding flow will be implemented in a later spr
 
 ---
 
-## Attributes
+#### Attributes
 
 ```txt
 string username
@@ -188,9 +178,9 @@ Farm farm
 
 ---
 
-# FARM CLASS
+### Farm Class
 
-## Attributes
+#### Attributes
 
 ```txt
 List plants
@@ -199,9 +189,9 @@ int num_plants
 
 ---
 
-# PLANT CLASS
+### Plant Class
 
-## Attributes
+##### Attributes
 
 ```txt
 string type
@@ -210,7 +200,7 @@ int growth_stage
 
 ---
 
-## Growth Stages
+#### Growth Stages
 
 ```txt
 0 = seedling
