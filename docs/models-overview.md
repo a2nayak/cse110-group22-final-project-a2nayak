@@ -12,6 +12,9 @@ The single source of truth for data shapes used across the game. Defines default
 
 Fields can be added to either shape without requiring behavior changes elsewhere. Files can read whatever fields are present on the object.
 
+Plain object implementation over classes was chosen to keep data and behavior cleanly seperated.
+Only the engine should be writing to this object so encapsulation probably isn't needed. Also makes it so we don't have to write getters and setters for every element.
+
 **What this file does:**
 - Defines the `Profile` data shape and its defaults
 - Defines the `GameState` data shape and its defaults
