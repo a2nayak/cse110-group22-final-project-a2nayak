@@ -179,22 +179,16 @@ Optional UI event flags may also be used for:
 - level-up notifications
 - temporary effects
 
----
-
-# Team 3
-
-## Main Goal
-
-Create the shared `gameState` structure and isolated gameplay systems used to update it.
 
 ---
 
-# gameState Structure
+# GameState Object Structure
 
 ```txt
 Player player
 List completed_question_ids
 int current_question_id
+
 ```
 
 ---
@@ -233,20 +227,6 @@ int num_plants
 
 ---
 
-## Functionality
-
-### plantSeed()
-
-- Creates a new `Plant` object
-- Adds the plant to the `plants` array
-
-### growPlants()
-
-- Iterates through all plants
-- Calls `grow()` on each plant
-
----
-
 # PLANT CLASS
 
 ## Attributes
@@ -265,14 +245,6 @@ int growth_stage
 1 = growing
 2 = mature
 ```
-
----
-
-## Functionality
-
-### grow()
-
-- Increases `growth_stage` if `growth_stage < 2`
 
 ---
 
