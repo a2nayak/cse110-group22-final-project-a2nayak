@@ -35,12 +35,6 @@
         - doc/name
         - test/name 
 
-and for branches:
-feature/name
-doc/name
-fix/name
-test/name
-
 ## Overview
 
 With our team formed and enough practice with GenAI, in both a code focused and design-focused manner, we are ready to take on a project utilizing modern Agile methodologies.
