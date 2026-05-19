@@ -154,34 +154,6 @@ Systems functions are responsible for mutating/updating `gameState`.
 
 ---
 
-
-
-##### Game Loop Integration
-
-- Pass `QuestionResult` into `game.js` update functions
-- Receive updated `gameState` references/flags from `game.js`
-- Rerender UI using updated `gameState`
-
----
-
-##### UI Updates
-
-Use updated `gameState` to rerender:
-- farm graphics
-- plant growth stages
-- score display
-- level display
-- current question
-- progression-related UI
-
-Optional UI event flags may also be used for:
-- growth animations
-- level-up notifications
-- temporary effects
-
-
----
-
 # GameState Object Structure
 
 ```txt
