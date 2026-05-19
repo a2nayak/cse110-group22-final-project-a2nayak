@@ -22,6 +22,24 @@
     - What AI model is being used?
     - Prompts log
     - Summarize outputs/results used in final deliverable
+6. All branches and commits must follow this naming scheme:
+    - Commits: [label] commit message
+    - Labels (eg: [feat] added timer and scoring)
+         - feat: add new feature
+         - fix: fixing bugs
+         - docs: adding documentation
+         - test: adding tests
+    - Branches: label/branch-name
+        - feat/name
+        - fix/name
+        - doc/name
+        - test/name 
+
+and for branches:
+feature/name
+doc/name
+fix/name
+test/name
 
 ## Overview
 
