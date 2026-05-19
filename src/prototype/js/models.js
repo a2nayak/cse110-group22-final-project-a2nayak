@@ -48,7 +48,7 @@ export function defaultGameState() {
   return {
     score: 0,
     answeredQuestions: 0,
-    usedIndexes: new Set(),
+    usedIndexes: new Set(), // JSON.stringify() requires Set -> Array conversion. Should be replaced with Array.
     savedAt: null,
     questions: [],
     currentQuestion: null,
