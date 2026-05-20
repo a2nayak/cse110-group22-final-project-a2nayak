@@ -1,4 +1,71 @@
 
+/* RulesBox styles */
+.rules-box {
+  background: #0b1812;
+  border-left: 4px solid #2ecc71;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.rules-box > h3 {
+  margin-bottom: 6px;
+  color: #8ff0b3;
+}
+
+/* GameUI styles */
+.game-ui {
+  width: 100%;
+  aspect-ratio: 6 / 5;
+  background-image: url("../assets/images/game-backdrop.jpg");
+  /* show the whole image, align to top, and keep green behind it */
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #113B23;
+  color: #ecfff4;
+
+  padding: 16px;
+  display: grid;
+  grid-template-rows: auto 1fr [input-area] auto; 
+  grid-template-columns: [title-text] auto 1fr [stats-display] auto;   
+  gap: 12px;
+
+  border: 1px solid #2ecc71;
+  border-radius: 12px;
+}
+
+.game-input-area {
+  grid-row: input-area; 
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* StatsDisplay styles */
+.stats-display {
+  grid-column: stats-display;
+  
+  font-size: 14px;
+  opacity: 0.95;
+  border: 1px solid #2ecc71;
+  background-color: #0b1812;
+  padding: 8px;
+  border-radius: 6px;
+  width: fit-content;
+  grid-row: 1 / 2;
+}
+
+/* PromptDisplay styles */
+.prompt-display {
+  background: #162820;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #244f38;
+  margin-top: auto;
+}
 
 /* CodeInputField styles */
 .code-input-field {
@@ -45,36 +112,4 @@
   line-height: 1;
   font-family: inherit;
   width: 100%;
-}
-
-/* StatsDisplay styles */
-.stats-display {
-  font-size: 14px;
-  opacity: 0.95;
-  border: 1px solid #2ecc71;
-  padding: 8px;
-  border-radius: 6px;
-  width: fit-content;
-}
-
-/* PromptDisplay styles */
-.prompt-display {
-  background: #162820;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #244f38;
-}
-
-/* RulesBox styles */
-.rules-box {
-  background: #0b1812;
-  border-left: 4px solid #2ecc71;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 14px;
-}
-
-.rules-box > h3 {
-  margin-bottom: 6px;
-  color: #8ff0b3;
 }

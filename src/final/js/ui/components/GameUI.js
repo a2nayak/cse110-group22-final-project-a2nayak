@@ -1,6 +1,9 @@
-import CodeInputField from "./CodeInputField.js";
-import PromptDisplay from "./PromptDisplay.js";
-import StatsDisplay from "./StatsDisplay.js";
+import { assertHTMLElement } from "../utils.js";
+import CodeInputField from "./game/CodeInputField.js";
+import PromptDisplay from "./game/PromptDisplay.js";
+import StatsDisplay from "./game/StatsDisplay.js";
+import PlantsGroup from "./game/PlantDisplayGroup.js";
+import PlantDisplayGroup from "./game/PlantDisplayGroup.js";
 
 /**
  * The main component for displaying the game. It will contain the game board and any other relevant information. 
@@ -9,6 +12,7 @@ import StatsDisplay from "./StatsDisplay.js";
  * <div class="game-ui">
  *   <CodeInputField class="code-input-field" />
  *   <StatsDisplay class="stats-display" />
+ *   <PromptDisplay class="prompt-display" />
  * </div>
  */
 export default class GameUI {
@@ -17,16 +21,14 @@ export default class GameUI {
     /**
      * Binds this GameUI to the given element.
      * @param {HTMLElement} element
-     * @param {HTMLElement} codeInputFieldElement
-     * @param {HTMLElement} statsDisplayElement
-     * @param {HTMLElement} promptDisplayElement
      */
-    constructor(element, codeInputFieldElement, statsDisplayElement, promptDisplayElement) {
+    constructor(element) {
         this.element = element;
-        this.statsDisplay = new StatsDisplay(statsDisplayElement);
-        this.codeInputField = new CodeInputField(codeInputFieldElement);
-        this.promptDisplay = new PromptDisplay(promptDisplayElement);
-        
+        this.statsDisplay = new StatsDisplay(assertHTMLElement(this.element.querySelector('.stats-display')));
+        this.codeInputField = new CodeInputField(assertHTMLElement(this.element.querySelector('.code-input-field')));
+        this.promptDisplay = new PromptDisplay(assertHTMLElement(this.element.querySelector('.prompt-display')));
+        this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
+
         this.codeInputField.onEnter((text) => this.handleAnswer(text));
     }
 

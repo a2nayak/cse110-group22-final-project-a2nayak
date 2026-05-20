@@ -13,11 +13,7 @@ let gameUI;
  */
 function main() {
     const gameDisplayElement = assertHTMLElement(document.querySelector('#game-ui'));
-    const codeInputFieldElement = assertHTMLElement(document.querySelector('#game-code-input-field'));
-    const statsDisplayElement = assertHTMLElement(document.querySelector('#game-stats-display'));
-    const promptDisplayElement = assertHTMLElement(document.querySelector('#game-prompt-display'));
-
-    gameUI = new GameUI(gameDisplayElement, codeInputFieldElement, statsDisplayElement, promptDisplayElement);
+    gameUI = new GameUI(gameDisplayElement);
     
     const [question, answer] = backendEmulator();
     gameUI.sendQuestion(question, answer);

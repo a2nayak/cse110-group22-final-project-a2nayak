@@ -10,38 +10,40 @@
 </head>
 
 <body>
-  <div id="game-ui">
-    <div id="header">
-      <h2>Python Typing Game</h2>
+  <h2 class="site-title">Python Typing Game</h2>
+  <!-- RulesBox -->
+  <div class="rules-box">
+    <h3>How to play!</h3>
+    <p>Read the question and submit your answer in the box below.</p>
+    <p>Have fun learning python and its syntax!</p>
+  </div>
+
+  <!-- GameUI -->
+  <div id="game-ui" class="game-ui">
+    <div class="game-header">
       <span id="progress">0 / 30</span>
     </div>
 
-    <!-- RulesBox -->
-    <div class="rules-box">
-      <h3>How to play!</h3>
-      <p>Read the question and submit your answer in the box below.</p>
-      <p>Have fun learning python and its syntax!</p>
-    </div>
-
     <!-- StatsDisplay -->
-    <div id="game-stats-display" class="stats-display">
+    <div class="stats-display">
       <p>Score: <span class="stats-display-score">0</span></p>
       <p>Accuracy: <span class="stats-display-accuracy">100%</span></p>
       <p>WPM: <span class="stats-display-wpm">0</span></p>
     </div>
 
-    <!-- PromptDisplay -->
-    <div id="game-prompt-display" class="prompt-display">
-      <p class="prompt-display-text">Loading question...</p>
-    </div>
-
-    <!-- CodeInputField -->
-    <div id="game-code-input-field" class="code-input-field">
-      <div class="ghost-text">
-        <span class="ghost-text-invisible"></span>
-        <span class="ghost-text-visible"></span>
+    <div class="game-input-area">
+      <!-- PromptDisplay -->
+      <div class="prompt-display">
+        <p class="prompt-display-text">Loading question...</p>
       </div>
-      <input class="code-input" />
+      <!-- CodeInputField -->
+      <div class="code-input-field">
+        <div class="ghost-text">
+          <span class="ghost-text-invisible"></span>
+          <span class="ghost-text-visible"></span>
+        </div>
+        <input class="code-input" />
+      </div>
     </div>
 
   </div>
