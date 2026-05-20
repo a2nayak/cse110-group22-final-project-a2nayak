@@ -29,7 +29,7 @@ export function defaultProfile() {
 /**
  * @typedef {Object} GameState
  * @property {number} score - Current game score
- * @property {Array} questions - Full question list loaded from questions.js (not persisted)
+ * @property {Array<*>} questions - Full question list loaded from questions.js (not persisted)
  * @property {number} currentQuestionIndex - Index of the active question in questions[]
  * @property {string} currentInput - What the player has typed so far for the current word (not persisted)
  * @property {number} timeRemaining - Seconds left in the current game

@@ -13,7 +13,8 @@
  *
  * Tests: tests/storage.test.js
  */
-
+/** @typedef {import('./models.js').Profile} Profile */
+/** @typedef {import('./models.js').GameState} GameState */
 import { defaultProfile, defaultGameState } from './models.js';
 
 const PROFILE_KEY = "profile";
@@ -27,7 +28,9 @@ const STATE_KEY = "state";
  * @returns {Profile}
  */
 export function loadProfile() {
-    return JSON.parse(localStorage.getItem(PROFILE_KEY)) ?? defaultProfile();
+    const profileJSON = localStorage.getItem(PROFILE_KEY);
+    if(!profileJSON) return defaultProfile();
+    return JSON.parse(profileJSON);
 }
 
 /**
@@ -60,7 +63,9 @@ export function clearProfile() {
  * @returns {GameState} The saved state, or a fresh default if none exists.
  */
 export function loadState() {
-    return JSON.parse(localStorage.getItem(STATE_KEY)) ?? defaultGameState();
+    const gameStateJSON = localStorage.getItem(STATE_KEY);
+    if(!gameStateJSON) return defaultGameState();
+    return JSON.parse(gameStateJSON);
 }
 
 /**

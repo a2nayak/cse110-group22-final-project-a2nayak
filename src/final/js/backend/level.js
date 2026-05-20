@@ -8,7 +8,8 @@
  * Imported by:
  * - game.js: calls loadLevel() at the start of each level
  */
-
+/** @typedef {import('./models.js').Profile} Profile */
+/** @typedef {import('./models.js').GameState} GameState */
 const LEVELS = [
   { levelNumber: 1, timeLimit: 60, questionCount: 10, difficulty: "very easy" },
   { levelNumber: 2, timeLimit: 60, questionCount: 10, difficulty: "easy"      },
@@ -33,7 +34,7 @@ export async function loadLevel(state, levelNumber, category) {
   // Logic may change as question set develops. Question set is trash right now.
   // For now, samples all questions from difficulty corresponding to level. (Ex. level 4 -> 10 "hard" questions)
   state.questions = allQuestions
-    .filter(q => q.difficulty === config.difficulty)
+    .filter(/** @param {*} q */ q => q.difficulty === config.difficulty)
     .sort(() => Math.random() - 0.5)
     .slice(0, config.questionCount);
 
