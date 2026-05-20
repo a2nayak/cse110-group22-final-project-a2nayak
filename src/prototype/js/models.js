@@ -12,25 +12,7 @@
  * Overview: docs/models-overview.md
  */
 
-/**
- * @typedef {Object} Profile
- * @property {string} name - Display name set by the user
- * @property {string|null} createdAt - ISO timestamp of profile creation
- * @property {number} highScore - All-time high score
- * @property {number} totalGamesPlayed - Total completed games
- * @property {boolean} isInitialized - False = empty slot, true = real profile
- */
 
-/** @returns {Profile} */
-export function defaultProfile() {
-  return {
-    name: "",
-    createdAt: null,
-    highScore: 0,
-    totalGamesPlayed: 0,
-    isInitialized: false,
-  };
-}
 
 /*
  * @typedef {Object} GameState
@@ -110,6 +92,16 @@ export class Farm {
 
 }
 
+/**
+ * @typedef {Object} Player
+ * @property {string} username - The player's chosen username
+ * @property {number} level - The player's current level
+ * @property {number} num_questions_answered - Total questions answered by the player
+ * @property {string} language - The player's preferred programming language
+ * @property {number} score - The player's total accumulated score
+ * @property {boolean} isInitialized - Flag indicating if the profile has been set up
+ */
+
 export class Player {
   
   constructor() {
@@ -119,6 +111,11 @@ export class Player {
     this.num_questions_answered = 0;
     this.language = "";
     this.farm = new Farm(10);
+  }
+
+  //function to level up the player
+  level_up() {
+    this.level += 1;
   }
 
 }
