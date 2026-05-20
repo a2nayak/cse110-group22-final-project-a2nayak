@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Typing Game</title>
-  <link rel="stylesheet" href="../style/game.css" />
+  <link rel="stylesheet" href="../style/game-components.css" />
   <link rel="stylesheet" href="../style/components.css" />
   <link rel="stylesheet" href="../style/qe-style.css" />
   <script type="module" src="../js/ui/ui-core.js"></script>
@@ -17,7 +17,6 @@
     <p>Read the question and submit your answer in the box below.</p>
     <p>Have fun learning python and its syntax!</p>
   </div>
-
   <!-- GameUI -->
   <div id="game-ui" class="game-ui">
     <div class="game-header">
@@ -29,8 +28,10 @@
       <p>Score: <span class="stats-display-score">0</span></p>
       <p>Accuracy: <span class="stats-display-accuracy">100%</span></p>
       <p>WPM: <span class="stats-display-wpm">0</span></p>
-    </div>
+    </div> 
 
+    <!-- PlantDisplayGroup -->
+    <div class="plant-display-group"></div>
     <div class="game-input-area">
       <!-- PromptDisplay -->
       <div class="prompt-display">
