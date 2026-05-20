@@ -1,0 +1,402 @@
+﻿[
+  {
+    "prompt": "Which line defines a function named greet?",
+    "options": ["func greet():", "def greet():", "define greet():"],
+    "answer": "def greet():",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line prints the word hello?",
+    "options": ["echo('hello')", "print('hello')", "log('hello')"],
+    "answer": "print('hello')",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line imports the math module?",
+    "options": ["include math", "import math", "using math"],
+    "answer": "import math",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line returns True from a function?",
+    "options": ["send True", "return True", "yield True"],
+    "answer": "return True",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line starts an infinite while loop?",
+    "options": ["while True:", "loop forever:", "while(true):"],
+    "answer": "while True:",
+    "answerChoice": 1,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a list with 1, 2, and 3?",
+    "options": ["x = (1, 2, 3)", "x = {1, 2, 3}", "x = [1, 2, 3]"],
+    "answer": "x = [1, 2, 3]",
+    "answerChoice": 3,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line gets the length of my_list?",
+    "options": ["size(my_list)", "len(my_list)", "count(my_list)"],
+    "answer": "len(my_list)",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line iterates from 0 to 4?",
+    "options": ["for i in range(5):", "for i = 0 to 4:", "loop i in 5:"],
+    "answer": "for i in range(5):",
+    "answerChoice": 1,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line assigns 10 to x?",
+    "options": ["let x = 10", "x = 10", "int x = 10"],
+    "answer": "x = 10",
+    "answerChoice": 2,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line checks if x is greater than 0?",
+    "options": ["if x > 0 then:", "if (x > 0):", "if x > 0:"],
+    "answer": "if x > 0:",
+    "answerChoice": 3,
+    "difficulty": "very easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line defines a function with parameters a and b?",
+    "options": ["def add(a, b):", "function add(a, b):", "func add(a, b):"],
+    "answer": "def add(a, b):",
+    "answerChoice": 1,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line appends an item to a list?",
+    "options": ["list.add(item)", "x.append(item)", "x.push(item)"],
+    "answer": "x.append(item)",
+    "answerChoice": 2,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a tuple with 1, 2, 3?",
+    "options": ["x = [1, 2, 3]", "x = {1, 2, 3}", "x = (1, 2, 3)"],
+    "answer": "x = (1, 2, 3)",
+    "answerChoice": 3,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line raises a ValueError?",
+    "options": ["throw ValueError", "raise ValueError", "error ValueError"],
+    "answer": "raise ValueError",
+    "answerChoice": 2,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line opens a file for reading?",
+    "options": ["read(file, 'r')", "file.open('r')", "open(file, 'r')"],
+    "answer": "open(file, 'r')",
+    "answerChoice": 3,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a dictionary with one entry?",
+    "options": ["x = ['key': 1]", "x = ('key': 1)", "x = {'key': 1}"],
+    "answer": "x = {'key': 1}",
+    "answerChoice": 3,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line correctly checks if x is None?",
+    "options": ["if x == None:", "if x is None:", "if None == x:"],
+    "answer": "if x is None:",
+    "answerChoice": 2,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line checks if x equals 10?",
+    "options": ["if x = 10:", "if x === 10:", "if x == 10:"],
+    "answer": "if x == 10:",
+    "answerChoice": 3,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a set with 1, 2, 3?",
+    "options": ["x = [1, 2, 3]", "x = (1, 2, 3)", "x = {1, 2, 3}"],
+    "answer": "x = {1, 2, 3}",
+    "answerChoice": 3,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line uses a with statement to open a file?",
+    "options": ["using open(file):", "with open(file):", "try open(file):"],
+    "answer": "with open(file):",
+    "answerChoice": 2,
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a lambda that doubles x?",
+    "options": ["func x: x * 2", "lambda x: x * 2", "def x: return x*2"],
+    "answer": "lambda x: x * 2",
+    "answerChoice": 2,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a list comprehension from lst?",
+    "options": ["(x for x in lst)", "{x for x in lst}", "[x for x in lst]"],
+    "answer": "[x for x in lst]",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line calls the parent class constructor?",
+    "options": ["parent.__init__()", "base.__init__()", "super().__init__()"],
+    "answer": "super().__init__()",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line checks if x is an instance of int?",
+    "options": ["x.istype(int)", "type(x) == int", "isinstance(x, int)"],
+    "answer": "isinstance(x, int)",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line iterates over key-value pairs in a dict?",
+    "options": ["dict.pairs()", "dict.each()", "dict.items()"],
+    "answer": "dict.items()",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line enumerates a list with index?",
+    "options": ["index(my_list)", "count(my_list)", "enumerate(my_list)"],
+    "answer": "enumerate(my_list)",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line zips two lists together?",
+    "options": ["merge(a, b)", "combine(a, b)", "zip(list1, list2)"],
+    "answer": "zip(list1, list2)",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line applies a function to each element of a list?",
+    "options": ["apply(f, lst)", "each(f, lst)", "list(map(f, lst))"],
+    "answer": "list(map(f, lst))",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which decorator marks a method as static?",
+    "options": ["@classmethod", "@staticmethod", "@property"],
+    "answer": "@staticmethod",
+    "answerChoice": 2,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line filters a list using a function?",
+    "options": ["map(f, lst)", "reduce(f, lst)", "filter(f, lst)"],
+    "answer": "filter(f, lst)",
+    "answerChoice": 3,
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "prompt": "Which decorator defines a class method?",
+    "options": ["@staticmethod", "@property", "@classmethod"],
+    "answer": "@classmethod",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line delegates iteration to a sub-generator?",
+    "options": ["return from gen", "send from gen", "yield from gen"],
+    "answer": "yield from gen",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line defines an async function?",
+    "options": ["def async main():", "coroutine main():", "async def main():"],
+    "answer": "async def main():",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line awaits a coroutine?",
+    "options": ["wait coroutine()", "sync coroutine()", "await coroutine()"],
+    "answer": "await coroutine()",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line restricts instance attributes to a fixed set?",
+    "options": ["__slots__ = []", "__attrs__ = []", "__fields__ = []"],
+    "answer": "__slots__ = []",
+    "answerChoice": 1,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which module provides the wraps decorator?",
+    "options": ["itertools.wraps", "operator.wraps", "functools.wraps"],
+    "answer": "functools.wraps",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which class provides a fast double-ended queue?",
+    "options": ["collections.queue", "collections.deque", "collections.stack"],
+    "answer": "collections.deque",
+    "answerChoice": 2,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a thread-safe lock?",
+    "options": ["thread.Lock()", "mutex.Lock()", "threading.Lock()"],
+    "answer": "threading.Lock()",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which type hint marks a value as optional?",
+    "options": ["typing.Maybe[int]", "typing.Null[int]", "typing.Optional[int]"],
+    "answer": "typing.Optional[int]",
+    "answerChoice": 3,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which decorator marks a method as abstract?",
+    "options": ["@abc.virtual", "@abc.abstractmethod", "@abc.interface"],
+    "answer": "@abc.abstractmethod",
+    "answerChoice": 2,
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which method must a context manager implement to set up?",
+    "options": ["__setup__(self):", "__enter__(self):", "__start__(self):"],
+    "answer": "__enter__(self):",
+    "answerChoice": 2,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which dunder method handles missing attribute access?",
+    "options": ["__missing__(self, n):", "__notfound__(self, n):", "__getattr__(self, n):"],
+    "answer": "__getattr__(self, n):",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which dunder method defines developer-facing object representation?",
+    "options": ["__str__(self):", "__display__(self):", "__repr__(self):"],
+    "answer": "__repr__(self):",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a weak reference to obj?",
+    "options": ["gc.ref(obj)", "weakref.ref(obj)", "sys.ref(obj)"],
+    "answer": "weakref.ref(obj)",
+    "answerChoice": 2,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line retrieves current exception info?",
+    "options": ["os.exc_info()", "gc.exc_info()", "sys.exc_info()"],
+    "answer": "sys.exc_info()",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line forces a garbage collection cycle?",
+    "options": ["mem.collect()", "sys.collect()", "gc.collect()"],
+    "answer": "gc.collect()",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which function retrieves the MRO of a class?",
+    "options": ["dir.getmro(cls)", "type.getmro(cls)", "inspect.getmro(cls)"],
+    "answer": "inspect.getmro(cls)",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which module provides the field() helper for dataclasses?",
+    "options": ["typing.field", "attrs.field", "dataclasses.field"],
+    "answer": "dataclasses.field",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which typing construct defines a structural subtype?",
+    "options": ["typing.Abstract", "typing.Interface", "typing.Protocol"],
+    "answer": "typing.Protocol",
+    "answerChoice": 3,
+    "difficulty": "very hard",
+    "category": "python"
+  },
+  {
+    "prompt": "Which line creates a named tuple class called Point?",
+    "options": ["NamedTuple('Point', x, y)", "namedtuple('Point', 'x y')", "tuple.named('Point', 'x y')"],
+    "answer": "namedtuple('Point', 'x y')",
+    "answerChoice": 2,
+    "difficulty": "very hard",
+    "category": "python"
+  }
+]
