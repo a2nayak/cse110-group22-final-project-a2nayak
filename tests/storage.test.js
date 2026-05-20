@@ -25,23 +25,22 @@ afterEach(() => {
     jest.restoreAllMocks();
 });
 
-const TEST_PROFILE = { name: "Ben", highScore: 1234, totalGamesPlayed: 123, createdAt: "2026-05-17T10:23:00.000Z", isInitialized: true };
+const TEST_PROFILE = { name: "Ben", highScores: [100, 200, 300, 400, 500], createdAt: "2026-05-17T10:23:00.000Z" };
 const TEST_QUESTIONS = [{ word: "def greet():", difficulty: "easy", category: "python" }];
 const TEST_STATE = { score: 300, questions: TEST_QUESTIONS, currentQuestionIndex: 2, currentInput: "def", timeRemaining: 45 };
 
 describe('loadProfile', () => {
     test('returns default profile when none exists', () => {
         const profile = loadProfile();
-        expect(profile.isInitialized).toBe(false);
         expect(profile.name).toBe("");
+        expect(profile.highScores).toEqual([0, 0, 0, 0, 0]);
     });
 
     test('correctly loads saved profile data', () => {
         saveProfile(TEST_PROFILE);
         const profile = loadProfile();
         expect(profile.name).toBe("Ben");
-        expect(profile.highScore).toBe(1234);
-        expect(profile.isInitialized).toBe(true);
+        expect(profile.highScores).toEqual([100, 200, 300, 400, 500]);
     });
 });
 
@@ -54,8 +53,7 @@ describe('saveProfile', () => {
         saveProfile(TEST_PROFILE);
         const profile = loadProfile();
         expect(profile.name).toBe("Ben");
-        expect(profile.highScore).toBe(1234);
-        expect(profile.totalGamesPlayed).toBe(123);
+        expect(profile.highScores).toEqual([100, 200, 300, 400, 500]);
     });
 
     test('returns false when localStorage is full', () => {
@@ -72,8 +70,8 @@ describe('clearProfile', () => {
     test('removes profile from localStorage', () => {
         saveProfile(TEST_PROFILE);
         clearProfile();
-        expect(loadProfile().isInitialized).toBe(false);
         expect(loadProfile().name).toBe("");
+        expect(loadProfile().highScores).toEqual([0, 0, 0, 0, 0]);
     });
 
     test('does not affect game state', () => {
@@ -153,7 +151,7 @@ describe('clearAll', () => {
         saveProfile(TEST_PROFILE);
         saveState(TEST_STATE);
         clearAll();
-        expect(loadProfile().isInitialized).toBe(false);
+        expect(loadProfile().name).toBe("");
         expect(loadState().score).toBe(0);
     });
 });
