@@ -21,6 +21,7 @@ export default class PlantDisplayGroup {
      */
     addPlant(){
         const plantDisplayMount = document.createElement('div');
+        plantDisplayMount.classList.add('plant-display');
         const plantDisplay = new PlantDisplay(plantDisplayMount);
         this.element.appendChild(plantDisplayMount);
         this.plantDisplays.push(plantDisplay);

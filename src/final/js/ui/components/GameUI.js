@@ -53,6 +53,7 @@ export default class GameUI {
     handleAnswer(answer){
         if(answer === this.currentAnswer){
             console.log("Correct!");
+            this.plantDisplayGroup.addPlant();
         } else {
             console.log("Incorrect! The correct answer was: " + this.currentAnswer);
         }

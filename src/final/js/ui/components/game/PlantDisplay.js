@@ -19,7 +19,8 @@ export default class PlantDisplay  {
         this.build();
     }
     build(){
-        this.plantImageElement.src = PlantDisplay.PLANT_IMAGES[this.growthLevel];
+        this.plantImageElement.src = `../assets/images/plant/${PlantDisplay.PLANT_IMAGES[this.growthLevel]}`;
+        this.plantImageElement.classList.add('plant-image');
         this.element.appendChild(this.plantImageElement);
     }
 }
