@@ -12,27 +12,9 @@
  * Overview: docs/models-overview.md
  */
 
-/**
- * @typedef {Object} Profile
- * @property {string} name - Display name set by the user
- * @property {string|null} createdAt - ISO timestamp of profile creation
- * @property {number} highScore - All-time high score
- * @property {number} totalGamesPlayed - Total completed games
- * @property {boolean} isInitialized - False = empty slot, true = real profile
- */
 
-/** @returns {Profile} */
-export function defaultProfile() {
-  return {
-    name: "",
-    createdAt: null,
-    highScore: 0,
-    totalGamesPlayed: 0,
-    isInitialized: false,
-  };
-}
 
-/**
+/*
  * @typedef {Object} GameState
  * @property {number} score - Current game score
  * @property {number} answeredQuestions - Number of questions answered so far
@@ -41,9 +23,10 @@ export function defaultProfile() {
  * @property {Array} questions - Full question list loaded from JSON (not persisted)
  * @property {Object|null} currentQuestion - The active question object (not persisted)
  * @property {number} totalQuestions - Total number of questions (not persisted)
- */
 
-/** @returns {GameState} */
+
+
+/** @returns {GameState}
 export function defaultGameState() {
   return {
     score: 0,
@@ -53,5 +36,102 @@ export function defaultGameState() {
     questions: [],
     currentQuestion: null,
     totalQuestions: 0,
+  };
+}
+*/
+
+export class Plant {
+
+  constructor(type,growth_stage) {
+    this.type = type;
+    this.growth_stage = growth_stage;
+  }
+
+  //function to grow the plant by one stage
+  grow() {
+    if (this.growth_stage < 2) {
+      this.growth_stage += 1;
+    }
+  }
+
+  //function to get the type of the plant
+  get_type() {
+    return this.type;
+  }
+
+  //function to get the growth stage of the plant
+  get_growth_stage() {
+    return this.growth_stage;
+  }
+
+  //function to set the type of the plant
+  set_type(type) {
+    this.type = type;
+  }
+
+  //function to set the growth stage of the plant
+  set_growth_state(growth_state) {
+    this.growth_stage = growth_state;
+  }
+
+}
+
+export class Farm {
+
+  constructor(num_plants) {
+    this.plants = [];
+    this.num_plants = num_plants;
+  }
+
+  //function to add a plant to the farm
+  add_plant(plant) {
+    if (this.plants.length < this.num_plants) {
+      this.plants.push(plant);
+    }
+  }
+
+}
+
+/**
+ * @typedef {Object} Player
+ * @property {string} username - The player's chosen username
+ * @property {number} level - The player's current level
+ * @property {number} num_questions_answered - Total questions answered by the player
+ * @property {string} language - The player's preferred programming language
+ * @property {number} score - The player's total accumulated score
+ * @property {boolean} isInitialized - Flag indicating if the profile has been set up
+ */
+
+export class Player {
+  
+  constructor() {
+    this.username = "Guest";
+    this.score = 0;
+    this.level = 1;
+    this.num_questions_answered = 0;
+    this.language = "";
+    this.farm = new Farm(10);
+  }
+
+  //function to level up the player
+  level_up() {
+    this.level += 1;
+  }
+
+}
+
+/**
+ * @typedef {Object} GameState
+ * @property {Player} player - The current player object and their farm
+ * @property {Array<number>} completed_question_ids - List of answered question IDs
+ * @property {number} current_question_id - The ID of the currently active question
+ */
+
+/** @returns {GameState} */
+export function defaultGameState() {
+  return {
+    player: new Player(),
+    completed_question_ids: [],
+    current_question_id: 0,
   };
 }
