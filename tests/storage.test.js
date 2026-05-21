@@ -2,7 +2,7 @@
 Test file for storage.js
 */
 
-import { loadProfile, saveProfile, clearProfile, loadState, saveState, clearState, clearAll } from '../src/final/js/backend/storage.js';
+import { loadProfile, saveProfile, clearProfile, loadState, saveState, clearState, clearAll } from '../src/final/js/systems/storage.js';
 
 const localStorageMock = (() => {
     let store = {};
