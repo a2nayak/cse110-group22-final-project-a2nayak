@@ -16,6 +16,24 @@
 * added level up functionality to player ([2a9b7cd](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2a9b7cd651b4612d0b5bfc67a9ed172b212b4fab))
 * added state-independant helper functions to be used in game.js ([2ef91e5](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2ef91e5c7232ddaf2c981769a855096932e06186))
 
+# 1.0.0 (2026-05-21)
+
+
+### Bug Fixes
+
+* added not applicable tests to a different folden ([0063ebf](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0063ebf54170c7cde7bda3309a6a71203ef6bb80))
+* bugs in scoring.js ([43cd572](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/43cd5724e50c66f4a278d9800d5875369bf5a2d7))
+* changed name of NA tests ([0991028](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0991028cd6c9a3e8001718efe0633de755e05de0))
+* commented out tests that don't apply to current implementation ([485c2df](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/485c2df5f1c5f74c7f6f19621b2e80d56a771d75))
+* commented out tests that don't apply to current implementation, pt2 ([0407aed](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0407aed4e13b5beae7b58e61e6d3f77a1e0287fc))
+* making linting run ([b460960](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/b46096040cf1fd18705af95a9f1ca8d09b21a32b))
+
+
+### Features
+
+* added level up functionality to player ([2a9b7cd](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2a9b7cd651b4612d0b5bfc67a9ed172b212b4fab))
+* added state-independant helper functions to be used in game.js ([2ef91e5](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2ef91e5c7232ddaf2c981769a855096932e06186))
+
 # [1.2.0](https://github.com/cse110-sp26-group22/cse110-group22-final-project/compare/v1.1.0...v1.2.0) (2026-05-21)
 
 
