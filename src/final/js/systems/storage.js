@@ -19,6 +19,18 @@ import { defaultProfile, defaultGameState } from './models.js';
 const PROFILE_KEY = "profile";
 const STATE_KEY = "state";
 
+// -------- safety --------
+function safeParse(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch (e) {
+    console.warn(`Failed to parse ${key}`, e);
+    return fallback;
+  }
+}
+
 // -------- Profile --------
 
 /**
@@ -27,7 +39,7 @@ const STATE_KEY = "state";
  * @returns {Profile}
  */
 export function loadProfile() {
-    return JSON.parse(localStorage.getItem(PROFILE_KEY)) ?? defaultProfile();
+    return safeParse(PROFILE_KEY, defaultProfile());
 }
 
 /**
@@ -60,7 +72,7 @@ export function clearProfile() {
  * @returns {GameState} The saved state, or a fresh default if none exists.
  */
 export function loadState() {
-    return JSON.parse(localStorage.getItem(STATE_KEY)) ?? defaultGameState();
+    return safeParse(STATE_KEY, defaultGameState());
 }
 
 /**
@@ -72,7 +84,8 @@ export function loadState() {
  */
 export function saveState(state) {
     try {
-        const snapshot = { ...state, currentInput: "" };
+        const snapshot = structuredClone(state);
+        snapshot.currentInput = "";
         localStorage.setItem(STATE_KEY, JSON.stringify(snapshot));
         return true;
     } catch (e) {
@@ -96,4 +109,15 @@ export function clearState() {
 export function clearAll() {
     localStorage.removeItem(PROFILE_KEY);
     localStorage.removeItem(STATE_KEY);
+}
+
+export function saveAll(profile, state) {
+  try {
+    saveProfile(profile);
+    saveState(state);
+    return true;
+  } catch (e) {
+    console.warn("Failed atomic save", e);
+    return false;
+  }
 }
