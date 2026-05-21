@@ -7,14 +7,16 @@ import Egg from "./Egg.js";
  * 
  * Expects the following minimal HTML structure:
  * <div class="app">
- *   <div class="egg-group"></div>
  *   <EggCounter class="egg-counter"/>
+ *   <div class="egg-group"></div>
  * </div>
  */
 export default class App {
-    /** @type {Array<Egg>} */
-    eggs = [];
-
+    /** @type {Array<Egg>}  */ eggs = [];
+    /** @type {HTMLElement} */ element;
+    /** @private @type {HTMLElement} */ eggGroupElement;
+    /** @private @type {EggCounter}  */ eggCounter;
+    
     /**
      * Binds this App to the given element.
      * @param {HTMLElement} element
@@ -22,7 +24,6 @@ export default class App {
     constructor(element) {
         this.element = element;
         this.eggGroupElement = assertHTMLElement(this.element.querySelector('.egg-group'));
-        
         this.eggCounter = new EggCounter(assertHTMLElement(this.element.querySelector('.egg-counter')));
         this.eggCounter.onUpdateCount((newCount) => this.handleUpdateCount(newCount));
     }
@@ -30,6 +31,7 @@ export default class App {
     /**
      * Updates the egg count.
      * @param {number} newCount 
+     * @private
      */
     handleUpdateCount(newCount) {
         if (newCount < 0) newCount = 0;
@@ -40,6 +42,7 @@ export default class App {
 
     /**
      * Adds a new egg to the display.
+     * @private
      */
     addEgg() {
         const eggElement = document.createElement('span');
@@ -51,6 +54,7 @@ export default class App {
 
     /**
      * Removes the most recently added egg from the display.
+     * @private
      */
     removeEgg() {
         const removedEgg = this.eggs.pop();

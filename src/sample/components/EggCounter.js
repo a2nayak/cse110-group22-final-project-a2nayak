@@ -12,6 +12,9 @@ import { assertHTMLElement } from "../utils.js";
  */
 export default class EggCounter {
     /** @type {number} */ #count = 0;
+    /** @type {HTMLElement} */ element;
+    /** @private @type {HTMLElement} */ incrementButton;
+    /** @private @type {HTMLElement} */ decrementButton;
 
     /**
      * Binds this EggCounter to the given element.
