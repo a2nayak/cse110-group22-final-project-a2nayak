@@ -125,6 +125,8 @@ export function defaultPlayer() {
  * @property {Array<number>} completed_question_ids - List of answered question IDs
  * @property {number} current_question_id - The ID of the currently active question
  * @property {string} current_input - The player's current input for the active question
+ * @property {number} incorrect_chars - Number of incorrect keystrokes for the current question, reset each question
+ * @property {number} time_limit - Time limit in seconds for the current level, set by level.js
  */
 
 /** @returns {GameState} */
@@ -135,5 +137,7 @@ export function defaultGameState() {
     current_question_id: 0,
     current_input: "",
     elapsed_time: 0,
+    incorrect_chars: 0,
+    time_limit: 60,
   };
 }
