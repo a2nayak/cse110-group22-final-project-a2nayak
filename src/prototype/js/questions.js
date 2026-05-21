@@ -26,7 +26,6 @@ export class Questions {
     constructor(questionPath = "../data/questions.json") {
         this.questionPath = questionPath;
         this.questions = [];
-        this.usedQuestions = new Set();
         this.currentIndex = 0;
         this.loaded = false;
     }
