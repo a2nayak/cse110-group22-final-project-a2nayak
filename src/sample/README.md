@@ -86,7 +86,9 @@ function main() {
 document.addEventListener('DOMContentLoaded', main);
 ``` 
 
-Alright, now we have our first component.
+Components will usually interact with the DOM by changing attributes, properties, or text. However, some components may need to modify the DOM by creating and deleting DOM elements.  
+
+We will maintain the convention that the component creating a DOM element is the one responsible for deleting it when it is done being used. 
 
 
 ### Component Trees
@@ -135,5 +137,43 @@ set count(newCount) {
 
 We mark the backing field of this component, `#count`, as a natively private JS variable to hide it. Then, the setter is able to update `#count` and change the displayed text at the same time, maintaining reactivity.
 
-The basic convention here that all public properties and methods should be reactive, and all private properties and methods may not necessarily be reactive. Note that we are using JSDoc annotations to mark properties as public/private.
+Again, we will maintain conventions for reactivity:
+1. All public properties and methods should be reactive
+    1. Private properties and methods are not necessarily reactive, but they can be
+2. Reactivity only affects a component's subtree
+    1. To prevent loops, reactivity should never trigger callbacks to parent components. The code structure should be reworked to have the least common ancestor (or a global object) handle such cases.
+
+### Sample Information Flow
+
+We can walk through our code to get a sense of how our components manage data.
+
+1. Initialization:
+    1. Our `main` function executes and mounts our `App`. 
+    2. In the constructor, our `App` initializes its template dependencies `eggGroupElement` and `eggCounter`.
+    3. `App` provides a callback for the `onUpdateCount` of `eggCounter`.
+2. When the user presses the `+` button:
+    1. The `eggCounter` receives an event on the increment button, which calls `callback(this.count + 1)`, thus passing state up the component tree.
+    2. `App`'s callback was `handleUpdateCount(newCount)`. This then runs `addEgg` to add an egg to the display.
+    3. In `addEgg`, the function creates a new `span` element, and binds an `Egg` component to it. This `Egg` is stored in a list for future access.
+3. When the user presses the `-` button:
+    1. A similar process as the `+` button occurs, the only exception being that `App` calls `removeEgg` instead.
+    2. In `removeEgg`, the function pops the last `Egg` from the stored list and unmounts it. 
+
+## HTML
+
+All components occurrences in the HTML should have a comment before them that marks which component it is, as follows:
+```html
+<!-- EggCounter -->
+<div class="egg-counter">
+    <span class="egg-counter-text">Eggs: 0</span>
+    <button class="egg-counter-decrement">-</button>
+    <button class="egg-counter-increment">+</button>
+</div>
+```
+
+HTML elements and their locations should be semantic (e.g. using a `span` for text, placing `<script>` tags in the `head`).
+
+If possible, the initial text value of HTML elements should match whatever their initial mount value is (or at least have meaningful placeholder text).
+
+
 
