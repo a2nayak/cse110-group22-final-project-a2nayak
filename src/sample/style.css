@@ -1,0 +1,73 @@
+
+/*#region General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.title {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+}
+/*#endregion */
+
+/*#region App styles */
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.egg-group {
+    display: flex;
+    height: auto;
+    margin-top: 1.5rem;
+    max-width: 13rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.5rem;
+}
+/*#endregion */
+
+/*#region EggCounter styles */
+.egg-counter {
+    display: grid;
+    grid-template-rows: auto auto; 
+    grid-template-columns: auto auto;
+    font-size: 1.5em;
+    gap: 0.5em;
+}
+
+.egg-counter-text {
+    grid-row: 1;
+    grid-column: 1 / span 2;
+    justify-self: center;
+}
+
+.egg-counter-decrement, .egg-counter-increment {
+    width: 3.5em;
+    height: 1.5em;
+    font-size: 1.5em;
+    grid-row: 2;
+    border: none;
+    cursor: pointer;
+    color: snow;
+}
+
+.egg-counter-decrement {
+    grid-column: 1;
+    background-color: #f44336;
+}
+.egg-counter-decrement:hover {
+    background-color: #d32f2f;
+}
+
+.egg-counter-increment {
+    grid-column: 2;
+    background-color: #4caf50;
+}
+.egg-counter-increment:hover {
+    background-color: #388e3c;
+}
+/*#endregion */
