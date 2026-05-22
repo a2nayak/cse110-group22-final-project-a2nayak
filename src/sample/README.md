@@ -175,5 +175,47 @@ HTML elements and their locations should be semantic (e.g. using a `span` for te
 
 If possible, the initial text value of HTML elements should match whatever their initial mount value is (or at least have meaningful placeholder text).
 
+## CSS
 
+### General Guidelines:
+CSS is powerful. Try to opt for natural CSS solutions instead of using more DOM elements or JS, whenever possible.
+- Most animations should be handled entirely by CSS.
+- Use better CSS settings instead of having wrapper DOM elements for positioning.
 
+Follow natural specificity conventions, if possible.
+
+### Styling
+
+In general, try to use classes for styling. Elements with the same parent should have similar prefixes for their primary class, as shown in the `EggCounter` component:
+```html
+<!-- EggCounter -->
+<div class="egg-counter">
+    <span class="egg-counter-text">Eggs: 0</span>
+    <button class="egg-counter-decrement">-</button>
+    <button class="egg-counter-increment">+</button>
+</div>
+```
+
+Using IDs for styling should be used sparingly. Only use IDs when it is guaranteed that exactly one element has that ID. 
+
+Using complex selectors is allowed, but try not to overuse them; only using classes is often cleaner.
+
+### Interacting with JS
+
+Editing the class list of an element will be the standard way that JS modifies styles.
+
+Updating CSS variables is another option, but only use it whenever it makes sense in context (e.g. theming).
+
+## JS
+
+All classes and functions should have JSDocs documentation.
+
+All variables should be as precisely typed as possible, such as preferring `ClassName` over `ClassName | null`
+- Also applies to callbacks, e.g. `(value: number) => void`
+- All functions should have clear input/output types
+
+Mark variables/functions with the correct JSDocs visibility (e.g. `@private`)
+
+Use JS modules with import/export syntax
+- Classes should use `export default` 
+- Functions should only use `export`
