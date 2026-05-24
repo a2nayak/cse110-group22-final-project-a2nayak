@@ -1,4 +1,5 @@
 import GameUI from './components/GameUI.js';
+import MainMenu from './components/MainMenu.js';
 import { assertHTMLElement } from './utils.js';
 
 /**
@@ -7,16 +8,26 @@ import { assertHTMLElement } from './utils.js';
 
 /** @type {GameUI} */
 let gameUI;
+/** @type {MainMenu} */
+let mainMenu;
 
 /**
- * Initializes the UI.
+ * Initializes the UI and shows the main menu.
  */
 function main() {
+    const menuDisplayElement = assertHTMLElement(document.querySelector('#main-menu'));
+    mainMenu = new MainMenu(menuDisplayElement);
+
     const gameDisplayElement = assertHTMLElement(document.querySelector('#game-ui'));
     gameUI = new GameUI(gameDisplayElement);
-    
-    const [question, answer] = backendEmulator();
-    gameUI.sendQuestion(question, answer);
+    gameDisplayElement.classList.add('hidden');
+
+    mainMenu.onStart((language) => {
+        menuDisplayElement.classList.add('hidden');
+        gameDisplayElement.classList.remove('hidden');
+        const [question, answer] = backendEmulator();
+        gameUI.sendQuestion(question, answer);
+    });
 }
 
 function backendEmulator(){
