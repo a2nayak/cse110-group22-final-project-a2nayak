@@ -39,4 +39,12 @@ export default class MainMenu {
     onStart(callback) {
         this.#startCallback = callback;
     }
+
+    show() {
+        this.element.classList.remove('hidden');
+    }
+
+    hide() {
+        this.element.classList.add('hidden');
+    }
 }
