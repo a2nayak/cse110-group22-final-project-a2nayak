@@ -1,89 +1,61 @@
-# /systems Overview
+# Systems Overview
 
 ## game.js
 
-### High-Level Responsibility
-Central game engine. Owns the active `GameState` and `Profile`, coordinates all other modules, and exposes functions for `ui.js` to call. Handles the full game lifecycle and processes player input.
+### High-Level Responsibility:
+Acts as the central orchestrator for the typing game, managing the game lifecycle, player input, state transitions between rounds, and coordinating communication between the UI, storage, timer, and scoring modules.
 
-### Function Breakdowns
-
-| Function | Description |
-|---|---|
-| `startLevel(levelNumber, category)` | Initializes a new level by loading questions via `level.js`, resetting state, and starting the timer |
-| `nextQuestion()` | Advances to the next question in the current question set; triggers end-of-game if none remain |
-| `onInput(key)` | Processes a single keypress from the player; updates `currentInput` and checks for correct answer |
-| `endGame()` | Stops the timer, saves state and profile, and signals `ui.js` to display end screen |
-| `pauseGame()` | Pauses the timer and suspends input handling |
-| `resumeGame()` | Resumes the timer and re-enables input handling |
-
----
+### Function Breakdowns:
+* **`initializeGame(uiCallbacks)`**: Establishes the communication bridge with the UI layer, enabling the game controller to trigger page updates.
+* **`startLevel(levelNumber, category)`**: Initializes a new level by loading data, resetting runtime metadata, rendering the initial gameplay screen, and starting the game timer.
+* **`handleRoundComplete()`**: Calculates the score for the completed question, updates total game progress, selects the next question, or terminates the game if no questions remain.
+* **`endGame()`**: Halts gameplay, stops the timer, saves the current game progress to storage, and directs the UI to load the end-of-game screen.
+* **`onTick(timeRemaining)`**: Callback function that updates the UI timer display during active gameplay.
+* **`handleExpire()`**: Manages the logic when a timer expires, either transitioning to the next question or triggering game completion.
+* **`onInput(key)`**: Processes user keyboard input, validates keystrokes against the current question, updates character accuracy stats, and detects when a round is successfully completed.
+* **`buildSaveSnapshot()`**: Generates an object containing essential state data (score, progress, category) for serialization to local storage.
 
 ## level.js
 
-### High-Level Responsibility
-Defines hardcoded level configurations and handles level initialization. Fetches questions from a category JSON file, filters by difficulty, and shuffles them. Called by `game.js` at the start of each level.
+### High-Level Responsibility:
+Handles the retrieval and structure of game level data.
 
-### Level Configurations
+### Function Breakdowns:
+* **`loadLevel(levelNumber, category)`**: Responsible for fetching the definitions and content required for a specific level based on its number and chosen category.
 
-| Level | Time Limit | Questions | Difficulty |
-|---|---|---|---|
-| 1 | 60s | 10 | Very Easy |
-| 2 | 60s | 10 | Easy |
-| 3 | 60s | 10 | Medium |
-| 4 | 60s | 10 | Hard |
-| 5 | 60s | 10 | Very Hard |
+## questions.js
 
-### Function Breakdowns
+### High-Level Responsibility:
+Manages the logic for question selection and progression throughout a game session.
 
-| Function | Description |
-|---|---|
-| `loadLevel(state, levelNumber, category)` | Fetches questions from `../data/{category}.json`, filters by the level's difficulty, shuffles, and slices to the configured question count. Mutates `state.questions`, `state.currentQuestionIndex`, `state.currentInput`, and `state.timeRemaining` |
-| `getLevelCount()` | Returns the total number of available levels (currently 5) |
+### Function Breakdowns:
+* **`getNextQuestion()`**: Retrieves the next question in the sequence for the current level.
 
----
+## scoring.js
+
+### High-Level Responsibility:
+Encapsulates the mathematical logic for calculating player performance.
+
+### Function Breakdowns:
+* **`calculateTotalScore(...)`**: Computes the score for a single question based on factors such as base score, accuracy (incorrect characters), answer length, and time taken.
 
 ## storage.js
 
-### High-Level Responsibility
-I/O layer for `localStorage`. Manages a single player profile and a single game state. All other modules go through this file to persist or retrieve data — nothing else touches `localStorage` directly.
+### High-Level Responsibility:
+Handles data persistence, allowing game state and user profiles to be saved and retrieved.
 
-### Function Breakdowns
+### Function Breakdowns:
+* **`loadProfile()`**: Retrieves player profile data.
+* **`saveProfile(profile)`**: Persists player profile data.
+* **`loadState()`**: Restores a previously saved game session state.
+* **`saveState(state)`**: Saves the current game session state.
+* **`saveAll()`**: Persists all current game and profile data to storage.
 
-#### Profile
+## timer.js
 
-| Function | Description |
-|---|---|
-| `loadProfile()` | Loads and parses the profile from `localStorage`. Returns `defaultProfile()` if none exists |
-| `saveProfile(profile)` | Serializes and saves the profile to `localStorage`. Returns `true` on success, `false` on failure |
-| `clearProfile()` | Removes the profile from `localStorage` |
+### High-Level Responsibility:
+Manages timing mechanisms for game sessions, including start, stop, and expiration logic.
 
-#### Game State
-
-| Function | Description |
-|---|---|
-| `loadState()` | Loads and parses the game state from `localStorage`. Returns `defaultGameState()` if none exists |
-| `saveState(state)` | Serializes and saves the game state. Resets `currentInput` to `""` before saving — partially typed input is not worth persisting. Returns `true` on success, `false` on failure |
-| `clearState()` | Removes the game state from `localStorage` |
-
-#### Utility
-
-| Function | Description |
-|---|---|
-| `clearAll()` | Removes both the profile and game state from `localStorage` in one call |
-
----
-
-## ui.js
-
-### High-Level Responsibility
-Handles all DOM interaction. Listens for user events and delegates to `game.js`, then updates the display based on the returned result. Never holds a direct reference to `GameState` — all state lives in `game.js`.
-
-### Function Breakdowns
-
-| Function | Description |
-|---|---|
-| `initEventListeners()` | Registers all event listeners on page load (keyboard input, button clicks, screen transitions) |
-| `updateScore(score)` | Updates the score display in the DOM |
-| `updateTimer(time)` | Updates the timer display in the DOM |
-| `displayQuestion(word)` | Renders the current question/prompt for the player to type |
-| `displayResult(correct)` | Shows feedback to the player after a submission (correct or incorrect) |
+### Function Breakdowns:
+* **`startTimer(duration, onTick, onExpire)`**: Initializes and starts a timer with defined duration and callback hooks for ticks and expiration.
+* **`stopTimer()`**: Immediately halts the active timer.
