@@ -1,4 +1,4 @@
-import { assertHTMLElement, assertHTMLInputElement } from '../../utils.js';
+import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
 /**
  * The component responsible for taking in the user's code input.
  * 
@@ -63,10 +63,16 @@ export default class CodeInputField {
      * @param {(text: string) => void} callback - The function to call when the user presses Enter. The current input value will be passed as an argument to this function.
      */
     onEnter(callback) {
-        if(!callback) return;
         this.codeInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') callback(this.codeInput.value);
         });
     }
 
+    /**
+     * Event handler for when the input value changes.
+     * @param {(text: string) => void} callback 
+     */
+    onInputChange(callback) {
+        this.codeInput.addEventListener('input', () => callback(this.codeInput.value));
+    }
 }
