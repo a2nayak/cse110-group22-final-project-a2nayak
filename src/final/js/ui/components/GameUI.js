@@ -3,6 +3,7 @@ import CodeInputField from "./game/CodeInputField.js";
 import PromptDisplay from "./game/PromptDisplay.js";
 import StatsDisplay from "./game/StatsDisplay.js";
 import PlantDisplayGroup from "./game/PlantDisplayGroup.js";
+import PauseMenu from "./game/PauseMenu.js";
 
 /**
  * The main component for displaying the game. It will contain the game board and any other relevant information. 
@@ -27,6 +28,13 @@ export default class GameUI {
         this.codeInputField = new CodeInputField(assertHTMLElement(this.element.querySelector('.code-input-field')));
         this.promptDisplay = new PromptDisplay(assertHTMLElement(this.element.querySelector('.prompt-display')));
         this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
+        this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
+
+        assertHTMLElement(this.element.querySelector('.game-header-pause')).addEventListener('click', () => {
+            this.pauseMenu.show();
+        });
+
+        // TODO: wire pauseMenu.onResume to hide the pause menu (and resume game state)
 
         this.codeInputField.onEnter((text) => this.handleAnswer(text));
     }
