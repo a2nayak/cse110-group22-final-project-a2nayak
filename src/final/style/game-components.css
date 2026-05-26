@@ -36,6 +36,21 @@
 }
 /*#endregion */
 
+/*#region PauseMenu styles */
+.pause-menu {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 17, 13, 0.85);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: #ecfff4;
+}
+/*#endregion */
+
 /*#region PlantDisplayGroup styles */
 .plant-display-group {
   position: absolute;

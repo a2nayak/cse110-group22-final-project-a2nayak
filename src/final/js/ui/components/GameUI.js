@@ -2,6 +2,8 @@ import { assertHTMLElement } from "../utils.js";
 import CodeInputField from "./game/input/CodeInputField.js";
 import PromptDisplay from "./game/input/PromptDisplay.js";
 import StatsDisplay from "./game/StatsDisplay.js";
+import PlantDisplayGroup from "./game/PlantDisplayGroup.js";
+import PauseMenu from "./game/PauseMenu.js";
 import PlantDisplayGroup from "./game/plants/PlantDisplayGroup.js";
 import GameTray from "./game/tray/GameTray.js";
 import Combo from "./game/Combo.js";
@@ -31,6 +33,13 @@ export default class GameUI {
         this.codeInputField = new CodeInputField(assertHTMLElement(this.element.querySelector('.code-input-field')));
         this.promptDisplay = new PromptDisplay(assertHTMLElement(this.element.querySelector('.prompt-display')));
         this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
+        this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
+
+        assertHTMLElement(this.element.querySelector('.game-header-pause')).addEventListener('click', () => {
+            this.pauseMenu.show();
+        });
+
+        // TODO: wire pauseMenu.onResume to hide the pause menu (and resume game state)
         this.gameTray = new GameTray(assertHTMLElement(this.element.querySelector('.game-tray')));
         this.timer = new Timer(assertHTMLElement(this.element.querySelector('.timer')));
         this.combo = new Combo(assertHTMLElement(this.element.querySelector('.combo')));
@@ -88,5 +97,13 @@ export default class GameUI {
         } else {
             console.log("Incorrect! The correct answer was: " + this.currentAnswer);
         }
+    }
+
+    show() {
+        this.element.classList.remove('hidden');
+    }
+
+    hide() {
+        this.element.classList.add('hidden');
     }
 }

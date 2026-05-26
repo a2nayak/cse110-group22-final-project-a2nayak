@@ -17,10 +17,53 @@
     <p>Read the question and submit your answer in the box below.</p>
     <p>Have fun learning python and its syntax!</p>
   </div>
+
+  <!-- MainMenu -->
+  <div id="main-menu">
+    <h3>Main Menu</h3>
+    <p>Select a language and play!</p>
+    <select class="main-menu-language-select">
+      <option value="python">Python</option>
+      <option value="language2">Language 2</option>
+      <option value="language3">Language 3</option>
+      <option value="language4">Language 4</option>
+    </select>
+    <button type="button" class="main-menu-start">Start Game</button>
+  </div>
+
+  <!-- ResultsScreen: hidden until game engine calls showResults() -->
+  <div class="results-screen">
+    <h2 class="results-title">Round Complete!</h2>
+    <p class="results-label">Language: <span class="results-language">Python</span></p>
+    <div class="results-stats">
+      <div class="results-stat">
+        <span class="results-label">Score</span>
+        <span class="results-stat-value results-score">0</span>
+      </div>
+      <div class="results-stat">
+        <span class="results-label">Accuracy</span>
+        <span class="results-stat-value results-accuracy">0%</span>
+      </div>
+      <div class="results-stat">
+        <span class="results-label">CPM</span>
+        <span class="results-stat-value results-cpm">0</span>
+      </div>
+      <div class="results-stat">
+        <span class="results-label">Questions</span>
+        <span class="results-stat-value results-questions">0 / 0</span>
+      </div>
+    </div>
+    <div class="results-actions">
+      <button type="button" class="results-retry">Retry</button>
+      <button type="button" class="results-main-menu">Main Menu</button>
+    </div>
+  </div>
+
   <!-- GameUI -->
   <div id="game-ui" class="game-ui">
     <div class="game-header">
       <span id="progress">0 / 30</span>
+      <button type="button" class="game-header-pause">Pause</button>
     </div>
     <!-- Timer -->
     <span class="timer">0:00</span>
@@ -31,6 +74,13 @@
       <p>Accuracy: <span class="stats-display-accuracy">100%</span></p>
       <p>WPM: <span class="stats-display-wpm">0</span></p>
     </div> 
+
+    <!-- PauseMenu -->
+    <div class="pause-menu">
+      <!-- TODO: add a Resume button that closes the pause menu -->
+      <!-- TODO: add a Return to Menu button that exits the game and shows the main menu -->
+    </div>
+
     <!-- Combo -->
     <div class="combo"><span class="combo-number">0</span></div>
     
