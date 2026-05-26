@@ -2,33 +2,44 @@
  * level.js
  *
  * Defines hardcoded level configurations and handles level initialization.
- * Fetches and filters questions from the appropriate category JSON file.
- * Sets initial state parameters and loads the question set for the level.
+ * Fetches questions from the category JSON, filters by difficulty, shuffles,
+ * and returns a plain state object that game.js merges into its active state.
+ *
+ * The returned object is JSON-serializable and can be passed directly to
+ * storage.js — no methods, no closures, no hidden state.
+ *
+ * game.js advances through questions by incrementing state.current_question_index.
+ * The current prompt and answer are always:
+ *   state.questions[state.current_question_index]
+ *   state.answers[state.current_question_index]
  *
  * Imported by:
  * - game.js: calls loadLevel() at the start of each level
+ *
+ * @module level
  */
 
-import { QuestionSelector } from "./question.js";
-
-export const DIFFICULTIES = {
-  VERY_EASY: "1",
-  EASY: "2",
-  MEDIUM: "3",
-  HARD: "4",
-  VERY_HARD: "5",
-};
-
 const LEVELS = [
-  { levelNumber: 1, timeLimit: 60, questionCount: 9, difficulty: "1" },
-  { levelNumber: 2, timeLimit: 60, questionCount: 9, difficulty: "2" },
-  { levelNumber: 3, timeLimit: 60, questionCount: 9, difficulty: "3" },
-  { levelNumber: 4, timeLimit: 60, questionCount: 9, difficulty: "4" },
-  { levelNumber: 5, timeLimit: 60, questionCount: 9, difficulty: "5" },
+  { levelNumber: 1, timeLimit: 60, questionCount: 10, difficulty: "very easy" },
+  { levelNumber: 2, timeLimit: 60, questionCount: 10, difficulty: "easy"      },
+  { levelNumber: 3, timeLimit: 60, questionCount: 10, difficulty: "medium"    },
+  { levelNumber: 4, timeLimit: 60, questionCount: 10, difficulty: "hard"      },
+  { levelNumber: 5, timeLimit: 60, questionCount: 10, difficulty: "very hard" },
 ];
 
 /**
- * Loads a level and returns initialized level session state.
+ * Loads a level and returns an initialized state object.
+ *
+ * Fetches the category JSON, filters questions by difficulty, shuffles them,
+ * then splits them into parallel questions[] and answers[] arrays so game.js
+ * can access either by the same index.
+ *
+ * The returned object is a plain data object — it can be saved to localStorage
+ * via storage.js without any conversion.
+ *
+ * @param {number} levelNumber - 1-indexed level number
+ * @param {string} category    - Question category slug (e.g. "python", "unix")
+ * @returns {Promise<GameState>}
  */
 export async function loadLevel(levelNumber, category) {
   const config = LEVELS[levelNumber - 1];
@@ -36,27 +47,30 @@ export async function loadLevel(levelNumber, category) {
   const response = await fetch(`../data/${category}.json`);
   const allQuestions = await response.json();
 
-  // filter ONLY level-specific questions
-  const levelQuestions = allQuestions.filter(
-    q => String(q.level) === config.difficulty
-  );
+  // Filter by difficulty, shuffle, cap at questionCount
+  const shuffled = allQuestions
+    .filter(q => q.difficulty === config.difficulty)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, config.questionCount);
 
-  // initialize selector
-  const selector = new QuestionSelector(levelQuestions);
-
-  // pre-pick first question
-  const firstQuestion = selector.getNextQuestion();
+  // Split into parallel arrays — same index = same question
+  const questions = shuffled.map(q => q.prompt);
+  const answers   = shuffled.map(q => q.answer);
 
   return {
-    levelNumber,
-    levelConfig: config,
+    // ── Calculated from fetched data ──────────────────────────────────────
+    questions,                          // shuffled prompt strings; index matches answers[]
+    answers,                            // shuffled answer strings; index matches questions[]
+    total_questions: shuffled.length,   // may be < questionCount if the pool is small
+    time_limit:      config.timeLimit,  // total seconds allowed, set by LEVELS config
+    timer:           config.timeLimit,  // seconds remaining; starts full, counts down each tick
 
-    selector,            //used to advance question in game.js
-    currentQuestion: firstQuestion,
-
-    currentInput: "",
-    timeRemaining: config.timeLimit,
-    score: 0,
+    // ── Always start at zero / empty ─────────────────────────────────────
+    plants:                 [0, 0, 0],  // 3 plants, each starting at growth stage 0
+    current_question_index: 0,   // pointer into questions[] and answers[]
+    current_input:          "",  // what the player has typed so far
+    incorrect_chars:        0,   // wrong keystrokes this question; reset each question
+    base_score:             0,   // points earned this session
   };
 }
 

@@ -13,16 +13,16 @@ let intervalId = null;
 let timeRemaining = 0;
 
 /**
- * Starts the countdown timer from the given initial time.
+ * Starts the countdown timer from state.timer.
  * Calls onTick each second with the updated time remaining.
  * Calls onExpire when time reaches 0.
- * @param {number} initialTime - Starting time in seconds
+ * @param {object} state - A copy of game state; reads state.timer as starting seconds
  * @param {function(number): void} onTick - Called every second with the updated time
  * @param {function(): void} onExpire - Called when the timer reaches 0
  */
-export function startTimer(initialTime, onTick, onExpire) {
+export function startTimer(state, onTick, onExpire) {
   stopTimer();
-  timeRemaining = initialTime;
+  timeRemaining = state.timer;
   intervalId = setInterval(() => {
     timeRemaining--;
     onTick(timeRemaining);

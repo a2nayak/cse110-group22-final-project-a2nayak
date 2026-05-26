@@ -12,95 +12,8 @@
  * Overview: docs/models-overview.md
  */
 
-
-
-/*
- * @typedef {Object} GameState
- * @property {number} score - Current game score
- * @property {number} answeredQuestions - Number of questions answered so far
- * @property {Set<number>} usedIndexes - Question indexes already seen this session
- * @property {string|null} savedAt - ISO timestamp of last save, null if no save exists
- * @property {Array} questions - Full question list loaded from JSON (not persisted)
- * @property {Object|null} currentQuestion - The active question object (not persisted)
- * @property {number} totalQuestions - Total number of questions (not persisted)
-
-
-
-/** @returns {GameState}
-export function defaultGameState() {
-  return {
-    score: 0,
-    answeredQuestions: 0,
-    usedIndexes: new Set(), // JSON.stringify() requires Set -> Array conversion. Should be replaced with Array.
-    savedAt: null,
-    questions: [],
-    currentQuestion: null,
-    totalQuestions: 0,
-  };
-}
-*/
-
-export class Plant {
-
-  constructor(type,growth_stage) {
-    this.type = type;
-    this.growth_stage = growth_stage;
-  }
-
-  //function to grow the plant by one stage
-  grow() {
-    if (this.growth_stage < 2) {
-      this.growth_stage += 1;
-    }
-  }
-
-  //function to get the type of the plant
-  get_type() {
-    return this.type;
-  }
-
-  //function to get the growth stage of the plant
-  get_growth_stage() {
-    return this.growth_stage;
-  }
-
-  //function to set the type of the plant
-  set_type(type) {
-    this.type = type;
-  }
-
-  //function to set the growth stage of the plant
-  set_growth_stage(growth_stage) {
-    this.growth_stage = growth_stage;
-  }
-
-}
-
-export class Farm {
-
-  constructor() {
-    this.plants = [new Plant("placeholder",0)];
-    this.num_plants = 1;
-  }
-
-  //function to add a plant to the farm
-  plant_seed(plant) {
-    if (this.plants.length < this.num_plants) {
-      this.plants.push(plant);
-    }
-  }
-
-  // function to grow all the plants in the farm by one stage
-  grow_plants() {
-    for (let plant of this.plants) {
-      plant.grow();
-    }
-  }
-
-}
-
 /**
- * @typedef {Object} Player
+ * @typedef {Object} Profile
  * @property {string} username - The player's chosen username
  * @property {number} level - The player's current level
  * @property {number} num_questions_answered - Total questions answered by the player
@@ -108,36 +21,44 @@ export class Farm {
  * @property {number} score - The player's total accumulated score
  * @property {boolean} isInitialized - Flag indicating if the profile has been set up
  */
-export function defaultPlayer() {
+export function defaultProfile() {
   return {
     username: "Guest",
     score: 0,
     level: 1,
     num_questions_answered: 0,
     language: "Python",
-    farm: new Farm(),
   };
 }
 
 /**
  * @typedef {Object} GameState
- * @property {Player} player - The current player object and their farm
- * @property {Array<number>} completed_question_ids - List of answered question IDs
- * @property {number} current_question_id - The ID of the currently active question
- * @property {string} current_input - The player's current input for the active question
- * @property {number} incorrect_chars - Number of incorrect keystrokes for the current question, reset each question
- * @property {number} time_limit - Time limit in seconds for the current level, set by level.js
+ * Session-only data. Does NOT include the player profile.
+ * Populated by level.js on each new level and reset between levels.
+ * Safe to clear without affecting the persistent player profile.
+ *
+ * @property {int[]}     plants                 - Plant array holding plants indexed (0 - 2). Each plant has growth level stored as int at respective index.
+ * @property {string[]}  questions              - Prompts for the current level (shuffled)
+ * @property {string[]}  answers                - Answers parallel to questions[]
+ * @property {number}    current_question_index - Index into questions[] / answers[]
+ * @property {string}    current_input          - Player's in-progress input for the active question
+ * @property {number}    incorrect_chars        - Wrong keystrokes for the current question (reset each question)
+ * @property {number}    timer                  - Seconds left in game until timeout.
+ * @property {number}    time_limit             - Total seconds allowed for the level
+ * @property {number}    base_score                  - Points accumulated this session
  */
 
 /** @returns {GameState} */
 export function defaultGameState() {
   return {
-    player: defaultPlayer(),
-    completed_question_ids: [],
-    current_question_id: 0,
-    current_input: "",
-    elapsed_time: 0,
-    incorrect_chars: 0,
-    time_limit: 60,
+    plants:                 [0, 0, 0],
+    questions:              [],
+    answers:                [],
+    current_question_index: 0,
+    current_input:          "",
+    incorrect_chars:        0,
+    timer:                  0,
+    time_limit:             60,
+    base_score:             0,
   };
 }

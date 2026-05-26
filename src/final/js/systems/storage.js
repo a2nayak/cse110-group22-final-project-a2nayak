@@ -14,7 +14,7 @@
  * Tests: tests/storage.test.js
  */
 
-import { defaultProfile, defaultGameState } from './models.js';
+import { defaultProfile, defaultGameState } from '../models/models.js';
 
 const PROFILE_KEY = "profile";
 const STATE_KEY = "state";
@@ -85,7 +85,7 @@ export function loadState() {
 export function saveState(state) {
     try {
         const snapshot = structuredClone(state);
-        snapshot.currentInput = "";
+        snapshot.current_input = "";
         localStorage.setItem(STATE_KEY, JSON.stringify(snapshot));
         return true;
     } catch (e) {

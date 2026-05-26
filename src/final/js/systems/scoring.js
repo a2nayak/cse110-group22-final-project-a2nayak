@@ -5,6 +5,11 @@
 //none of the functions in this file should be able to directly mutate the game state
 //instead they should return values that can be used to update the game state in game.js
 
+export function calculateBaseScore(state) {
+    const { base_score } = state;
+    return 50 + base_score;
+}
+
 export function calculateAccuracyMultiplier(incorrectChars, totalChars) {
     if (totalChars === 0) return 1;
 
@@ -31,15 +36,22 @@ export function calculateTimeMultiplier(timeElapsed, timeLimit) {
 //    return Math.min(1 + streak * 0.05, 2.0);
 // }
 
-export function calculateTotalScore(baseScore, incorrectChars, totalChars, timeElapsed, timeLimit) {
+export function calculateTotalScore(baseScore, state) {
+    const { incorrect_chars, answers, current_input, current_question_index, timer, time_limit } = state;
+
+    const totalChars = answers
+        .slice(0, current_question_index)
+        .reduce((sum, a) => sum + a.length, 0)
+        + current_input.length;
+
     const accuracyMultiplier = calculateAccuracyMultiplier(
-        incorrectChars,
+        incorrect_chars,
         totalChars
     );
 
     const timeMultiplier = calculateTimeMultiplier(
-        timeElapsed,
-        timeLimit
+        time_limit - timer,
+        time_limit
     );
 
     //const streakMultiplier = calculateStreakMultiplier(streak);

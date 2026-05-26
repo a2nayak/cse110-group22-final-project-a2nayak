@@ -3,30 +3,35 @@
 .game-ui {
   position: relative;
   width: 100%;
-  aspect-ratio: 6 / 5;
-  background-image: url("../assets/images/game-backdrop.jpg");
+  flex: 1;
+  background-image:
+    url("../assets/images/game-backdrop.jpg"),
+    linear-gradient(to bottom, 
+      #91D1DD 0%,
+      #91D1DD 32.25%,
+      #113B23 32.25%,
+      #113B23 100%
+    );
   /* show the whole image, align to top, and keep green behind it */
-  background-size: contain;
+  background-size:contain;
   background-position: top center;
   background-repeat: no-repeat;
-  background-color: #113B23;
   color: #ecfff4;
 
-  padding: 16px;
+  padding-top: 0.25rem;
   display: grid;
-  grid-template-rows: auto 1fr [input-area] auto; 
-  grid-template-columns: [title-text] auto 1fr [stats-display] auto;   
-
-  border: 1px solid #2ecc71;
-  border-radius: 12px;
+  grid-template-rows:
+    auto [combo-row] auto 1fr [input-area-row] auto [game-tray]; 
+  grid-template-columns: 
+    [flank-left] 3rem [input-area-start] 1fr [stats-display] auto [flank-right] 3rem;   
 }
 
 .game-input-area {
-  grid-row: input-area; 
-  grid-column: 1 / -1;
+  grid-row: input-area-row; 
+  grid-column: input-area-start /span 2;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.25rem;
   z-index: 1;
 }
 /*#endregion */
@@ -61,11 +66,9 @@
 }
 /*#endregion */
 
-/* print("Hello, World!") */
-
 /*#region StatsDisplay styles */
 .stats-display {
-  grid-column: stats-display;
+  grid-column: stats-display /span 2;
   
   font-size: 14px;
   border: 1px solid #2ecc71;
@@ -92,6 +95,8 @@
     position: relative;
     font-family: Consolas, "Courier New", monospace;
     height: min-content;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
 }
 
 .ghost-text {
@@ -134,3 +139,111 @@
   width: 100%;
 }
 /*#endregion*/
+
+/*#region Timer styles */
+.timer {
+  grid-row: 1;
+  grid-column: input-area-start /span 2;
+  height: fit-content;
+  width: fit-content;
+
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+  color: rgb(253, 203, 38);
+  font-size: 1.5em;
+  border: 1px solid #2ecc71;
+  background-color: #0b1812;
+  padding: 0.25em 0.75em;
+  border-radius: 6px;
+  text-align: center;
+}
+/*#endregion */
+
+/*#region Combo styles */
+.combo {
+  position: relative;
+  grid-row: combo-row;
+  grid-column: stats-display /span 2;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+  color: rgb(46, 204, 113);
+  font-size: 1.5em;
+
+  border: 1px solid #2ecc71;
+  background-color: #0b1812;
+  padding: 0.2em 0.75em;
+  border-radius: 6px;
+  text-align: center;
+  padding-right: 1em;
+}
+.combo.flashed > .combo-number {
+  display: inline-block;
+  animation: combo-flash-bounce 0.1s ease;
+}
+.combo.flashed::after {
+  animation: combo-flash-bounce 0.1s ease;
+}
+@keyframes combo-flash-bounce {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(0%, -5%) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+.combo.flashed::before {
+  position: absolute;
+  content: attr(data-flash-text);
+  color: #35b76d;
+  font-size: 1em;
+  animation: combo-flash-highlight 0.15s linear;
+  transform: translate(20%, -0.1em) scale(1.4);
+  opacity: 0;
+}
+.combo::after {
+  position: absolute;
+  display: inline;
+  content: 'x';
+}
+@keyframes combo-flash-highlight {
+  0% {
+    opacity: 0.1;
+    transform: translate(15%, -0.1em) scale(1.4);
+  }
+  15% {
+    opacity: 0.5;
+    color:#33c833;
+    transform: translate(20%, -0.2em) scale(1.5);
+  }
+  60% {
+    opacity: 0.4;
+    transform: translate(15%, -0.1em) scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(5%, -0.1em) scale(1.1);
+  }
+}
+/*#endregion */
+
+/*#region GameTray styles */
+.game-tray {
+  grid-row: game-tray;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 1rem;
+  background-color: #0a140a;
+  height: 4rem;
+  border-top: 3px ridge #118c7786;
+}
+/*#endregion */

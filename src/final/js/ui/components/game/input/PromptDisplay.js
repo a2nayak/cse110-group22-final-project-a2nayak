@@ -1,4 +1,4 @@
-import { assertHTMLElement } from "../../utils.js";
+import { assertHTMLElement } from "../../../utils.js";
 
 /**
  * The component responsible for displaying the current prompt to the user.
