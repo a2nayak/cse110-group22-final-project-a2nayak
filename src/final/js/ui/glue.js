@@ -6,9 +6,6 @@ import {
 import { store } from "./store.js";
 import { mainMenu, gameUI, resultsScreen } from "./ui.js";
 
-let currentLevel = 1;
-let language = 'python';
-
 /**
  * @param {string} screenName 
  * @param {*} data 
@@ -59,7 +56,6 @@ function handleUpdateScreen(response, data) {
 
 export function initializeBackend() {
     registerCallbacks(handleLoadScreen, handleUpdateScreen);
-    startLevel(currentLevel, language);
 }
 
 /**
@@ -71,4 +67,4 @@ export function handleKeyPress(key){
     onInput(key); //backend naming is different from our convention
 }
 
-export { pauseGame, resumeGame, goToLevelSelect, goToMainMenu };
+export { startLevel, pauseGame, resumeGame, goToLevelSelect, goToMainMenu };

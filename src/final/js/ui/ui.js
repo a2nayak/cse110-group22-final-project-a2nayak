@@ -40,6 +40,7 @@ function main() {
         lastLanguage = language;
         mainMenu.hide();
         gameUI.show();
+        glue.startLevel(1, language);
     });
 
     resultsScreen.onRetry(() => {
