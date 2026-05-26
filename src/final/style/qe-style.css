@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.hidden {
+  display: none;
+}
+
 body {
   background: #06110d;
 
@@ -16,6 +20,7 @@ body {
   min-height: 100vh;
   color: white;
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 .site-title {

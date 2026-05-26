@@ -1,4 +1,58 @@
 
+/*#region ResultsScreen styles */
+.results-screen {
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.results-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.results-label {
+  font-size: 12px;
+}
+
+.results-stat-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.results-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.results-stat {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid currentColor;
+}
+
+.results-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.results-retry,
+.results-main-menu {
+  padding: 8px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+/*#endregion */
+
 /*#region RulesBox styles */
 .rules-box {
   background: #0b1812;

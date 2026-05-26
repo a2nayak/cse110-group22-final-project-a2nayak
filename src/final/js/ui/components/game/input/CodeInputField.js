@@ -1,4 +1,4 @@
-import { assertHTMLElement, assertHTMLInputElement } from '../../utils.js';
+import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
 /**
  * The component responsible for taking in the user's code input.
  * 
@@ -29,13 +29,20 @@ export default class CodeInputField {
     }
 
     /**
+     * Clears the input field and resets the ghost text.
+     */
+    clearAnswer() {
+        this.codeInput.value = '';
+        this.renderGhostText();
+    }
+
+    /**
      * Sets what the ghost text should be. 
      * This is the text that appears as a hint for the user, but disappears as they type.
      * @param {String} text 
      */
     setGhostText(text) {
         this.ghostTextString = text;
-        console.log('Setting ghost text to: ' + text);
         this.renderGhostText();
     }
 
@@ -44,7 +51,7 @@ export default class CodeInputField {
      * The part of the ghost text that overlaps with the input value is rendered in the "invisible" span, while the rest is rendered in the "visible" span.
      */
     renderGhostText() {
-        //TODO: check for input validity
+        if(!this.ghostTextString) return;
         const value = this.codeInput.value;
         this.ghostTextInvisible.textContent = this.codeInput.value;
         this.ghostTextVisible.textContent = this.ghostTextString.substring(value.length);
@@ -63,10 +70,26 @@ export default class CodeInputField {
      * @param {(text: string) => void} callback - The function to call when the user presses Enter. The current input value will be passed as an argument to this function.
      */
     onEnter(callback) {
-        if(!callback) return;
         this.codeInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') callback(this.codeInput.value);
         });
     }
 
+    /**
+     * Event handler for when the input value changes.
+     * @param {(text: string) => void} callback 
+     */
+    onInputChange(callback) {
+        this.codeInput.addEventListener('input', () => callback(this.codeInput.value));
+    }
+
+    /**
+     * Event handler for when a key is pressed in the input field.
+     * @param {(key: string) => void} callback 
+     */
+    onKeyPress(callback) {
+        this.codeInput.addEventListener('keypress', (event) => {
+            setTimeout(() => callback(event.key), 0);
+        });
+    }
 }

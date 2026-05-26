@@ -22,3 +22,15 @@ export function assertHTMLInputElement(element) {
     }
     return element;
 }
+
+/**
+ * Asserts that an element is an HTMLSelectElement.
+ * @param {Element | null} element 
+ * @returns {HTMLSelectElement}
+ */
+export function assertHTMLSelectElement(element) {
+    if (!(element instanceof HTMLSelectElement)) {
+        throw new Error('Expected an HTMLSelectElement, but got: ' + element);
+    }
+    return element;
+}
