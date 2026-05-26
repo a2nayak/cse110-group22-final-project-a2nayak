@@ -8,6 +8,8 @@ import GameTray from "./game/tray/GameTray.js";
 import Combo from "./game/Combo.js";
 import Timer from "./game/Timer.js";
 import { store } from "../store.js";
+import NotificationDisplay from "./NotificationDisplay.js";
+
 
 /**
  * The main component for displaying the game. It will contain the game board and any other relevant information. 
@@ -33,6 +35,9 @@ export default class GameUI {
         this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
         this.timer = new Timer(assertHTMLElement(this.element.querySelector('.timer')));
         this.combo = new Combo(assertHTMLElement(this.element.querySelector('.combo')));
+        this.notificationDisplay = new NotificationDisplay(
+            assertHTMLElement(this.element.querySelector('.notification-display'))
+        );
 
         this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
         this.onPause(() => this.pauseMenu.show());
