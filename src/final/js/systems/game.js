@@ -49,7 +49,7 @@
 import { loadLevel } from "./level.js";
 import { startTimer, stopTimer } from "./timer.js";
 import { calculateBaseScore, calculateTotalScore } from "./scoring.js";
-import { saveProfile, saveState, clearState } from "./storage.js";
+import { saveProfile, clearState } from "./storage.js";
 import { defaultGameState, defaultProfile } from "../models/models.js";
 import { growNextPlant } from "./plants.js";
 
