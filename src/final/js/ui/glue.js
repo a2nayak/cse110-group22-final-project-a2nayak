@@ -25,7 +25,15 @@ function handleLoadScreen(screenName, data) {
     }
     if (screenName === 'endscreen') {
         gameUI.hide();
-        resultsScreen.show(data.stats);
+        //TODO: pass real data here
+        resultsScreen.show({ 
+            score: 0,
+            questionsAnswered: 0,
+            totalQuestions: 0,
+            accuracy: '0%',
+            cpm: 0,
+            language: 'python'
+        });
         mainMenu.hide();
     }
     if (screenName === 'mainmenu' || screenName === 'levelselect') {
