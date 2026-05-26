@@ -1,4 +1,9 @@
-name: CI Pipeline
+name: CI/CD Pipeline
+
+# Note: frontend tests using jsdom should please start their files with
+#  /**
+#   * @jest-environment jsdom
+#  */ 
 
 on:
   push:
@@ -6,7 +11,7 @@ on:
       - main
       - dev
       - research
-      - feature/**
+      - feat/**
       - docs/**
       - fix/**
       - test/**
@@ -14,6 +19,15 @@ on:
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -27,14 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -42,22 +49,31 @@ jobs:
       - name: Run linting
         run: npm run lint
 
+      # Run Jest in CI mode
       - name: Run tests
-        run: npm test
-      
+        run: npm test -- --ci
+
       - name: Build project
-        run: npm run build --if-present
+        run: npm run build
 
-# for CD to GitHub Pages, uncomment the following section and make sure to set up the gh-pages branch in your repository
-# to be done after the frontend is more developed and ready for deployment
+      # Upload build artifacts for deployment
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
-#  deploy:
-#    needs: test
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Deploy to GitHub Pages
-#        uses: peaceiris/actions-gh-pages@v4
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: ./dist
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
