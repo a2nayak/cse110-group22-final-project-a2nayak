@@ -1,4 +1,4 @@
-import { assertHTMLElement } from "../utils.js";
+import { assertHTMLElement, assertHTMLSelectElement } from "../utils.js";
 
 /**
  * The main menu component for the game.
@@ -25,7 +25,7 @@ export default class MainMenu {
      */
     constructor(element) {
         this.element = element;
-        this.#languageSelect = assertHTMLElement(this.element.querySelector('.main-menu-language-select'));
+        this.#languageSelect = assertHTMLSelectElement(this.element.querySelector('.main-menu-language-select'));
         this.#startButton = assertHTMLElement(this.element.querySelector('.main-menu-start'));
 
         this.#startButton.addEventListener('click', () => this.#startCallback(this.#languageSelect.value));

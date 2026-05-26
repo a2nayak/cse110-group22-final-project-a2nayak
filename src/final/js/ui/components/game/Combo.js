@@ -20,10 +20,6 @@ export default class Combo {
     constructor(element){
         this.element = element;
         this.countElement = assertHTMLElement(element.querySelector('span'));
-        this.element.addEventListener('animationend', (e) => {
-            if(e.animationName !== 'combo-flash-highlight') return;
-            if(!this.#rollDownPromise) this.renderedComboCount = this.#comboCount;
-        });
     }
 
     /**
@@ -50,7 +46,7 @@ export default class Combo {
      * @private
      */
     flash(){
-        this.element.setAttribute('data-flash-text', this.#renderedComboCount + 'x');
+        this.element.setAttribute('data-flash-text', (this.#renderedComboCount + 1).toString() + 'x');
         this.element.classList.remove('flashed');
         this.element.offsetWidth; //force reflow to restart animation if already flashed
         this.element.classList.add('flashed');
@@ -62,6 +58,7 @@ export default class Combo {
     increment(){
         if(!this.#rollDownPromise) this.renderedComboCount = this.#comboCount;
         this.#comboCount++;
+        setTimeout(() => this.renderedComboCount = this.#comboCount, 20);
         this.flash();
     }
 

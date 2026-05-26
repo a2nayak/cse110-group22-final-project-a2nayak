@@ -44,7 +44,8 @@ const LEVELS = [
 export async function loadLevel(levelNumber, category) {
   const config = LEVELS[levelNumber - 1];
 
-  const response = await fetch(`../data/${category}.json`);
+  fetch(`../data/${category}.json`);
+  const response = await fetch(`../js/data/${category}.json`);
   const allQuestions = await response.json();
 
   // Filter by difficulty, shuffle, cap at questionCount

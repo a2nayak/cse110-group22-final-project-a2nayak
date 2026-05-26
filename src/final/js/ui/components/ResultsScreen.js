@@ -50,9 +50,9 @@ export default class ResultsScreen {
      * @param {{ score: number, accuracy: string, cpm: number, questionsAnswered: number, totalQuestions: number, language: string }} stats
      */
     show(stats) {
-        this.scoreEl.textContent = stats.score;
-        this.accuracyEl.textContent = stats.accuracy;
-        this.cpmEl.textContent = stats.cpm;
+        this.scoreEl.textContent = `${stats.score}`;
+        this.accuracyEl.textContent = `${stats.accuracy}`;
+        this.cpmEl.textContent = `${stats.cpm}`;
         this.questionsEl.textContent = `${stats.questionsAnswered} / ${stats.totalQuestions}`;
         this.languageEl.textContent = stats.language;
         this.element.classList.remove('hidden');

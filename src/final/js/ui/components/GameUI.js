@@ -2,12 +2,12 @@ import { assertHTMLElement } from "../utils.js";
 import CodeInputField from "./game/input/CodeInputField.js";
 import PromptDisplay from "./game/input/PromptDisplay.js";
 import StatsDisplay from "./game/StatsDisplay.js";
-import PlantDisplayGroup from "./game/PlantDisplayGroup.js";
 import PauseMenu from "./game/PauseMenu.js";
 import PlantDisplayGroup from "./game/plants/PlantDisplayGroup.js";
 import GameTray from "./game/tray/GameTray.js";
 import Combo from "./game/Combo.js";
 import Timer from "./game/Timer.js";
+import { store } from "../store.js";
 
 /**
  * The main component for displaying the game. It will contain the game board and any other relevant information. 
@@ -21,8 +21,6 @@ import Timer from "./game/Timer.js";
  * </div>
  */
 export default class GameUI {
-    currentQuestion = "";
-    currentAnswer = "";
     /**
      * Binds this GameUI to the given element.
      * @param {HTMLElement} element
@@ -33,29 +31,16 @@ export default class GameUI {
         this.codeInputField = new CodeInputField(assertHTMLElement(this.element.querySelector('.code-input-field')));
         this.promptDisplay = new PromptDisplay(assertHTMLElement(this.element.querySelector('.prompt-display')));
         this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
-        this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
-
-        assertHTMLElement(this.element.querySelector('.game-header-pause')).addEventListener('click', () => {
-            this.pauseMenu.show();
-        });
-
-        // TODO: wire pauseMenu.onResume to hide the pause menu (and resume game state)
-        this.gameTray = new GameTray(assertHTMLElement(this.element.querySelector('.game-tray')));
         this.timer = new Timer(assertHTMLElement(this.element.querySelector('.timer')));
         this.combo = new Combo(assertHTMLElement(this.element.querySelector('.combo')));
 
-        this.timer.remainingTime = 120; //DEBUG: set initial time to 2 minutes
-        this.codeInputField.onEnter((text) => this.handleAnswer(text));
-        this.codeInputField.onInputChange((text) => this.handleInputChange(text)); //DEBUG: handle answer on input change for easier testing
-        //callback that repeats every second to decrement the timer and check for timeout
-        setInterval(() => {
-            if(this.timer.remainingTime > 0){
-                this.timer.remainingTime--;
-            } else {
-                console.log("Time's up! The correct answer was: " + this.currentAnswer);
-                this.timer.remainingTime = 120; //DEBUG: reset timer for easier testing
-            }
-         }, 1000);
+        this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
+        this.onPause(() => this.pauseMenu.show());
+        this.onResume(() => this.pauseMenu.hide());
+        
+        this.gameTray = new GameTray(assertHTMLElement(this.element.querySelector('.game-tray')));
+        
+        store.subscribe('timer', (/** @type {number} */ value) => this.timer.remainingTime = value);
     }
 
     /**
@@ -65,38 +50,9 @@ export default class GameUI {
      */
     sendQuestion(question, answer) {
         if(!this.promptDisplay || !this.codeInputField) return;
+        this.codeInputField.clearAnswer();
         this.promptDisplay.setText(question);
         this.codeInputField.setGhostText(answer);
-
-        this.currentQuestion = question;
-        this.currentAnswer = answer;
-    }
-
-    /**
-     * Handles changes to the input field and updates the combo accordingly.
-     * @param {string} text 
-     */
-    handleInputChange(text) {
-        //compute the prefix match length between text and currentAnswer
-        const prefix = this.currentAnswer.substring(0, text.length);
-        if(prefix === text){
-            this.combo.increment(); // Increment combo on correct prefix
-        } else {
-            this.combo.reset(); // Reset combo on incorrect prefix
-        }
-    }
-
-    /**
-     * Handles the user's answer.
-     * @param {string} answer 
-     */
-    handleAnswer(answer){
-        if(answer === this.currentAnswer){
-            console.log("Correct!");
-            this.plantDisplayGroup.addPlant();
-        } else {
-            console.log("Incorrect! The correct answer was: " + this.currentAnswer);
-        }
     }
 
     show() {
@@ -105,5 +61,22 @@ export default class GameUI {
 
     hide() {
         this.element.classList.add('hidden');
+    }
+
+    /**
+     * Adds an event listener for when the user clicks the pause button, which will show the pause menu.
+     * @param {() => void} callback 
+     */
+    onPause(callback) {
+        const pauseMenuButton = assertHTMLElement(this.element.querySelector('.game-header-pause'));
+        pauseMenuButton.addEventListener('click', callback);
+    }
+
+    /**
+     * Registers a callback to be called when the user clicks the Resume button in the pause menu, which will hide the pause menu.
+     * @param {() => void} callback
+     */
+    onResume(callback) {
+        this.pauseMenu.onResume(callback);
     }
 }

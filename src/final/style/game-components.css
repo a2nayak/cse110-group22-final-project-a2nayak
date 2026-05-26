@@ -217,7 +217,7 @@
   content: attr(data-flash-text);
   color: #35b76d;
   font-size: 1em;
-  animation: combo-flash-highlight 0.15s linear;
+  animation: combo-flash-highlight 0.2s linear;
   transform: translate(20%, -0.1em) scale(1.4);
   opacity: 0;
 }
@@ -228,21 +228,24 @@
 }
 @keyframes combo-flash-highlight {
   0% {
-    opacity: 0.1;
-    transform: translate(15%, -0.1em) scale(1.4);
+    opacity: 0.2;
   }
   15% {
-    opacity: 0.5;
+    opacity: 0.35;
     color:#33c833;
-    transform: translate(20%, -0.2em) scale(1.5);
+    transform: translate(20%, -0.2em) scale(1.6);
   }
   60% {
-    opacity: 0.4;
+    opacity: 0.35;
     transform: translate(15%, -0.1em) scale(1.2);
   }
   100% {
-    opacity: 0.3;
+    opacity: 0;
     transform: translate(5%, -0.1em) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(20%, -0.1em) scale(1.4);
   }
 }
 /*#endregion */
