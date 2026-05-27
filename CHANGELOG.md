@@ -1,3 +1,37 @@
+# 1.0.0 (2026-05-27)
+
+
+### Bug Fixes
+
+* add working results screen ([361f82d](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/361f82da94641c548963a946b5e78fdeb5e04d87))
+* added example tests to make sure pipeline works ([573c740](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/573c740687fba5ad7c7b8ce0a93de3c244fc1651))
+* added not applicable tests to a different folden ([0063ebf](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0063ebf54170c7cde7bda3309a6a71203ef6bb80))
+* bugs in scoring.js ([43cd572](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/43cd5724e50c66f4a278d9800d5875369bf5a2d7))
+* changed name of NA tests ([0991028](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0991028cd6c9a3e8001718efe0633de755e05de0))
+* changes to pass linting ([946e695](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/946e69519fb9131b637364c7a23c7b1ad6e0086f))
+* commented out tests that don't apply to current implementation ([485c2df](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/485c2df5f1c5f74c7f6f19621b2e80d56a771d75))
+* commented out tests that don't apply to current implementation, pt2 ([0407aed](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0407aed4e13b5beae7b58e61e6d3f77a1e0287fc))
+* defer start level to main menu's start event ([b19005d](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/b19005dd2501ec7a292eb63fc17c6a46fc2d00f9))
+* edited vite config ([a6a0832](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/a6a08329542c74464b283f6f1f7a05b2cf4d5231))
+* fetch test case ([c2a26c7](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/c2a26c77449cb3749dea6dd923c08fe7c3391157))
+* incomplete edits to fix bugs in game.js WIP ([a9bb446](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/a9bb446c8db2acf037eddb6a1a293d9a61e9bcaf))
+* linter error ([a3cfc5c](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/a3cfc5cd1ad1e298517e6ce8e6781654a948f988))
+* major errors ([98d110e](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/98d110eb22c514449484f681a23cdce3f0547a3a))
+* major errors ([2d9bc11](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2d9bc11320f8bf7ce4dbc55cea086f100e3704b5))
+* making linting run ([b460960](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/b46096040cf1fd18705af95a9f1ca8d09b21a32b))
+* typos in README for components section ([46d15aa](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/46d15aa3f489938baf9f4ab4dfef76ed251853c8))
+* update information flow section in frontend convetions ([d02156a](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/d02156a15b222cbf9022d805802ea4bcaf972614))
+* update package-lock.json ([0d5588f](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/0d5588ff8fcc1aa39fba46703a925a46ac424ccf))
+
+
+### Features
+
+* add notification display component ([14dd1f2](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/14dd1f2dfea7c7156b4253bfb4acc63a2ad1ee70))
+* added level up functionality to player ([2a9b7cd](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2a9b7cd651b4612d0b5bfc67a9ed172b212b4fab))
+* added state-independant helper functions to be used in game.js ([2ef91e5](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/2ef91e5c7232ddaf2c981769a855096932e06186))
+* added timer and combo counter ([33ca001](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/33ca001b2c3e42d653f5c88bbd64c6aac2ff06a2))
+* wire frontend and backend ([40230dd](https://github.com/cse110-sp26-group22/cse110-group22-final-project/commit/40230dd6ce48cc8fe5d852a7508e27adee3f2c6c))
+
 # 1.0.0 (2026-05-26)
 
 
