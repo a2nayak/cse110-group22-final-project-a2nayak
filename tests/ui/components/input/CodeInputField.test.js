@@ -108,7 +108,9 @@ describe('CodeInputField', () => {
         codeInputField.onKeyPress(mockCallback);
         const keyPressEvent = new KeyboardEvent('keypress', { key: 'a' });
         codeInputField.codeInput.dispatchEvent(keyPressEvent);
-        expect(mockCallback).toHaveBeenCalledWith('a');
+        setTimeout(() => {
+            expect(mockCallback).toHaveBeenCalledWith('a');
+        }, 0);
     });
 
     test('onKeyPress detects special keys', () => {

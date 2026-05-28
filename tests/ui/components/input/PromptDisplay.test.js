@@ -1,4 +1,4 @@
-import PromptDisplay from "../../../src/ui/components/input/PromptDisplay.js";
+import PromptDisplay from "../../../../src/final/js/ui/components/game/input/PromptDisplay";
 
 describe('PromptDisplay', () => {
     /** @type {PromptDisplay} */
