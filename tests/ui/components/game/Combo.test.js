@@ -35,7 +35,7 @@ describe('Combo', () => {
         expect(combo.countElement.textContent).toBe('1');
     });
 
-    test('reset sets combo count to 0 and updates display', async () => {
+    test.concurrent('reset sets combo count to 0 and updates display', async () => {
         const combo = new Combo(document.querySelector('#combo-3'));
         combo.increment();
         combo.increment();

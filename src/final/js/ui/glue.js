@@ -6,6 +6,9 @@ import {
 import { store } from "./store.js";
 import { mainMenu, gameUI, resultsScreen } from "./ui.js";
 
+// Temporary backend 
+import * as plantMod from "./backend-emulator/plantMod.js";
+
 /**
  * @param {string} screenName 
  * @param {*} data 
@@ -58,12 +61,21 @@ function handleUpdateScreen(response, data) {
         gameUI.combo.reset();
     }
     if (response === 'next-question') {
+        plantMod.correctAnswer();
         gameUI.sendQuestion(data.questions[data.current_question_index], data.answers[data.current_question_index]);
+    }
+    if (response === 'plant::set-plants') {
+        if(data.result === 'add-new-plant') {
+            gameUI.plantDisplayGroup.addPlant();
+        } else if (data.result === 'grow-last-plant') {
+            gameUI.plantDisplayGroup.growLastPlant();
+        }
     }
 }
 
 export function initializeBackend() {
     registerCallbacks(handleLoadScreen, handleUpdateScreen);
+    plantMod.register(handleLoadScreen, handleUpdateScreen);
 }
 
 /**

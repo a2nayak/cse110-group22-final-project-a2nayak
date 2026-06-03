@@ -6,7 +6,7 @@
  */
 export default class PlantDisplay  {
     /** @const {(string)[]}*/
-    static PLANT_IMAGES = ['plant1-stage1.png', 'plant1-stage2.png', 'plant1-stage3.png'];
+    static PLANT_IMAGES = ['plant-small-AI.png', 'plant-medium-AI.png', 'plant-large-AI.png'];
     /**
      * Binds this PlantDisplay to the given element.
      * @param {HTMLElement} element 
@@ -22,5 +22,12 @@ export default class PlantDisplay  {
         this.plantImageElement.src = `../assets/images/plant/${PlantDisplay.PLANT_IMAGES[this.growthLevel]}`;
         this.plantImageElement.classList.add('plant-image');
         this.element.appendChild(this.plantImageElement);
+    }
+
+    grow(){
+        if(this.growthLevel < PlantDisplay.PLANT_IMAGES.length - 1){
+            this.growthLevel++;
+            this.plantImageElement.src = `../assets/images/plant/${PlantDisplay.PLANT_IMAGES[this.growthLevel]}`;
+        }
     }
 }

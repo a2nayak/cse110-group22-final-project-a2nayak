@@ -26,4 +26,13 @@ export default class PlantDisplayGroup {
         this.element.appendChild(plantDisplayMount);
         this.plantDisplays.push(plantDisplay);
     }
+    
+    /**
+     * Grows the last PlantDisplay in this PlantDisplayGroup.
+     */
+    growLastPlant(){
+        if(this.plantDisplays.length === 0) return;
+        const lastPlantDisplay = this.plantDisplays[this.plantDisplays.length - 1];
+        lastPlantDisplay.grow();
+    }
 }
