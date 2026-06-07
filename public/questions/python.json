@@ -1,0 +1,352 @@
+[
+  {
+    "Question": "What keyword defines a function in Python?",
+    "Answer": "def",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function prints output to the console in Python?",
+    "Answer": "print()",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What symbol starts a comment in Python?",
+    "Answer": "#",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What operator checks if two values are equal in Python?",
+    "Answer": "==",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword is used to create a conditional statement in Python?",
+    "Answer": "if",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword is used after an if statement for another condition?",
+    "Answer": "elif",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword runs code when no if or elif condition is true?",
+    "Answer": "else",
+    "Difficulty": 1,
+    "baseScore": 10,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method adds a new item to the end of a list?",
+    "Answer": ".append()",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function returns the length of a list or string?",
+    "Answer": "len()",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword exits a function and sends back a value?",
+    "Answer": "return",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword creates a loop that repeats for each item in a sequence?",
+    "Answer": "for",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword creates a loop that runs while a condition is true?",
+    "Answer": "while",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword stops a loop immediately?",
+    "Answer": "break",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword skips the current loop step and continues to the next one?",
+    "Answer": "continue",
+    "Difficulty": 2,
+    "baseScore": 15,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method removes and returns the last item from a list?",
+    "Answer": ".pop()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method changes all letters in a string to lowercase?",
+    "Answer": ".lower()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method changes all letters in a string to uppercase?",
+    "Answer": ".upper()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method splits a string into a list?",
+    "Answer": ".split()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method joins list items into one string?",
+    "Answer": ".join()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function converts a value into an integer?",
+    "Answer": "int()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function converts a value into a string?",
+    "Answer": "str()",
+    "Difficulty": 3,
+    "baseScore": 20,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword defines a class in Python?",
+    "Answer": "class",
+    "Difficulty": 4,
+    "baseScore": 25,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method is automatically called when creating a new object from a class?",
+    "Answer": "__init__()",
+    "Difficulty": 4,
+    "baseScore": 25,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What parameter usually refers to the current object inside a class?",
+    "Answer": "self",
+    "Difficulty": 4,
+    "baseScore": 25,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword imports code from another Python file or module?",
+    "Answer": "import",
+    "Difficulty": 4,
+    "baseScore": 25,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword imports only a specific function or class from a module?",
+    "Answer": "from",
+    "Difficulty": 4,
+    "baseScore": 25,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword is used to handle code that might cause an error?",
+    "Answer": "try",
+    "Difficulty": 5,
+    "baseScore": 30,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword catches an error after a try block?",
+    "Answer": "except",
+    "Difficulty": 5,
+    "baseScore": 30,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword runs code after try and except no matter what happens?",
+    "Answer": "finally",
+    "Difficulty": 5,
+    "baseScore": 30,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function opens a file in Python?",
+    "Answer": "open()",
+    "Difficulty": 5,
+    "baseScore": 30,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword is commonly used to safely open and close files?",
+    "Answer": "with",
+    "Difficulty": 5,
+    "baseScore": 30,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function creates a sequence of numbers for a loop?",
+    "Answer": "range()",
+    "Difficulty": 6,
+    "baseScore": 35,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function gives both the index and value while looping through a list?",
+    "Answer": "enumerate()",
+    "Difficulty": 6,
+    "baseScore": 35,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What function pairs items from two lists together?",
+    "Answer": "zip()",
+    "Difficulty": 6,
+    "baseScore": 35,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method returns the value for a dictionary key?",
+    "Answer": ".get()",
+    "Difficulty": 6,
+    "baseScore": 35,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What syntax creates a list of doubled values from nums?",
+    "Answer": "[x * 2 for x in nums]",
+    "Difficulty": 7,
+    "baseScore": 40,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What syntax unpacks the first two values of a list into a and b?",
+    "Answer": "a, b = values",
+    "Difficulty": 7,
+    "baseScore": 40,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What symbol unpacks multiple arguments from a list when calling a function?",
+    "Answer": "*",
+    "Difficulty": 7,
+    "baseScore": 40,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What symbol unpacks keyword arguments from a dictionary when calling a function?",
+    "Answer": "**",
+    "Difficulty": 7,
+    "baseScore": 40,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword creates an anonymous function in Python?",
+    "Answer": "lambda",
+    "Difficulty": 8,
+    "baseScore": 45,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method reads a JSON string into a Python object?",
+    "Answer": "json.loads()",
+    "Difficulty": 8,
+    "baseScore": 45,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What method converts a Python object into a JSON string?",
+    "Answer": "json.dumps()",
+    "Difficulty": 8,
+    "baseScore": 45,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword pauses an async function until an awaitable finishes?",
+    "Answer": "await",
+    "Difficulty": 8,
+    "baseScore": 45,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword defines an asynchronous function in Python?",
+    "Answer": "async",
+    "Difficulty": 9,
+    "baseScore": 50,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What asyncio function runs multiple awaitable tasks at the same time?",
+    "Answer": "asyncio.gather()",
+    "Difficulty": 9,
+    "baseScore": 50,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What keyword produces a value from a generator function?",
+    "Answer": "yield",
+    "Difficulty": 9,
+    "baseScore": 50,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What decorator is used to define a static method inside a class?",
+    "Answer": "@staticmethod",
+    "Difficulty": 10,
+    "baseScore": 55,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What decorator is used to define a class method inside a class?",
+    "Answer": "@classmethod",
+    "Difficulty": 10,
+    "baseScore": 55,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What special method lets an object control what happens when len() is called on it?",
+    "Answer": "__len__()",
+    "Difficulty": 10,
+    "baseScore": 55,
+    "QuestionList": "python"
+  },
+  {
+    "Question": "What special method lets an object control how it appears as a readable string?",
+    "Answer": "__str__()",
+    "Difficulty": 10,
+    "baseScore": 55,
+    "QuestionList": "python"
+  }
+]
