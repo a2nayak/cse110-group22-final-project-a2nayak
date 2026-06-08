@@ -15,6 +15,7 @@ import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
  */
 
 /**
+ * @class CodeInputField
  * The component responsible for taking in the user's code input.
  */
 export default class CodeInputField {
