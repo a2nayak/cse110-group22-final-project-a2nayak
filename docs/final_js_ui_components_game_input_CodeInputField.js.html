@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: final/js/ui/components/game/input/CodeInputField.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: final/js/ui/components/game/input/CodeInputField.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
+/**
+ * The component responsible for taking in the user's code input.
+ * 
+ * Expects the following minimal HTML structure:
+ *  &lt;div id="game-code-input-field" class="code-input-field">
+ *      &lt;div class="ghost-text">
+ *          &lt;span class="ghost-text-invisible">&lt;/span>
+ *          &lt;span class="ghost-text-visible">&lt;/span>
+ *      &lt;/div>
+ *      &lt;div class="code-input-highlight" aria-hidden="true">
+ *          &lt;span class="highlight-correct">&lt;/span>
+ *          &lt;span class="highlight-error">&lt;/span>
+ *      &lt;/div>
+ *      &lt;input class="code-input" />
+ *  &lt;/div>
+ */
+export default class CodeInputField {
+    /**
+     * Creates an input field and binds it to the given element.
+     * @param {HTMLElement} element - The input field element to bind to.
+     */
+    constructor(element) {
+        this.element = element;
+        this.ghostTextString = 'print("Hello, World!")';
+        this.ghostTextInvisible = assertHTMLElement(this.element.querySelector('.ghost-text-invisible'));
+        this.ghostTextVisible = assertHTMLElement(this.element.querySelector('.ghost-text-visible'));
+        this.highlightCorrect = assertHTMLElement(this.element.querySelector('.highlight-correct'));
+        this.highlightError = assertHTMLElement(this.element.querySelector('.highlight-error'));
+        this.codeInput = assertHTMLInputElement(this.element.querySelector('.code-input'));
+
+        // Add event listeners
+        this.codeInput.addEventListener('input', () => this.handleInput());
+        this.renderGhostText();
+    }
+
+    /**
+     * Clears the input field and resets the ghost text.
+     */
+    clearAnswer() {
+        this.codeInput.value = '';
+        this.renderGhostText();
+    }
+
+    /**
+     * Sets what the ghost text should be. 
+     * This is the text that appears as a hint for the user, but disappears as they type.
+     * @param {String} text 
+     */
+    setGhostText(text) {
+        this.ghostTextString = text;
+        this.renderGhostText();
+    }
+
+    /**
+     * Renders the ghost text based on the current input value. 
+     * The part of the ghost text that overlaps with the input value is rendered in the "invisible" span, while the rest is rendered in the "visible" span.
+     */
+    renderGhostText() {
+        if(!this.ghostTextString) return;
+        const value = this.codeInput.value;
+        this.ghostTextInvisible.textContent = this.codeInput.value;
+        this.ghostTextVisible.textContent = this.ghostTextString.substring(value.length);
+    
+        this.errorHighlight();
+    }
+
+    /**
+     * Error highlighting for the input field. If the user's input matches the corresponding portion of the ghost text, the error highlight is removed. Otherwise, an error highlight is added to indicate a mistake.
+     */
+    errorHighlight() {
+        if (!this.ghostTextString) return;
+        const value = this.codeInput.value;
+        if (!value) {
+            this.highlightCorrect.textContent = '';
+            this.highlightError.textContent = '';
+            return;
+        }
+
+        let matchIndex = 0;
+        const compareLen = Math.min(value.length, this.ghostTextString.length);
+        while (matchIndex &lt; compareLen &amp;&amp; value[matchIndex] === this.ghostTextString[matchIndex]) {
+            matchIndex++;
+        }
+
+        this.highlightCorrect.textContent = value.substring(0, matchIndex);
+        this.highlightError.textContent = this.ghostTextString.substring(matchIndex, value.length);
+    }
+    /**
+     * Event handler for when the input value changes. 
+     * Rerenders the ghost text to reflect the new input value.
+     */
+    handleInput(){ 
+        this.renderGhostText();
+    }
+
+    /**
+     * Event handler for when the user presses the Enter key.
+     * @param {(text: string) => void} callback - The function to call when the user presses Enter. The current input value will be passed as an argument to this function.
+     */
+    onEnter(callback) {
+        this.codeInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') callback(this.codeInput.value);
+        });
+    }
+
+    /**
+     * Event handler for when the input value changes.
+     * @param {(text: string) => void} callback 
+     */
+    onInputChange(callback) {
+        this.codeInput.addEventListener('input', () => callback(this.codeInput.value));
+    }
+
+    /**
+     * Event handler for when a key is pressed in the input field.
+     * @param {(key: string) => void} callback 
+     */
+    onKeyPress(callback) {
+        this.codeInput.addEventListener('keypress', (event) => {
+            setTimeout(() => callback(event.key), 0);
+        });
+    }
+
+    /**
+     * Focuses the input field, allowing the user to start typing immediately.
+     */
+    focus() {
+        this.codeInput.focus();
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-level.html">level</a></li><li><a href="module-scoring.html">scoring</a></li></ul><h3>Classes</h3><ul><li><a href="Questions.html">Questions</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MAX_PROFILES">MAX_PROFILES</a></li><li><a href="global.html#_onExpire">_onExpire</a></li><li><a href="global.html#addPlant">addPlant</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#assertHTMLElement">assertHTMLElement</a></li><li><a href="global.html#assertHTMLInputElement">assertHTMLInputElement</a></li><li><a href="global.html#assertHTMLSelectElement">assertHTMLSelectElement</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#callbacks">callbacks</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#clearAnswer">clearAnswer</a></li><li><a href="global.html#clearPlayer">clearPlayer</a></li><li><a href="global.html#clearProfile">clearProfile</a></li><li><a href="global.html#clearState">clearState</a></li><li><a href="global.html#combo">combo</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#currentLevel">currentLevel</a></li><li><a href="global.html#defaultGameState">defaultGameState</a></li><li><a href="global.html#endTime">endTime</a></li><li><a href="global.html#errorHighlight">errorHighlight</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#gameUI">gameUI</a></li><li><a href="global.html#gameUIReady">gameUIReady</a></li><li><a href="global.html#getCurrentQuestion">getCurrentQuestion</a></li><li><a href="global.html#getLiveStats">getLiveStats</a></li><li><a href="global.html#getResultsStats">getResultsStats</a></li><li><a href="global.html#goToMainMenu">goToMainMenu</a></li><li><a href="global.html#goToResults">goToResults</a></li><li><a href="global.html#handleInput">handleInput</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleLoadScreen">handleLoadScreen</a></li><li><a href="global.html#handleQuestionComplete">handleQuestionComplete</a></li><li><a href="global.html#handleUpdateScreen">handleUpdateScreen</a></li><li><a href="global.html#hardReset">hardReset</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#initializeBackend">initializeBackend</a></li><li><a href="global.html#initializeProfiles">initializeProfiles</a></li><li><a href="global.html#isRunning">isRunning</a></li><li><a href="global.html#isVisible">isVisible</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#lastLanguage">lastLanguage</a></li><li><a href="global.html#latestGameData">latestGameData</a></li><li><a href="global.html#loadActiveProfileId">loadActiveProfileId</a></li><li><a href="global.html#loadPlayer">loadPlayer</a></li><li><a href="global.html#loadProfile">loadProfile</a></li><li><a href="global.html#loadState">loadState</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mainMenu">mainMenu</a></li><li><a href="global.html#notifyEvent">notifyEvent</a></li><li><a href="global.html#onClockTick">onClockTick</a></li><li><a href="global.html#onEnter">onEnter</a></li><li><a href="global.html#onInput">onInput</a></li><li><a href="global.html#onInputChange">onInputChange</a></li><li><a href="global.html#onKeyPress">onKeyPress</a></li><li><a href="global.html#onMainMenu">onMainMenu</a></li><li><a href="global.html#onNext">onNext</a></li><li><a href="global.html#onPause">onPause</a></li><li><a href="global.html#onResume">onResume</a></li><li><a href="global.html#onRetry">onRetry</a></li><li><a href="global.html#onStart">onStart</a></li><li><a href="global.html#onUpdateCount">onUpdateCount</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#player">player</a></li><li><a href="global.html#registerCallbacks">registerCallbacks</a></li><li><a href="global.html#removePlant">removePlant</a></li><li><a href="global.html#renderGhostText">renderGhostText</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#resultsScreen">resultsScreen</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#retrieve">retrieve</a></li><li><a href="global.html#rulesBox">rulesBox</a></li><li><a href="global.html#saveActiveProfileId">saveActiveProfileId</a></li><li><a href="global.html#savePlayer">savePlayer</a></li><li><a href="global.html#savePlayerData">savePlayerData</a></li><li><a href="global.html#saveProfile">saveProfile</a></li><li><a href="global.html#saveState">saveState</a></li><li><a href="global.html#sendQuestion">sendQuestion</a></li><li><a href="global.html#setGhostText">setGhostText</a></li><li><a href="global.html#setGrowthLevel">setGrowthLevel</a></li><li><a href="global.html#setGrowthLevels">setGrowthLevels</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#setupFocusTrap">setupFocusTrap</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showResults">showResults</a></li><li><a href="global.html#startCountdown">startCountdown</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startTimer">startTimer</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#stopCountdown">stopCountdown</a></li><li><a href="global.html#stopTimer">stopTimer</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#timeoutId">timeoutId</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateGameStats">updateGameStats</a></li><li><a href="global.html#updateLiveData">updateLiveData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Jun 07 2026 21:51:04 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

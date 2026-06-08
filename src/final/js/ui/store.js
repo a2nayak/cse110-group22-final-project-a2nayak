@@ -32,7 +32,7 @@ export default class Store {
     /**
      * Retrieves the current value of the given property.
      * @param {string} property 
-     * @returns 
+     * @returns {*}
      */
     retrieve(property) {
         return this.data[property];

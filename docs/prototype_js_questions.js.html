@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: prototype/js/questions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: prototype/js/questions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// questions.js
+
+/**
+ * Questions class
+ *
+ * Loads questions from a JSON file and provides questions one by one.
+ *
+ * Expected JSON structure:
+ *
+ * [
+ *   {
+ *     "answer": "def",
+ *     "explanation": "The 'def' keyword is used to define a function in Python.",
+ *     "difficulty": 1,
+ *     "baseScore": 10
+ *   }
+ * ]
+ */
+export class Questions {
+    /**
+     * Creates a Questions instance.
+     *
+     * @param {string} questionPath
+     *        Path to the questions JSON file.
+     */
+    constructor(questionPath = "../data/questions.json") {
+        this.questionPath = questionPath;
+        this.questions = [];
+        this.currentIndex = 0;
+        this.loaded = false;
+    }
+
+    /**
+     * Loads questions from the JSON file.
+     *
+     * This function uses fetch(), so it works in browser environments.
+     *
+     * @returns {Promise&lt;Array&lt;Object>>}
+     *          The loaded question array.
+     */
+    async loadQuestions() {
+        const response = await fetch(this.questionPath);
+
+        if (!response.ok) {
+            throw new Error(`Failed to load questions from ${this.questionPath}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error("questions.json must contain an array of questions.");
+        }
+
+        this.questions = data.map(q => new Question(q.answer, q.explanation, q.difficulty, q.baseScore));
+        this.currentIndex = 0;
+        this.loaded = true;
+
+        return this.questions;
+    }
+
+    /**
+     * Returns the next question.
+     * TODO: Added use progression system to increase difficulty and select random questions from a certain range of difficulties.
+     * If there are no more questions, this returns null.
+     *
+     * @returns {Object|null}
+     *          The next question object, or null if finished.
+     */
+    getNextQuestion() {
+        if (!this.loaded) {
+            throw new Error("Questions have not been loaded yet. Call loadQuestions() first.");
+        }
+
+        if (this.currentIndex >= this.questions.length) {
+            return null;
+        }
+        if (this.usedQuestions.has(this.currentIndex)) {
+            throw new Error("Question index has already been used. This should not happen if getNextQuestion() is used correctly.");
+        }
+        const question = this.questions[this.currentIndex];
+        this.currentIndex += 1;
+        this.usedQuestions.add(this.currentIndex - 1);
+
+        return question;
+    }
+
+    /**
+     * Returns the current question without moving to the next one.
+     *
+     * @returns {Object|null}
+     *          The current question object, or null if finished.
+     */
+    getCurrentQuestion() {
+        if (!this.loaded) {
+            throw new Error("Questions have not been loaded yet. Call loadQuestions() first.");
+        }
+
+        if (this.currentIndex >= this.questions.length) {
+            return null;
+        }
+
+        return this.questions[this.currentIndex];
+    }
+
+    /**
+     * Checks whether there is another question available.
+     *
+     * @returns {boolean}
+     *          True if another question exists.
+     */
+    hasNextQuestion() {
+        return this.loaded &amp;&amp; this.currentIndex &lt; this.questions.length;
+    }
+
+    /**
+     * Resets the question pointer back to the first question.
+     *
+     * This does not reload the JSON file.
+     *
+     * @returns {void}
+     */
+    resetQuestions() {
+        this.currentIndex = 0;
+    }
+
+    /**
+     * Returns the total number of loaded questions.
+     *
+     * @returns {number}
+     *          Number of loaded questions.
+     */
+    getQuestionCount() {
+        return this.questions.length;
+    }
+
+    /**
+     * Returns the number of questions already used.
+     *
+     * @returns {number}
+     *          Current question index.
+     */
+    getCurrentIndex() {
+        return this.currentIndex;
+    }
+}
+
+class Question {
+    constructor(answer, explanation, difficulty, baseScore) {
+        this.answer = answer;
+        this.explanation = explanation;
+        this.difficulty = difficulty;
+        this.baseScore = baseScore;
+    }
+    // Getter functions for each property
+    getAnswer() {
+        return this.answer;
+    }
+    getExplanation() {
+        return this.explanation;
+    }
+    getDifficulty() {
+        return this.difficulty;
+    }
+    getBaseScore() {
+        return this.baseScore;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-level.html">level</a></li><li><a href="module-scoring.html">scoring</a></li></ul><h3>Classes</h3><ul><li><a href="Questions.html">Questions</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MAX_PROFILES">MAX_PROFILES</a></li><li><a href="global.html#_onExpire">_onExpire</a></li><li><a href="global.html#addPlant">addPlant</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#assertHTMLElement">assertHTMLElement</a></li><li><a href="global.html#assertHTMLInputElement">assertHTMLInputElement</a></li><li><a href="global.html#assertHTMLSelectElement">assertHTMLSelectElement</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#callbacks">callbacks</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#clearAnswer">clearAnswer</a></li><li><a href="global.html#clearPlayer">clearPlayer</a></li><li><a href="global.html#clearProfile">clearProfile</a></li><li><a href="global.html#clearState">clearState</a></li><li><a href="global.html#combo">combo</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#currentLevel">currentLevel</a></li><li><a href="global.html#defaultGameState">defaultGameState</a></li><li><a href="global.html#endTime">endTime</a></li><li><a href="global.html#errorHighlight">errorHighlight</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#gameUI">gameUI</a></li><li><a href="global.html#gameUIReady">gameUIReady</a></li><li><a href="global.html#getCurrentQuestion">getCurrentQuestion</a></li><li><a href="global.html#getLiveStats">getLiveStats</a></li><li><a href="global.html#getResultsStats">getResultsStats</a></li><li><a href="global.html#goToMainMenu">goToMainMenu</a></li><li><a href="global.html#goToResults">goToResults</a></li><li><a href="global.html#handleInput">handleInput</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleLoadScreen">handleLoadScreen</a></li><li><a href="global.html#handleQuestionComplete">handleQuestionComplete</a></li><li><a href="global.html#handleUpdateScreen">handleUpdateScreen</a></li><li><a href="global.html#hardReset">hardReset</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#initializeBackend">initializeBackend</a></li><li><a href="global.html#initializeProfiles">initializeProfiles</a></li><li><a href="global.html#isRunning">isRunning</a></li><li><a href="global.html#isVisible">isVisible</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#lastLanguage">lastLanguage</a></li><li><a href="global.html#latestGameData">latestGameData</a></li><li><a href="global.html#loadActiveProfileId">loadActiveProfileId</a></li><li><a href="global.html#loadPlayer">loadPlayer</a></li><li><a href="global.html#loadProfile">loadProfile</a></li><li><a href="global.html#loadState">loadState</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mainMenu">mainMenu</a></li><li><a href="global.html#notifyEvent">notifyEvent</a></li><li><a href="global.html#onClockTick">onClockTick</a></li><li><a href="global.html#onEnter">onEnter</a></li><li><a href="global.html#onInput">onInput</a></li><li><a href="global.html#onInputChange">onInputChange</a></li><li><a href="global.html#onKeyPress">onKeyPress</a></li><li><a href="global.html#onMainMenu">onMainMenu</a></li><li><a href="global.html#onNext">onNext</a></li><li><a href="global.html#onPause">onPause</a></li><li><a href="global.html#onResume">onResume</a></li><li><a href="global.html#onRetry">onRetry</a></li><li><a href="global.html#onStart">onStart</a></li><li><a href="global.html#onUpdateCount">onUpdateCount</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#player">player</a></li><li><a href="global.html#registerCallbacks">registerCallbacks</a></li><li><a href="global.html#removePlant">removePlant</a></li><li><a href="global.html#renderGhostText">renderGhostText</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#resultsScreen">resultsScreen</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#retrieve">retrieve</a></li><li><a href="global.html#rulesBox">rulesBox</a></li><li><a href="global.html#saveActiveProfileId">saveActiveProfileId</a></li><li><a href="global.html#savePlayer">savePlayer</a></li><li><a href="global.html#savePlayerData">savePlayerData</a></li><li><a href="global.html#saveProfile">saveProfile</a></li><li><a href="global.html#saveState">saveState</a></li><li><a href="global.html#sendQuestion">sendQuestion</a></li><li><a href="global.html#setGhostText">setGhostText</a></li><li><a href="global.html#setGrowthLevel">setGrowthLevel</a></li><li><a href="global.html#setGrowthLevels">setGrowthLevels</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#setupFocusTrap">setupFocusTrap</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showResults">showResults</a></li><li><a href="global.html#startCountdown">startCountdown</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startTimer">startTimer</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#stopCountdown">stopCountdown</a></li><li><a href="global.html#stopTimer">stopTimer</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#timeoutId">timeoutId</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateGameStats">updateGameStats</a></li><li><a href="global.html#updateLiveData">updateLiveData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Jun 07 2026 21:51:04 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

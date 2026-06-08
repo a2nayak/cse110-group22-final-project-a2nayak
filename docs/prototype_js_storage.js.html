@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: prototype/js/storage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: prototype/js/storage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * storage.js
+ *
+ * Serves as an I/O layer to access localStorage data
+
+ * Main responsibilities:
+ * - Save/Load Player Profile
+ * - Save/Load Game State
+ * - Clear Profiles and State
+ * - Manage Active Profile
+ *
+ * Dependencies:
+ * - scoring.js: getScore(), getStreak()
+ * - timer.js: GetAllTimerRecords(), GetCurrentTimerSettings()
+ * 
+ * Version 1.0 : 5/17/2026
+ * Sprint : 2 
+ * 
+ * Overview: docs/storage-overview.md
+ * File: src/prototype/js/storage.js
+ * Tests: tests/storage.test.js
+ */
+
+const MAX_PROFILES = 4;
+const ACTIVE_KEY = "activeProfile";
+
+// Produces key to access respective player/state localStorage data via slot id
+// Ex. id = 0 -> PLAYER_KEY(0) = "player_0", STATE_KEY(0) = "state_0"
+const PLAYER_KEY = (id) => `player_${id}`;
+const STATE_KEY = (id) => `state_${id}`;
+
+/**
+ * @typedef {Object} PlayerProfile
+ * @property {string} name
+ * @property {string|null} createdAt
+ * @property {number} highScore
+ * @property {number} totalGamesPlayed
+ * @property {boolean} isInitialized
+ */
+//TODO: Add additional profile data as we flesh out features
+const DEFAULT_PLAYER = {
+    name: "",
+    createdAt: null,
+    highScore: 0,
+    totalGamesPlayed: 0,
+    isInitialized: false,
+};
+
+/**
+ * @typedef {Object} GameState
+ * @property {Array|null} questions - null on save, repopulated from questions.json on load
+ * @property {Object|null} currentQuestion - null on save, derived after load
+ * @property {number|null} totalQuestions - null on save, derived from questions.length
+ * @property {number} score
+ * @property {number} answeredQuestions
+ * @property {Array} usedIndexes - stored as Array (Set is not JSON serializable)
+ * @property {string|null} savedAt
+ */
+const DEFAULT_STATE = {
+    questions: null,
+    currentQuestion: null,
+    totalQuestions: null,
+    score: 0,
+    answeredQuestions: 0,
+    usedIndexes: [],
+    savedAt: null,
+};
+
+// -------- Active Profile --------
+// Functions allow program to remember last-used profile/state
+// Unnecessary until multi-profiles are implemented
+
+/**
+ * Loads the active profile id from localStorage.
+ * Should be called to bypass profile select if set.
+ * @returns {number|null} The active profile id, or null if none is set.
+ */
+export function loadActiveProfileId() {
+    const id = localStorage.getItem(ACTIVE_KEY);
+    return id !== null ? Number(id) : null;
+}
+
+/**
+ * Saves the active profile id to localStorage.
+ * Should be called once after profile select.
+ * Should be set to null before "exiting profile".
+ * @param {number} id - Profile slot (0-3)
+ */
+export function saveActiveProfileId(id) {
+    localStorage.setItem(ACTIVE_KEY, id);
+}
+
+// -------- Profile Initialization --------
+
+/**
+ * Initializes all 4 profile slots in localStorage if they don't exist yet.
+ * Should be called once on page load.
+ */
+export function initializeProfiles() {
+    for (let i = 0; i &lt; MAX_PROFILES; i++) {
+        if (!localStorage.getItem(PLAYER_KEY(i))) {
+            localStorage.setItem(PLAYER_KEY(i), JSON.stringify({ ...DEFAULT_PLAYER }));
+        }
+    }
+}
+
+// -------- Player Profile --------
+// For now, with single profile implementation, id = 0 can be used generically
+
+/**
+ * Loads the player profile for the given slot id.
+ * Returns an uninitialized default profile if the slot doesn't exist.
+ * @param {number} id - Profile slot (0-3)
+ * @returns {PlayerProfile}
+ */
+export function loadPlayer(id) {
+    return JSON.parse(localStorage.getItem(PLAYER_KEY(id))) ?? { ...DEFAULT_PLAYER };
+}
+
+/**
+ * Creates a new initialized player profile at the given slot id.
+ * @param {number} id - Profile slot (0-3)
+ * @returns {PlayerProfile} The newly created player profile.
+ */
+export function createPlayer(id) {
+    const newPlayer = { ...DEFAULT_PLAYER, isInitialized: true, createdAt: new Date().toISOString() };
+    savePlayer(newPlayer, id);
+    return newPlayer;
+}
+
+/**
+ * Saves the player profile to localStorage.
+ * @param {PlayerProfile} playerData
+ * @param {number} id - Profile slot (0-3)
+ * @returns {boolean} True if player profile saved successfully, false otherwise.
+ */
+export function savePlayer(playerData, id) {
+    try {
+        localStorage.setItem(PLAYER_KEY(id), JSON.stringify(playerData));
+        return true;
+    } catch (e) {
+        if (e.name === "QuotaExceededError") {
+            console.warn("localStorage is full, player data could not be saved.", e);
+        } else {
+            console.warn("Failed to save player data.", e);
+        }
+        return false;
+    }
+}
+
+/**
+ * Resets a profile slot to uninitialized default and clears the associated state.
+ * @param {number} id - Profile slot (0-3)
+ */
+export function clearPlayer(id) {
+    localStorage.setItem(PLAYER_KEY(id), JSON.stringify({ ...DEFAULT_PLAYER }));
+    clearState(id);
+}
+
+// -------- Game State --------
+
+/**
+ * Loads the game state for the given profile slot id.
+ * Fields questions, currentQuestion, and totalQuestions are null — repopulate in engine after load.
+ * usedIndexes is stored as an Array and must be converted back to a Set in the engine.
+ * @param {number} id - Profile slot (0-3)
+ * @returns {GameState} The saved state, or a fresh default if none exists.
+ */
+export function loadState(id) {
+    return JSON.parse(localStorage.getItem(STATE_KEY(id))) ?? { ...DEFAULT_STATE };
+}
+
+/**
+ * Saves the engine state to localStorage for the given profile slot.
+ * Strips non-serializable fields (questions, currentQuestion, totalQuestions) before saving.
+ * usedIndexes is converted from Set to Array automatically.
+ * Sets savedAt automatically.
+ * @param {Object} state - The engine state object
+ * @param {number} id - Profile slot (0-3)
+ * @returns {boolean} True if state saved successfully, false otherwise.
+ */
+export function saveState(state, id) {
+    try {
+        const snapshot = {
+            questions: null,
+            currentQuestion: null,
+            totalQuestions: null,
+            score: state.score,
+            answeredQuestions: state.answeredQuestions,
+            usedIndexes: Array.from(state.usedIndexes),
+            savedAt: new Date().toISOString(),
+        };
+        localStorage.setItem(STATE_KEY(id), JSON.stringify(snapshot));
+        return true;
+    } catch (e) {
+        if (e.name === "QuotaExceededError") {
+            console.warn("localStorage is full, state data could not be saved.", e);
+        } else {
+            console.warn("Failed to save state data.", e);
+        }
+        return false;
+    }
+}
+
+/**
+ * Removes game state for the given profile slot from localStorage.
+ * @param {number} id - Profile slot (0-3)
+ */
+export function clearState(id) {
+    localStorage.removeItem(STATE_KEY(id));
+}
+
+// -------- Nuclear options --------
+
+/**
+ * Removes all player profiles, game states, and active profile data from localStorage.
+ */
+export function clearAll() {
+    for (let i = 0; i &lt; MAX_PROFILES; i++) {
+        localStorage.removeItem(PLAYER_KEY(i));
+        localStorage.removeItem(STATE_KEY(i));
+    }
+    localStorage.removeItem(ACTIVE_KEY);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-level.html">level</a></li><li><a href="module-scoring.html">scoring</a></li></ul><h3>Classes</h3><ul><li><a href="Questions.html">Questions</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MAX_PROFILES">MAX_PROFILES</a></li><li><a href="global.html#_onExpire">_onExpire</a></li><li><a href="global.html#addPlant">addPlant</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#assertHTMLElement">assertHTMLElement</a></li><li><a href="global.html#assertHTMLInputElement">assertHTMLInputElement</a></li><li><a href="global.html#assertHTMLSelectElement">assertHTMLSelectElement</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#callbacks">callbacks</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#clearAnswer">clearAnswer</a></li><li><a href="global.html#clearPlayer">clearPlayer</a></li><li><a href="global.html#clearProfile">clearProfile</a></li><li><a href="global.html#clearState">clearState</a></li><li><a href="global.html#combo">combo</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#currentLevel">currentLevel</a></li><li><a href="global.html#defaultGameState">defaultGameState</a></li><li><a href="global.html#endTime">endTime</a></li><li><a href="global.html#errorHighlight">errorHighlight</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#gameUI">gameUI</a></li><li><a href="global.html#gameUIReady">gameUIReady</a></li><li><a href="global.html#getCurrentQuestion">getCurrentQuestion</a></li><li><a href="global.html#getLiveStats">getLiveStats</a></li><li><a href="global.html#getResultsStats">getResultsStats</a></li><li><a href="global.html#goToMainMenu">goToMainMenu</a></li><li><a href="global.html#goToResults">goToResults</a></li><li><a href="global.html#handleInput">handleInput</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleLoadScreen">handleLoadScreen</a></li><li><a href="global.html#handleQuestionComplete">handleQuestionComplete</a></li><li><a href="global.html#handleUpdateScreen">handleUpdateScreen</a></li><li><a href="global.html#hardReset">hardReset</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#initializeBackend">initializeBackend</a></li><li><a href="global.html#initializeProfiles">initializeProfiles</a></li><li><a href="global.html#isRunning">isRunning</a></li><li><a href="global.html#isVisible">isVisible</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#lastLanguage">lastLanguage</a></li><li><a href="global.html#latestGameData">latestGameData</a></li><li><a href="global.html#loadActiveProfileId">loadActiveProfileId</a></li><li><a href="global.html#loadPlayer">loadPlayer</a></li><li><a href="global.html#loadProfile">loadProfile</a></li><li><a href="global.html#loadState">loadState</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mainMenu">mainMenu</a></li><li><a href="global.html#notifyEvent">notifyEvent</a></li><li><a href="global.html#onClockTick">onClockTick</a></li><li><a href="global.html#onEnter">onEnter</a></li><li><a href="global.html#onInput">onInput</a></li><li><a href="global.html#onInputChange">onInputChange</a></li><li><a href="global.html#onKeyPress">onKeyPress</a></li><li><a href="global.html#onMainMenu">onMainMenu</a></li><li><a href="global.html#onNext">onNext</a></li><li><a href="global.html#onPause">onPause</a></li><li><a href="global.html#onResume">onResume</a></li><li><a href="global.html#onRetry">onRetry</a></li><li><a href="global.html#onStart">onStart</a></li><li><a href="global.html#onUpdateCount">onUpdateCount</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#player">player</a></li><li><a href="global.html#registerCallbacks">registerCallbacks</a></li><li><a href="global.html#removePlant">removePlant</a></li><li><a href="global.html#renderGhostText">renderGhostText</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#resultsScreen">resultsScreen</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#retrieve">retrieve</a></li><li><a href="global.html#rulesBox">rulesBox</a></li><li><a href="global.html#saveActiveProfileId">saveActiveProfileId</a></li><li><a href="global.html#savePlayer">savePlayer</a></li><li><a href="global.html#savePlayerData">savePlayerData</a></li><li><a href="global.html#saveProfile">saveProfile</a></li><li><a href="global.html#saveState">saveState</a></li><li><a href="global.html#sendQuestion">sendQuestion</a></li><li><a href="global.html#setGhostText">setGhostText</a></li><li><a href="global.html#setGrowthLevel">setGrowthLevel</a></li><li><a href="global.html#setGrowthLevels">setGrowthLevels</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#setupFocusTrap">setupFocusTrap</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showResults">showResults</a></li><li><a href="global.html#startCountdown">startCountdown</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startTimer">startTimer</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#stopCountdown">stopCountdown</a></li><li><a href="global.html#stopTimer">stopTimer</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#timeoutId">timeoutId</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateGameStats">updateGameStats</a></li><li><a href="global.html#updateLiveData">updateLiveData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Jun 07 2026 21:51:04 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

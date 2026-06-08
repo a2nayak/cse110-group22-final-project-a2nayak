@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: final/js/systems/game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: final/js/systems/game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * game.js
+ *
+ * Central game engine. Owns the active GameState and Profile, coordinates
+ * all other modules, and exposes functions for ui.js to call.
+ *
+ * Main responsibilities:
+ * - Initialize and own GameState as single source of truth
+ * - Handle game lifecycle: startLevel(), restartLevel(), pauseGame(), resumeGame()
+ * - Process player input (onInput) and update state accordingly
+ * - Coordinate modules: level.js, scoring.js, timer.js, storage.js
+ * - Fire callbacks back to glue.js after each state change
+ *
+ * Architecture:
+ * - glue.js registers loadScreen / updateScreen callbacks on init
+ * - game.js never touches the DOM directly = all UI updates go through callbacks
+ * - state is the single source of truth
+ *
+ * Current question/answer are accessed by index:
+ *   state.questions[state.current_question_index]
+ *   state.answers[state.current_question_index]
+ *
+ * Advancing a question = state.current_question_index++
+ *
+ * state.timer counts down from time_limit to 0 (seconds remaining).
+ * Elapsed time = state.time_limit - state.timer.
+ *
+ * Dependencies:
+ * - level.js         : loadLevel(levelNumber, category)
+ * - timer.js         : startTimer(), stopTimer()
+ * - scoring.js       : calculateTotalScore()
+ * - storage.js       : saveProfile(),
+ * - models/models.js : defaultGameState()
+ *
+ * Responses emitted via updateScreen():
+ * - "correct"        → user entered a correct input
+ * - "incorrect"      → user entered a wrong input
+ * - "next-question"  → answer complete, next question ready
+ * - "plant-growth"    → plant growth level increased
+ *
+ * Screens emitted via loadScreen():
+ * - "game"           → switch to game screen (level just started or resumed)
+ * - "pause"          → switch to pause screen
+ * - "results"        → switch to results screen (all levels completed)
+ * - "mainmenu"       → switch to main menu (player exits session)
+ */
+
+import { getLevelCount, loadLevel } from "./level.js";
+import { startTimer, stopTimer } from "./timer.js";
+import { calculateTotalScore } from "./scoring.js";
+// import { saveProfile } from "./storage.js";
+import { defaultGameState, defaultProfile } from "../models/models.js";
+
+
+
+// ── Module-level state ──────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Session state - reset each level via Object.assign(state, levelData).
+ * @type {ReturnType&lt;typeof defaultGameState>}
+ */
+let state = defaultGameState();
+
+/**
+ * Persistent player profile = survives between levels.
+ * @type {ReturnType&lt;typeof defaultProfile>}
+ */
+let player = defaultProfile();
+
+/**
+ * Callbacks registered by glue.js.
+ * game.js fires these after processing each event.
+ */
+const callbacks = {
+  /** @type {((screenName: string, data: object) => void)|null} */
+  loadScreen: null,
+
+  /** @type {((response: string, data: object) => void)|null} */
+  updateScreen: null,
+};
+
+const MAX_PLANT_GROWTH_LEVEL = 2;
+
+// ── Callback registration ───────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Registers the UI callbacks that game.js fires after state changes.
+ * Must be called once by ui-core.js on page load, before any user action.
+ *
+ * @param {(screenName: string, data: object) => void} loadScreen
+ *   Called when game.js wants to switch to a different screen.
+ * @param {(response: string, data: object) => void} updateScreen
+ *   Called when game.js wants to update the current screen in-place.
+ */
+export function registerCallbacks(loadScreen, updateScreen) {
+  callbacks.loadScreen = loadScreen;
+  callbacks.updateScreen = updateScreen;
+}
+
+// ── Lifecycle  ─────────────────────────────────────────────────────────────────────────────────────────────────────
+
+// ── Called by [mainmenu] UI (exclusive) ──────────────────────────────────────
+
+/**
+ * Sets the language used for this game sequence
+ * @param {string} category    - Question category (e.g. "python, javascript")
+ */
+export function setLanguage(category) {
+  player.language = category;
+}
+
+// ── Called by [pause] UI (exclusive) ─────────────────────────────────────────
+
+/**
+ * Resumes the countdown timer using remaining time on pause, updates state, and loads the game screen.
+ */
+export function resumeGame() {
+  if (!state.isPaused) return;
+  state.isPaused = false;
+  state.isActive = true;
+  state.isOver = false;
+  startTimer( { ...state }, _onExpire);
+  state.questionEndTime = Date.now() + state.remainingOnPause;
+  state.remainingOnPause = 0;
+  callbacks.loadScreen("game", { ...state });
+}
+
+/**
+ * Restarts the current level with a fresh set of questions.
+ * Resets all state except for player profile and language selection.
+ * Note: may be replaced by an isolated call to startLevel(); this is intended for code readability purposes
+ */
+export function restartLevel() {
+  if(state.isPaused || state.isOver || !state.isActive){ return; }
+  state.isPaused = false;
+  state.isActive = true;
+  state.isOver = false;
+  startLevel(state.level, state.language);
+}
+
+// ── Called by [game] UI (exclusive) ──────────────────────────────────────────
+
+/**
+ * Pauses the active countdown timer and, saves time remaining for questionm and loads the pause screen.
+ */
+export function pauseGame() {
+  if (state.isPaused) return;
+  state.isPaused = true;
+  state.isActive = true;
+  state.isOver = false;
+  state.remainingOnPause = Math.max(0, state.questionEndTime - Date.now());
+  stopTimer();
+  callbacks.loadScreen("pause", { ...state });
+}
+
+/**
+ * Recieves user text input, updates GameState, returns responses,
+ * Checks the current input against the current prompt answer.
+ *
+ * Responses fired:
+ * - "incorrect"     → prefix length of current input is not larger than max prefix length.
+ * - "correct"       → prefix length of current input is larger than max prefix length.
+ * - "next-question" → answer complete, index advanced to next question
+ * - (endGame)       → answer complete and no more questions remain
+ *
+ * @param {string} input - Input entered by Player 
+ */
+export async function onInput(input) {
+  if (!state.isActive || state.isPaused || state.isOver) return;
+
+  // Determine if input is valid and should be counted
+  const previousInput = state.currentInput;
+  const isDeletion = input.length &lt; previousInput.length;
+  const addedText = input.length > previousInput.length ? input.slice(previousInput.length) : "";
+  const isWhitespaceOnlyInput = addedText.length > 0 &amp;&amp; addedText.trim() === "";
+  const shouldCountInput = !isDeletion &amp;&amp; !isWhitespaceOnlyInput;
+  state.currentInput = input;
+  if (shouldCountInput) state.totalInputs++;
+
+  // Calculate input prefix length
+  const answer = state.answers[state.currentQuestionIndex];
+  if (!answer) return;
+  let prefixLength = 0;
+  for (let i = 0; i &lt; input.length; i++) {
+    if (input[i] != answer[i]) {
+      break;
+    }
+    prefixLength++;
+  }
+
+  // If input is correct and typed answer is complete, run completed answer behavior
+  if (input === answer) {
+    await handleQuestionComplete(true);
+    return;
+  } 
+
+  // If input is incorrect, apply state penalites and update UI 
+  if (prefixLength &lt;= state.maxPrefixLength) {
+    if (shouldCountInput) {
+      state.incorrectInputs++;
+      state.totalIncorrectInputs++;
+    }
+    state.combo = 0;
+    callbacks.updateScreen("incorrect", { ...state });
+    return;
+  }
+
+  // If input is correct and typed answer is incomplete, apply bonuses to state and update UI
+  state.maxPrefixLength = prefixLength;
+  state.combo++;
+  callbacks.updateScreen("correct", { ...state });
+  return;
+}
+
+// ── Called by [mainmenu, pause, results] UI ──────────────────────────────
+
+/**
+ * Starts a level. Fetches and shuffles questions via level.js, merges the
+ * result into state (replacing only level-specific fields), starts the timer,
+ * and signals glue.js to show the game screen.
+ *
+ * @param {number} levelNumber - 1-indexed level number
+ * @param {string} category    - Question category slug, e.g. "python"
+ */
+export async function startLevel(levelNumber, category) {
+  player.language = category;
+  state = await loadLevel(levelNumber, category);
+  state.questionEndTime = startTimer( { ...state }, _onExpire);
+  callbacks.loadScreen("game", { ...state });
+}
+
+// ── Called by [pause, results] UI ────────────────────────────────────────
+
+/**
+ * Exits the current session and returns to the main menu.
+ * Stops the timer and discards in-progress state without saving.
+ * Called when the player presses the main menu button.
+ */
+export function goToMainMenu() {
+  state.isActive = false;
+  state.isPaused = false;
+  stopTimer();
+  player = defaultProfile();
+  callbacks.loadScreen("mainmenu", { ...state });
+}
+
+// ── Called internally ────────────────────────────────────────────────────
+
+/**
+ * Handles end of level behavior. Stops the timer, saves player data,
+ * and advances UI to "results" screen
+ */
+function goToResults() {
+  state.isActive = false;
+  state.isPaused = false;
+  stopTimer();
+  savePlayerData();
+  callbacks.loadScreen("results", { ...state });
+}
+
+/**
+ * @param {boolean} complete - whether the question was completed before timer expiration (true) or not (false)
+ * Handles all state updates after the current question ends.
+ *
+ * This function:
+ * - Stops the active question timer.
+ * - Records time used for the question.
+ * - Applies timeout penalties or awards score for a completed answer.
+ * - Advances the question index.
+ * - Updates plant growth when the player reaches a progress milestone.
+ * - Either starts the next question, shows level results, or ends the game.
+ */
+async function handleQuestionComplete(complete) {
+  if(state.isPaused || state.isOver || !state.isActive){ return; }
+
+  // Stop timer to prevent unintentional UI advancement
+  stopTimer();
+
+  // Record timing and answer data for this
+  const timeRemaining = Math.max(0, state.questionEndTime - Date.now());
+  const elapsedTime = Math.max(0, state.timeLimit - timeRemaining);
+  const answer = state.answers[state.currentQuestionIndex] ?? "";
+  state.timeUsed.push(elapsedTime);
+  state.totalAnswerCharacters += answer.length; 
+
+  // If question timed out, do not update score and add penalties to state
+  if (!complete) {
+    const remainingCharacters = answer.length - state.maxPrefixLength;
+    state.totalInputs += remainingCharacters;
+    state.totalIncorrectInputs += remainingCharacters;
+  }
+  // If question finished normally, calculate new score and increment counter for correct questions
+  else {
+    state.score += calculateTotalScore({ ...state }, elapsedTime);
+    state.numCorrectQuestions++;
+  }
+
+  // Set state to next question
+  state.currentQuestionIndex++;
+
+  // Calculate plant growth level and update UI with new plant growth value
+  if (complete &amp;&amp; state.numCorrectQuestions % 3 === 0) {
+    if(state.growthLevel &lt; MAX_PLANT_GROWTH_LEVEL) {
+      state.growthLevel++;
+      callbacks.updateScreen("plant-growth", { ...state });
+    }
+  }
+
+  // If there are still question left in this level, reset the per-question state
+  // and advance UI to next question
+  if (state.currentQuestionIndex &lt; state.questions.length) {
+    state.maxPrefixLength = 0;
+    state.currentInput = "";   
+    state.incorrectInputs = 0;
+    state.questionStartTime = Date.now();
+    state.questionEndTime = startTimer( { ...state }, _onExpire);
+    callbacks.updateScreen("next-question", { ...state });
+    return;
+  }
+
+  // If the level is complete but more levels exist, add score to player total
+  // and advance UI to level results screen
+  if (state.currentQuestionIndex >= state.questions.length &amp;&amp; state.level &lt; getLevelCount()) {
+    player.score += state.score;
+    const accuracyPercentage = (1 - (state.totalIncorrectInputs / state.totalInputs));
+    state.levelAccuracyPercent = accuracyPercentage.toFixed(2);
+    goToResults();
+    return;
+  }
+
+  // If the level is complete and no more levels exist, set game state to "gameover",
+  // calculate final score, and advance UI to level results screen
+  state.isOver = true;
+  state.finalScore = player.score;
+  const accuracyPercentage = (1 - (state.totalIncorrectInputs / state.totalInputs));
+  state.levelAccuracyPercent = accuracyPercentage.toFixed(2);
+  goToResults();
+  return;
+}
+
+// ── Timer callbacks (internal) ──────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fired by timer.js when the countdown reaches 0.
+ */
+function _onExpire() {
+  handleQuestionComplete(false);
+}
+
+// ── Profile management handling ─────────────────────────────────────────────────────────────────────────────────────
+
+/** 
+ * Save relevant session data in the player profile
+*/
+function savePlayerData(){
+  player.score += state.score; 
+  player.level = state.level;
+  // TODO: we are not using local storage
+  // saveProfile(player);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-level.html">level</a></li><li><a href="module-scoring.html">scoring</a></li></ul><h3>Classes</h3><ul><li><a href="Questions.html">Questions</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MAX_PROFILES">MAX_PROFILES</a></li><li><a href="global.html#_onExpire">_onExpire</a></li><li><a href="global.html#addPlant">addPlant</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#assertHTMLElement">assertHTMLElement</a></li><li><a href="global.html#assertHTMLInputElement">assertHTMLInputElement</a></li><li><a href="global.html#assertHTMLSelectElement">assertHTMLSelectElement</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#callbacks">callbacks</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#clearAnswer">clearAnswer</a></li><li><a href="global.html#clearPlayer">clearPlayer</a></li><li><a href="global.html#clearProfile">clearProfile</a></li><li><a href="global.html#clearState">clearState</a></li><li><a href="global.html#combo">combo</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#currentLevel">currentLevel</a></li><li><a href="global.html#defaultGameState">defaultGameState</a></li><li><a href="global.html#endTime">endTime</a></li><li><a href="global.html#errorHighlight">errorHighlight</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#gameUI">gameUI</a></li><li><a href="global.html#gameUIReady">gameUIReady</a></li><li><a href="global.html#getCurrentQuestion">getCurrentQuestion</a></li><li><a href="global.html#getLiveStats">getLiveStats</a></li><li><a href="global.html#getResultsStats">getResultsStats</a></li><li><a href="global.html#goToMainMenu">goToMainMenu</a></li><li><a href="global.html#goToResults">goToResults</a></li><li><a href="global.html#handleInput">handleInput</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleLoadScreen">handleLoadScreen</a></li><li><a href="global.html#handleQuestionComplete">handleQuestionComplete</a></li><li><a href="global.html#handleUpdateScreen">handleUpdateScreen</a></li><li><a href="global.html#hardReset">hardReset</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#initializeBackend">initializeBackend</a></li><li><a href="global.html#initializeProfiles">initializeProfiles</a></li><li><a href="global.html#isRunning">isRunning</a></li><li><a href="global.html#isVisible">isVisible</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#lastLanguage">lastLanguage</a></li><li><a href="global.html#latestGameData">latestGameData</a></li><li><a href="global.html#loadActiveProfileId">loadActiveProfileId</a></li><li><a href="global.html#loadPlayer">loadPlayer</a></li><li><a href="global.html#loadProfile">loadProfile</a></li><li><a href="global.html#loadState">loadState</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mainMenu">mainMenu</a></li><li><a href="global.html#notifyEvent">notifyEvent</a></li><li><a href="global.html#onClockTick">onClockTick</a></li><li><a href="global.html#onEnter">onEnter</a></li><li><a href="global.html#onInput">onInput</a></li><li><a href="global.html#onInputChange">onInputChange</a></li><li><a href="global.html#onKeyPress">onKeyPress</a></li><li><a href="global.html#onMainMenu">onMainMenu</a></li><li><a href="global.html#onNext">onNext</a></li><li><a href="global.html#onPause">onPause</a></li><li><a href="global.html#onResume">onResume</a></li><li><a href="global.html#onRetry">onRetry</a></li><li><a href="global.html#onStart">onStart</a></li><li><a href="global.html#onUpdateCount">onUpdateCount</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#player">player</a></li><li><a href="global.html#registerCallbacks">registerCallbacks</a></li><li><a href="global.html#removePlant">removePlant</a></li><li><a href="global.html#renderGhostText">renderGhostText</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#resultsScreen">resultsScreen</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#retrieve">retrieve</a></li><li><a href="global.html#rulesBox">rulesBox</a></li><li><a href="global.html#saveActiveProfileId">saveActiveProfileId</a></li><li><a href="global.html#savePlayer">savePlayer</a></li><li><a href="global.html#savePlayerData">savePlayerData</a></li><li><a href="global.html#saveProfile">saveProfile</a></li><li><a href="global.html#saveState">saveState</a></li><li><a href="global.html#sendQuestion">sendQuestion</a></li><li><a href="global.html#setGhostText">setGhostText</a></li><li><a href="global.html#setGrowthLevel">setGrowthLevel</a></li><li><a href="global.html#setGrowthLevels">setGrowthLevels</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#setupFocusTrap">setupFocusTrap</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showResults">showResults</a></li><li><a href="global.html#startCountdown">startCountdown</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startTimer">startTimer</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#stopCountdown">stopCountdown</a></li><li><a href="global.html#stopTimer">stopTimer</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#timeoutId">timeoutId</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateGameStats">updateGameStats</a></li><li><a href="global.html#updateLiveData">updateLiveData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Jun 07 2026 21:51:04 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

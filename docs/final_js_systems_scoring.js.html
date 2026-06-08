@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: final/js/systems/scoring.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: final/js/systems/scoring.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * scoring.js
+ *
+ * Deterministic, pure scoring functions for a single question and the overall
+ * game session.  No function here mutates game state directly = each returns a
+ * value that game.js applies to the state.
+ *
+ * Score pipeline per question:
+ *   baseScore × accuracyMultiplier × timeMultiplier × comboMultiplier + plantBonus
+ *
+ * Multiplier ranges:
+ *   - accuracy : 0.50 – 1.00  (clamped; perfect accuracy = 1.0)
+ *   - time     : 0.70 – 1.30  (faster answers score higher)
+ *   - combo    : 1.00 – 2.00  (5 % boost per consecutive correct char, capped)
+ *   - plant    : flat bonus   (PLANT_BONUS × growthStage)
+ *
+ * Dependencies: none
+ *
+ * Imported by:
+ * - game.js: calls calculateTotalScore() when a question is completed
+ *
+ * @module scoring
+ */
+
+// Points awarded for each growth stage of a plant.
+const PLANT_BONUS = 10;
+
+export function calculateBaseScore(state) {
+    const { base_score } = state;
+    return 50 + base_score;
+}
+
+export function calculateAccuracyMultiplier(incorrectChars, totalChars) {
+    if (totalChars === 0) return 1;
+
+    const accuracy = (totalChars - incorrectChars) / totalChars;
+
+    // clamp to prevent extreme punishment/boost
+    return Math.max(0.5, accuracy); // 50% minimum
+}
+
+export function calculateTimeMultiplier(elapsedMs, timeLimit) {
+    if (timeLimit === 0) return 1;
+
+    const ratio = elapsedMs / timeLimit;
+
+    // faster = higher reward
+    const multiplier = 1 + (1 - ratio);
+
+    // clamp so it doesn't explode
+    return Math.max(0.7, Math.min(multiplier, 1.3));
+}
+
+export function calculateComboBonus(combo) {
+    return Math.min(1 + combo * 0.05, 2.0);
+}
+
+/**
+ * Calculates the bonus score for one plant based on its growth stage.
+ *
+ * Plants are stored as numbers from 0 to 2:
+ * - 0 means no growth
+ * - 2 means fully grown
+ *
+ * The stage is clamped so invalid values do not create negative or excessive
+ * bonuses.
+ *
+ * @param {number} plant - Current growth stage of one plant.
+ * @returns {number} Bonus points earned from that plant.
+ */
+export function addPlantBonus(plant) {
+    const growthStage = Number(plant) || 0;
+    const clampedStage = Math.max(0, Math.min(growthStage, 2));
+
+    return clampedStage * PLANT_BONUS;
+}
+
+/**
+ * Calculates the score for the current question.
+ *
+ * The final score combines:
+ * - the question's base score
+ * - the accuracy multiplier
+ * - the time multiplier
+ * - bonus points from the current plant states
+ *
+ * @param {object} state - Current game state.
+ * @param {number} elapsedMs - Time spent on the current question in milliseconds.
+ * @returns {number} Rounded non-negative score for the current question.
+ */
+export function calculateTotalScore(state, elapsedMs = 0) {
+    const {
+        baseScores = [],
+        incorrectInputs = 0,
+        answers = [],
+        currentInput = "",
+        currentQuestionIndex = 0,
+        timeLimit = 0,
+        combo = 0,
+        growthLevel = 0
+    } = state;
+
+    const answer = answers[currentQuestionIndex] || "";
+    const questionBaseScore = baseScores[currentQuestionIndex] || 0;
+    const totalChars = Math.max(answer.length, currentInput.length);
+    const accuracyMultiplier = calculateAccuracyMultiplier(
+        incorrectInputs,
+        totalChars
+    );
+
+    const timeMultiplier = calculateTimeMultiplier(
+        elapsedMs,
+        timeLimit
+    );
+
+    const comboMultiplier = calculateComboBonus(combo);
+
+    // Sum the bonus from the plant in the current growth state.
+    const plantBonus = addPlantBonus(growthLevel);
+
+    const finalScore =
+        questionBaseScore *
+        accuracyMultiplier *
+        timeMultiplier * comboMultiplier + plantBonus;
+
+    return Math.round(Math.max(0, finalScore));
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-level.html">level</a></li><li><a href="module-scoring.html">scoring</a></li></ul><h3>Classes</h3><ul><li><a href="Questions.html">Questions</a></li><li><a href="module.exports.html">exports</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MAX_PROFILES">MAX_PROFILES</a></li><li><a href="global.html#_onExpire">_onExpire</a></li><li><a href="global.html#addPlant">addPlant</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#assertHTMLElement">assertHTMLElement</a></li><li><a href="global.html#assertHTMLInputElement">assertHTMLInputElement</a></li><li><a href="global.html#assertHTMLSelectElement">assertHTMLSelectElement</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#callbacks">callbacks</a></li><li><a href="global.html#clearAll">clearAll</a></li><li><a href="global.html#clearAnswer">clearAnswer</a></li><li><a href="global.html#clearPlayer">clearPlayer</a></li><li><a href="global.html#clearProfile">clearProfile</a></li><li><a href="global.html#clearState">clearState</a></li><li><a href="global.html#combo">combo</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#currentLevel">currentLevel</a></li><li><a href="global.html#defaultGameState">defaultGameState</a></li><li><a href="global.html#endTime">endTime</a></li><li><a href="global.html#errorHighlight">errorHighlight</a></li><li><a href="global.html#focus">focus</a></li><li><a href="global.html#gameUI">gameUI</a></li><li><a href="global.html#gameUIReady">gameUIReady</a></li><li><a href="global.html#getCurrentQuestion">getCurrentQuestion</a></li><li><a href="global.html#getLiveStats">getLiveStats</a></li><li><a href="global.html#getResultsStats">getResultsStats</a></li><li><a href="global.html#goToMainMenu">goToMainMenu</a></li><li><a href="global.html#goToResults">goToResults</a></li><li><a href="global.html#handleInput">handleInput</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleLoadScreen">handleLoadScreen</a></li><li><a href="global.html#handleQuestionComplete">handleQuestionComplete</a></li><li><a href="global.html#handleUpdateScreen">handleUpdateScreen</a></li><li><a href="global.html#hardReset">hardReset</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#initializeBackend">initializeBackend</a></li><li><a href="global.html#initializeProfiles">initializeProfiles</a></li><li><a href="global.html#isRunning">isRunning</a></li><li><a href="global.html#isVisible">isVisible</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#lastLanguage">lastLanguage</a></li><li><a href="global.html#latestGameData">latestGameData</a></li><li><a href="global.html#loadActiveProfileId">loadActiveProfileId</a></li><li><a href="global.html#loadPlayer">loadPlayer</a></li><li><a href="global.html#loadProfile">loadProfile</a></li><li><a href="global.html#loadState">loadState</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mainMenu">mainMenu</a></li><li><a href="global.html#notifyEvent">notifyEvent</a></li><li><a href="global.html#onClockTick">onClockTick</a></li><li><a href="global.html#onEnter">onEnter</a></li><li><a href="global.html#onInput">onInput</a></li><li><a href="global.html#onInputChange">onInputChange</a></li><li><a href="global.html#onKeyPress">onKeyPress</a></li><li><a href="global.html#onMainMenu">onMainMenu</a></li><li><a href="global.html#onNext">onNext</a></li><li><a href="global.html#onPause">onPause</a></li><li><a href="global.html#onResume">onResume</a></li><li><a href="global.html#onRetry">onRetry</a></li><li><a href="global.html#onStart">onStart</a></li><li><a href="global.html#onUpdateCount">onUpdateCount</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#player">player</a></li><li><a href="global.html#registerCallbacks">registerCallbacks</a></li><li><a href="global.html#removePlant">removePlant</a></li><li><a href="global.html#renderGhostText">renderGhostText</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#resultsScreen">resultsScreen</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#retrieve">retrieve</a></li><li><a href="global.html#rulesBox">rulesBox</a></li><li><a href="global.html#saveActiveProfileId">saveActiveProfileId</a></li><li><a href="global.html#savePlayer">savePlayer</a></li><li><a href="global.html#savePlayerData">savePlayerData</a></li><li><a href="global.html#saveProfile">saveProfile</a></li><li><a href="global.html#saveState">saveState</a></li><li><a href="global.html#sendQuestion">sendQuestion</a></li><li><a href="global.html#setGhostText">setGhostText</a></li><li><a href="global.html#setGrowthLevel">setGrowthLevel</a></li><li><a href="global.html#setGrowthLevels">setGrowthLevels</a></li><li><a href="global.html#setLanguage">setLanguage</a></li><li><a href="global.html#setText">setText</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#setupFocusTrap">setupFocusTrap</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showResults">showResults</a></li><li><a href="global.html#startCountdown">startCountdown</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startTimer">startTimer</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#stopCountdown">stopCountdown</a></li><li><a href="global.html#stopTimer">stopTimer</a></li><li><a href="global.html#subscribe">subscribe</a></li><li><a href="global.html#timeoutId">timeoutId</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateGameStats">updateGameStats</a></li><li><a href="global.html#updateLiveData">updateLiveData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Jun 07 2026 21:51:04 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
