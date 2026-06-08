@@ -1,4 +1,7 @@
 /**
+ * @module StatsDisplay
+ */
+/*
  * The component responsible for displaying the user's current score and accuracy.
  * 
  * Expects the following minimal HTML structure:

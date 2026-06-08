@@ -1,5 +1,9 @@
 import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
 /**
+ * @module CodeInputField
+ */
+
+/**
  * The component responsible for taking in the user's code input.
  * 
  * Expects the following minimal HTML structure:

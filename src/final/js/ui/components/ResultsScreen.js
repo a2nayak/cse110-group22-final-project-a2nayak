@@ -2,6 +2,9 @@ import { assertHTMLElement } from "../utils.js";
 import { store } from "../store.js";
 
 /**
+ * @module ResultsScreen
+ */
+/*
  * The results screen shown at the end of a game round.
  *
  * Expects the following HTML structure:

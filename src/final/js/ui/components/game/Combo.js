@@ -1,6 +1,9 @@
 import { assertHTMLElement } from "../../utils.js";
 import { store } from "../../store.js";
 /**
+ * @module Combo
+ */
+/*
  * The component responsible for displaying the combo count.
  * 
  * Expects the following minimal HTML structure:

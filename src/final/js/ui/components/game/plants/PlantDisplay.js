@@ -1,4 +1,8 @@
 /**
+ * @module PlantDisplay
+ */
+
+/**
  * The component responsible for displaying the user's current plant level.
  * 
  * Expects the following minimal HTML structure:

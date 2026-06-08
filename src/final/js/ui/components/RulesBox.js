@@ -1,5 +1,8 @@
 
 /**
+ * @module RulesBox
+ */
+/*
  * The component responsible for displaying the rules of the game to the user.
  * 
  * Expects the following minimal HTML structure:

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: exports</title>
+    <title>JSDoc: Class: module:NotificationDisplay</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: exports</h1>
+    <h1 class="page-title">Class: module:NotificationDisplay</h1>
 
     
 
@@ -28,10 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description">A simple state management class that allows components
-to more easily access and update shared state, without needing to prop drill.</div>
+        <h2><span class="attribs"><span class="type-signature"></span></span>module:NotificationDisplay<span class="signature">(element)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -42,23 +39,74 @@ to more easily access and update shared state, without needing to prop drill.</d
         
 
     
-    <h2>Constructor</h2>
+
+    
+    <h4 class="name" id="module:NotificationDisplay"><span class="type-signature"></span>new module:NotificationDisplay<span class="signature">(element)</span><span class="type-signature"></span></h4>
     
 
     
-    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
+
+
+
+<div class="description">
+    Binds this NotificationDisplay to the given element.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
     
 
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
 
 
+            
+            </td>
 
+            
 
+            
 
+            <td class="description last"></td>
+        </tr>
 
-
-
+    
+    </tbody>
+</table>
 
 
 
@@ -94,7 +142,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line5">line 5</a>
+        <a href="ui_components_NotificationDisplay.js.html">ui/components/NotificationDisplay.js</a>, <a href="ui_components_NotificationDisplay.js.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -144,14 +192,10 @@ to more easily access and update shared state, without needing to prop drill.</d
 
         
             
-<h4 class="name" id="data"><span class="type-signature"></span>data<span class="type-signature"> :*</span></h4>
+<h4 class="name" id="DISPLAY_DURATION"><span class="type-signature">(constant) </span>DISPLAY_DURATION<span class="type-signature"> :number</span></h4>
 
 
 
-
-<div class="description">
-    - The data stored in the Store.
-</div>
 
 
 
@@ -159,7 +203,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     <ul>
         <li>
             
-<span class="param-type">*</span>
+<span class="param-type">number</span>
 
 
         </li>
@@ -198,7 +242,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line9">line 9</a>
+        <a href="ui_components_NotificationDisplay.js.html">ui/components/NotificationDisplay.js</a>, <a href="ui_components_NotificationDisplay.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -215,27 +259,107 @@ to more easily access and update shared state, without needing to prop drill.</d
 
 
         
-            
-<h4 class="name" id="eventTarget"><span class="type-signature"></span>eventTarget<span class="type-signature"> :EventTarget</span></h4>
+    
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="notifyEvent"><span class="type-signature"></span>notifyEvent<span class="signature">(event, color)</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
 
 <div class="description">
-    - The EventTarget used for managing subscriptions and dispatching events.
+    Displays a notification with the given event message and color.
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">EventTarget</span>
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -270,7 +394,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line7">line 7</a>
+        <a href="ui_components_NotificationDisplay.js.html">ui/components/NotificationDisplay.js</a>, <a href="ui_components_NotificationDisplay.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -286,9 +410,21 @@ to more easily access and update shared state, without needing to prop drill.</d
 
 
 
-        
-    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

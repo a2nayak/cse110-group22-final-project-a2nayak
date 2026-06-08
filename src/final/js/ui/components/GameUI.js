@@ -10,6 +10,9 @@ import NotificationDisplay from "./NotificationDisplay.js";
 
 
 /**
+ * @module GameUI
+ */
+/*
  * The main component for displaying the game. It will contain the game board and any other relevant information. 
  * 
  * Expects the following minimal HTML structure:

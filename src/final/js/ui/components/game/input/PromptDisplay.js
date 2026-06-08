@@ -1,5 +1,6 @@
 import { assertHTMLElement } from "../../../utils.js";
 
+/** @module PromptDisplay */
 /**
  * The component responsible for displaying the current prompt to the user.
  * 

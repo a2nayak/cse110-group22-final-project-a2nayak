@@ -1,5 +1,10 @@
 import PlantDisplay from "./PlantDisplay.js";
 /**
+ * @module PlantDisplayGroup
+ */
+
+/**
+ * 
  * The component responsible for displaying the user's plants grouped together.
  * 
  * Expects the following minimal HTML structure:

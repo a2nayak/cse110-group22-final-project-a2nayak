@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: exports</title>
+    <title>JSDoc: Source: ui/components/GameUI.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,286 +17,167 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: exports</h1>
+    <h1 class="page-title">Source: ui/components/GameUI.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { assertHTMLElement } from "../utils.js";
+import CodeInputField from "./game/input/CodeInputField.js";
+import PromptDisplay from "./game/input/PromptDisplay.js";
+import StatsDisplay from "./game/StatsDisplay.js";
+import PauseMenu from "./game/PauseMenu.js";
+import PlantDisplayGroup from "./game/plants/PlantDisplayGroup.js";
+import Combo from "./game/Combo.js";
+import Timer from "./game/Timer.js";
+import NotificationDisplay from "./NotificationDisplay.js";
+
+
+/**
+ * @module GameUI
+ */
+/*
+ * The main component for displaying the game. It will contain the game board and any other relevant information. 
+ * 
+ * Expects the following minimal HTML structure:
+ * &lt;div class="game-ui">
+ *   &lt;CodeInputField class="code-input-field" />
+ *   &lt;StatsDisplay class="stats-display" />
+ *   &lt;PromptDisplay class="prompt-display" />
+ *   &lt;GameTray class="game-tray" />
+ * &lt;/div>
+ */
+export default class GameUI {
+    /** @type {number | null} */
+    clockInterval = null;
+    /** @type {EventTarget} */
+    clockEventTarget = new EventTarget();
+
+    /**
+     * Binds this GameUI to the given element.
+     * @param {HTMLElement} element
+     */
+    constructor(element) {
+        this.element = element;
+        this.statsDisplay = new StatsDisplay(assertHTMLElement(this.element.querySelector('.stats-display')));
+        this.codeInputField = new CodeInputField(assertHTMLElement(this.element.querySelector('.code-input-field')));
+        this.promptDisplay = new PromptDisplay(assertHTMLElement(this.element.querySelector('.prompt-display')));
+        this.plantDisplayGroup = new PlantDisplayGroup(assertHTMLElement(this.element.querySelector('.plant-display-group')));
+        this.timer = new Timer(assertHTMLElement(this.element.querySelector('.timer')));
+        this.combo = new Combo(assertHTMLElement(this.element.querySelector('.combo')));
+        this.notificationDisplay = new NotificationDisplay(
+            assertHTMLElement(this.element.querySelector('.notification-display'))
+        );
+
+        this.pauseMenu = new PauseMenu(assertHTMLElement(this.element.querySelector('.pause-menu')));
+        this.onPause(() => this.pauseMenu.show());
+        this.onResume(() => {
+            this.pauseMenu.hide();
+            this.codeInputField.focus();
+        });
         
-            <div class="class-description">A simple state management class that allows components
-to more easily access and update shared state, without needing to prop drill.</div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line5">line 5</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="data"><span class="type-signature"></span>data<span class="type-signature"> :*</span></h4>
-
-
-
-
-<div class="description">
-    - The data stored in the Store.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">*</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line9">line 9</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="eventTarget"><span class="type-signature"></span>eventTarget<span class="type-signature"> :EventTarget</span></h4>
-
-
-
-
-<div class="description">
-    - The EventTarget used for managing subscriptions and dispatching events.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">EventTarget</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line7">line 7</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+        this.onClockTick(() => this.updateLiveData());
+        this.onPause(() => console.log('game paused'));
+    }
+
+    /**
+     * Registers a callback to be called when the clock ticks.
+     * @param {(event: Event) => void} callback
+     */
+    onClockTick(callback) {
+        this.clockEventTarget.addEventListener('clockTick', callback);
+    }
+
+    /**
+     * Updates all subcomponents that rely on the clock.
+     */
+    updateLiveData(){
+        this.timer.rerender();
+        //this.statsDisplay.rerender();
+    }
+
+    /**
+     * Starts the countdown timer.
+     */
+    startCountdown() {
+        if (this.clockInterval) return; // Countdown is already running
+        this.clockInterval = setInterval(() => this.clockEventTarget.dispatchEvent(new Event('clockTick')), 500);
+    }
+
+    /**
+     * Stops the countdown timer from updating. 
+     */
+    stopCountdown(){
+        clearInterval(this.clockInterval);
+        this.clockInterval = null;
+    }
+
+    /**
+     * Sends a question to the prompt display.
+     * @param {String} question - The question to display.
+     * @param {String} answer - The answer to display.
+     */
+    sendQuestion(question, answer) {
+        if(!this.promptDisplay || !this.codeInputField) return;
+        this.codeInputField.clearAnswer();
+        this.promptDisplay.setText(question);
+        this.codeInputField.setGhostText(answer);
+    }
+
+    /**
+     * Renders this GameUI
+     */
+    show() {
+        this.element.classList.remove('hidden');
+        this.codeInputField.focus();
+    }
+
+    /**
+     * Hides this GameUI.
+     */
+    hide() {
+        this.element.classList.add('hidden');
+    }
+
+    /**
+     * Adds an event listener for when the user clicks the pause button, which will show the pause menu.
+     * @param {() => void} callback 
+     */
+    onPause(callback) {
+        const pauseMenuButton = assertHTMLElement(this.element.querySelector('.game-header-pause'));
+        pauseMenuButton.addEventListener('click', callback);
+    }
+
+    /**
+     * Registers a callback to be called when the user clicks the Resume button in the pause menu, which will hide the pause menu.
+     * @param {() => void} callback
+     */
+    onResume(callback) {
+        this.pauseMenu.onResume(callback);
+    }
+    
+    /**
+     * Registers a callback to be called when the user clicks the Retry button in the pause menu.
+     * @param {() => void} callback
+     */
+    onRetry(callback) {
+        this.pauseMenu.onRetry(callback);
+    }
+
+    /**
+     * Registers a callback to be called when the user clicks the Main Menu button in the pause menu.
+     * @param {() => void} callback
+     */
+    onMainMenu(callback) {
+        this.pauseMenu.onMainMenu(callback);
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,5 +1,8 @@
 import { assertHTMLElement } from "../utils.js";
 /**
+ * @module NotificationDisplay
+ */
+/*
  * NotificationDisplay
  * 
  * Displays temporary notifications at the top of the game UI.

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: exports</title>
+    <title>JSDoc: Class: module:PlantDisplayGroup</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: exports</h1>
+    <h1 class="page-title">Class: module:PlantDisplayGroup</h1>
 
     
 
@@ -28,10 +28,13 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>module:PlantDisplayGroup<span class="signature">(element)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A simple state management class that allows components
-to more easily access and update shared state, without needing to prop drill.</div>
+            <div class="class-description">The component responsible for displaying the user's plants grouped together.
+
+Expects the following minimal HTML structure:
+<div class="plant-display-group">
+</div></div>
         
     
 </header>
@@ -46,19 +49,72 @@ to more easily access and update shared state, without needing to prop drill.</d
     
 
     
-    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="module:PlantDisplayGroup"><span class="type-signature"></span>new module:PlantDisplayGroup<span class="signature">(element)</span><span class="type-signature"></span></h4>
     
 
     
 
 
 
+<div class="description">
+    Binds this PlantDisplayGroup to the given element.
+</div>
 
 
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -94,7 +150,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line5">line 5</a>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -144,14 +200,10 @@ to more easily access and update shared state, without needing to prop drill.</d
 
         
             
-<h4 class="name" id="data"><span class="type-signature"></span>data<span class="type-signature"> :*</span></h4>
+<h4 class="name" id="plantDisplays"><span class="type-signature"></span>plantDisplays<span class="type-signature"> :Array.&lt;PlantDisplay></span></h4>
 
 
 
-
-<div class="description">
-    - The data stored in the Store.
-</div>
 
 
 
@@ -159,7 +211,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     <ul>
         <li>
             
-<span class="param-type">*</span>
+<span class="param-type">Array.&lt;PlantDisplay></span>
 
 
         </li>
@@ -198,7 +250,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line9">line 9</a>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -215,27 +267,35 @@ to more easily access and update shared state, without needing to prop drill.</d
 
 
         
-            
-<h4 class="name" id="eventTarget"><span class="type-signature"></span>eventTarget<span class="type-signature"> :EventTarget</span></h4>
+    
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addPlant"><span class="type-signature"></span>addPlant<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
 
 <div class="description">
-    - The EventTarget used for managing subscriptions and dispatching events.
+    Adds a new PlantDisplay to this PlantDisplayGroup.
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">EventTarget</span>
 
 
-        </li>
-    </ul>
+
+
+
 
 
 
@@ -270,7 +330,7 @@ to more easily access and update shared state, without needing to prop drill.</d
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line7">line 7</a>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -286,9 +346,386 @@ to more easily access and update shared state, without needing to prop drill.</d
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
+            
+
     
 
+    
+    <h4 class="name" id="removePlant"><span class="type-signature"></span>removePlant<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Removes the last PlantDisplay from this PlantDisplayGroup.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setGrowthLevel"><span class="type-signature"></span>setGrowthLevel<span class="signature">(growthLevel)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates plant growth stages.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>growthLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setGrowthLevels"><span class="type-signature"></span>setGrowthLevels<span class="signature">(growthLevels)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates all plant growth stages.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>growthLevels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ui_components_game_plants_PlantDisplayGroup.js.html">ui/components/game/plants/PlantDisplayGroup.js</a>, <a href="ui_components_game_plants_PlantDisplayGroup.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

@@ -2,6 +2,9 @@ import { assertHTMLElement } from "../../utils.js";
 import { store } from "../../store.js";
 
 /**
+ * @module PauseMenu
+ */
+/*
  * The component responsible for displaying the pause menu.
  * 
  * Expects the following minimal HTML structure:

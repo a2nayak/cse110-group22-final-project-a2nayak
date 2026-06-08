@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: exports</title>
+    <title>JSDoc: Source: ui/components/game/input/CodeInputField.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,286 +17,153 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: exports</h1>
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description">A simple state management class that allows components
-to more easily access and update shared state, without needing to prop drill.</div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line5">line 5</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="data"><span class="type-signature"></span>data<span class="type-signature"> :*</span></h4>
-
-
-
-
-<div class="description">
-    - The data stored in the Store.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">*</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line9">line 9</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="eventTarget"><span class="type-signature"></span>eventTarget<span class="type-signature"> :EventTarget</span></h4>
-
-
-
-
-<div class="description">
-    - The EventTarget used for managing subscriptions and dispatching events.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">EventTarget</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ui_store.js.html">ui/store.js</a>, <a href="ui_store.js.html#line7">line 7</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: ui/components/game/input/CodeInputField.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
+/**
+ * @module CodeInputField
+ */
+
+/**
+ * The component responsible for taking in the user's code input.
+ * 
+ * Expects the following minimal HTML structure:
+ *  &lt;div id="game-code-input-field" class="code-input-field">
+ *      &lt;div class="ghost-text">
+ *          &lt;span class="ghost-text-invisible">&lt;/span>
+ *          &lt;span class="ghost-text-visible">&lt;/span>
+ *      &lt;/div>
+ *      &lt;div class="code-input-highlight" aria-hidden="true">
+ *          &lt;span class="highlight-correct">&lt;/span>
+ *          &lt;span class="highlight-error">&lt;/span>
+ *      &lt;/div>
+ *      &lt;input class="code-input" />
+ *  &lt;/div>
+ */
+export default class CodeInputField {
+    /**
+     * Creates an input field and binds it to the given element.
+     * @param {HTMLElement} element - The input field element to bind to.
+     */
+    constructor(element) {
+        this.element = element;
+        this.ghostTextString = 'print("Hello, World!")';
+        this.ghostTextInvisible = assertHTMLElement(this.element.querySelector('.ghost-text-invisible'));
+        this.ghostTextVisible = assertHTMLElement(this.element.querySelector('.ghost-text-visible'));
+        this.highlightCorrect = assertHTMLElement(this.element.querySelector('.highlight-correct'));
+        this.highlightError = assertHTMLElement(this.element.querySelector('.highlight-error'));
+        this.codeInput = assertHTMLInputElement(this.element.querySelector('.code-input'));
+
+        // Add event listeners
+        this.codeInput.addEventListener('input', () => this.handleInput());
+        this.renderGhostText();
+    }
+
+    /**
+     * Clears the input field and resets the ghost text.
+     */
+    clearAnswer() {
+        this.codeInput.value = '';
+        this.renderGhostText();
+    }
+
+    /**
+     * Sets what the ghost text should be. 
+     * This is the text that appears as a hint for the user, but disappears as they type.
+     * @param {String} text 
+     */
+    setGhostText(text) {
+        this.ghostTextString = text;
+        this.renderGhostText();
+    }
+
+    /**
+     * Renders the ghost text based on the current input value. 
+     * The part of the ghost text that overlaps with the input value is rendered in the "invisible" span, while the rest is rendered in the "visible" span.
+     */
+    renderGhostText() {
+        if(!this.ghostTextString) return;
+        const value = this.codeInput.value;
+        this.ghostTextInvisible.textContent = this.codeInput.value;
+        this.ghostTextVisible.textContent = this.ghostTextString.substring(value.length);
+    
+        this.errorHighlight();
+    }
+
+    /**
+     * Error highlighting for the input field. If the user's input matches the corresponding portion of the ghost text, the error highlight is removed. Otherwise, an error highlight is added to indicate a mistake.
+     */
+    errorHighlight() {
+        if (!this.ghostTextString) return;
+        const value = this.codeInput.value;
+        if (!value) {
+            this.highlightCorrect.textContent = '';
+            this.highlightError.textContent = '';
+            return;
+        }
+
+        let matchIndex = 0;
+        const compareLen = Math.min(value.length, this.ghostTextString.length);
+        while (matchIndex &lt; compareLen &amp;&amp; value[matchIndex] === this.ghostTextString[matchIndex]) {
+            matchIndex++;
+        }
+
+        this.highlightCorrect.textContent = value.substring(0, matchIndex);
+        this.highlightError.textContent = this.ghostTextString.substring(matchIndex, value.length);
+    }
+    /**
+     * Event handler for when the input value changes. 
+     * Rerenders the ghost text to reflect the new input value.
+     */
+    handleInput(){ 
+        this.renderGhostText();
+    }
+
+    /**
+     * Event handler for when the user presses the Enter key.
+     * @param {(text: string) => void} callback - The function to call when the user presses Enter. The current input value will be passed as an argument to this function.
+     */
+    onEnter(callback) {
+        this.codeInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') callback(this.codeInput.value);
+        });
+    }
+
+    /**
+     * Event handler for when the input value changes.
+     * @param {(text: string) => void} callback 
+     */
+    onInputChange(callback) {
+        this.codeInput.addEventListener('input', () => callback(this.codeInput.value));
+    }
+
+    /**
+     * Event handler for when a key is pressed in the input field.
+     * @param {(key: string) => void} callback 
+     */
+    onKeyPress(callback) {
+        this.codeInput.addEventListener('keypress', (event) => {
+            setTimeout(() => callback(event.key), 0);
+        });
+    }
+
+    /**
+     * Focuses the input field, allowing the user to start typing immediately.
+     */
+    focus() {
+        this.codeInput.focus();
+    }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

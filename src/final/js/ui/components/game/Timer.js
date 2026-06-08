@@ -1,5 +1,8 @@
 import { store } from '../../store.js';
 /**
+ * @module Timer
+ */
+/*
  * The component responsible for displaying the time remaining.
  * 
  * Expects the following minimal HTML structure:

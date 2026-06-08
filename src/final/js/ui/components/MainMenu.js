@@ -1,4 +1,7 @@
 /**
+ * @module MainMenu
+ */
+/*
  * The main menu component for the game.
  *
  * Expects the following minimal HTML structure:
