@@ -1,12 +1,6 @@
 import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
 /**
- * @module CodeInputField
- */
-
-/**
- * The component responsible for taking in the user's code input.
- * 
- * Expects the following minimal HTML structure:
+ *  Expects the following minimal HTML structure:
  *  <div id="game-code-input-field" class="code-input-field">
  *      <div class="ghost-text">
  *          <span class="ghost-text-invisible"></span>
@@ -18,6 +12,10 @@ import { assertHTMLElement, assertHTMLInputElement } from '../../../utils.js';
  *      </div>
  *      <input class="code-input" />
  *  </div>
+ */
+
+/**
+ * The component responsible for taking in the user's code input.
  */
 export default class CodeInputField {
     /**
